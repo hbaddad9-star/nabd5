@@ -8,6 +8,7 @@ using Nabd.Infrastructure;
 using Nabd.Web.ClientScripts;
 using Nabd.Web.Controllers.Api;
 using Nabd.Web.Http;
+using Nabd.Web.Images;
 
 var builder = WebApplication.CreateBuilder(args);
 
@@ -28,6 +29,8 @@ builder.Services
 builder.Services.Configure<WebEncoderOptions>(options => options.TextEncoderSettings =
     new TextEncoderSettings(UnicodeRanges.BasicLatin, UnicodeRanges.Latin1Supplement, UnicodeRanges.GeneralPunctuation, UnicodeRanges.Arabic));
 builder.Services.AddSingleton<IClientBundleProvider, ClientBundleProvider>();
+// The site's images by key: the paths are in images.json, so an image is changed in one place (ADR 0020).
+builder.Services.AddSingleton<ImageCatalog>();
 builder.Services.AddProblemDetails();
 builder.Services.AddNabdRateLimits(builder.Configuration);
 builder.Services.AddOptions<ServerSessionsApiOptions>().Bind(builder.Configuration.GetSection(ServerSessionsApiOptions.SectionName));

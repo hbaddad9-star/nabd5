@@ -5,9 +5,6 @@ public enum UnderstandingService
 {
     /// <summary>The service behind the emergency room (reader, voices, handover grading).</summary>
     ErRoom,
-
-    /// <summary>The service behind the respiratory room.</summary>
-    RespiratoryRoom,
 }
 
 /// <summary>A request relayed to an understanding service.</summary>

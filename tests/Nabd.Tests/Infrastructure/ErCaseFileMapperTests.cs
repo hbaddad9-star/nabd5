@@ -1,6 +1,6 @@
 using System.Text.Json;
 using Nabd.Domain.Simulation;
-using Nabd.Infrastructure.LegacyData;
+using Nabd.Infrastructure.CaseData;
 using Nabd.Tests.Support;
 
 namespace Nabd.Tests.Infrastructure;
@@ -29,7 +29,7 @@ public class ErCaseFileMapperTests
     [Fact]
     public async Task Every_field_the_clinical_core_uses_is_mapped_as_the_file_has_it()
     {
-        using var raw = JsonDocument.Parse(await TestData.LegacyDataFiles.ReadAsync(LegacyDataFiles.ErCases));
+        using var raw = JsonDocument.Parse(await TestData.CaseDataFiles.ReadAsync(CaseDataFiles.ErCases));
         foreach (var rawCase in raw.RootElement.GetProperty("cases").EnumerateArray())
         {
             var id = rawCase.GetProperty("id").GetString()!;
@@ -96,8 +96,8 @@ public class ErCaseFileMapperTests
     [Fact]
     public async Task Only_the_shipped_data_files_can_be_read()
     {
-        await Assert.ThrowsAsync<ArgumentException>(() => TestData.LegacyDataFiles.ReadAsync("../appsettings"));
-        await Assert.ThrowsAsync<ArgumentException>(() => TestData.LegacyDataFiles.ReadAsync("er-cases.json"));
-        Assert.Equal(8, LegacyDataFiles.KnownNames.Count);
+        await Assert.ThrowsAsync<ArgumentException>(() => TestData.CaseDataFiles.ReadAsync("../appsettings"));
+        await Assert.ThrowsAsync<ArgumentException>(() => TestData.CaseDataFiles.ReadAsync("er-cases.json"));
+        Assert.Equal(["er-cases", "er-act", "er-find"], CaseDataFiles.KnownNames);
     }
 }

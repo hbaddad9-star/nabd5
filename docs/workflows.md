@@ -1,121 +1,47 @@
 # Workflows
 
-This document describes how Nabd («نَبْض الأردن») is used and how a request travels through the application.
-It has three parts: what a user can do today, what the server does for each kind of request, and what a
-developer does to change or check the system.
+The journeys a person takes through Nabd 7, and the flows the system runs underneath them. The demo script for the
+committee is [demo-script.ar.md](demo-script.ar.md); the walks that check these journeys are in `tools/qa`.
 
-Read these first if you have not seen the project: [../README.md](../README.md) and
-[architecture.md](architecture.md).
+## User journeys
 
-Four facts apply to every section below.
+### 1. A visitor on the landing page
 
-- The clinical content of the cases was written for training and **has not been reviewed by a physician**. The
-  system does not diagnose or treat real patients.
-- The room in the browser still runs the **legacy client**. The server-side model (`Nabd.Domain`) and the use
-  cases (`Nabd.Application`) exist and are tested, but **the room does not call them yet**
-  ([decision 0007](decisions/0007-server-session-api-off-by-default.md)).
-- The real understanding services were **never called** in this phase. The relay is tested against fakes only
-  ([decision 0006](decisions/0006-understanding-services-through-a-gateway.md)).
-- There is **no authentication** and no database. Accounts are demo data in the browser
-  ([decision 0008](decisions/0008-no-database-and-no-authentication-in-this-phase.md)).
+The public landing (sections, the room's screenshot, specialties, method, institutions). «تسجيل الدخول» and «إنشاء
+حساب» open the sign-in screen at `/login` and `/register`; a signed-in page asked for while signed out opens it too.
 
-## User journeys that work today
+### 2. Sign-in and registration
 
-Source of the step lists: [legacy-audit/34-feature-reachability.md](legacy-audit/34-feature-reachability.md),
-section "User journeys that work today", and the ER parts of the audit. That audit checked the legacy page in a
-headless browser; the steps were not re-run against the new host in this phase except through the state
-comparison described in [testing-strategy.md](testing-strategy.md) (landing, sign-in, register, home for three
-roles, academic portal, profile, a refused navigation to the coach, ER briefing in both roles).
+- **Sign-in by e-mail.** The e-mail decides the account (`app/020-access.js`): Nabd's administration and the
+  university staff and students on a roster enter directly; a university's domain off its roster is refused with
+  its name; an e-mail with no account goes to registration with the e-mail filled in (D-59).
+- **Registration** is one step: name, e-mail, the track (must be chosen; it decides the role in the room for good,
+  D-57) and the year (D-58).
+- **Demo buttons** open the three consoles.
 
-Where the logic runs: in every journey below, the **browser client** (the six script bundles). The server only
-sends the page, the bundles, the data documents and, for typed messages in the ER room, relays to the
-understanding service.
+### 3. An independent trainee
 
-### 1. Visitor on the landing page
+Home → «ابدأ أول حالة» (or the ER card) → the room's briefing, in the role of his track → the session → the handover
+and the report → the report is saved with the account → the home's facts, «تقاريري», the profile's skills and repeated
+errors, and the coach all read it. The coach names the gaps, runs the guided drill and suggests the real case next.
+«بياناتي» in the profile changes the name, track, year and photo.
 
-| Step | What happens |
-|---|---|
-| 1 | The page loads on the landing view. Header anchors: about, problem, solution, sections, audience |
-| 2 | A request for any protected view shows the landing view and opens the sign-in page with a notice |
-| 3 | "Try an ER case" signs in the demo account `med_student` and opens the ER briefing |
+### 4. A university student
 
-Logic: browser (`script.js`). Some landing sections are hidden by stylesheet rules (audit part 34, "Matrix").
+The same, plus her section's assignments on the home (an assignment opens its case in the room) and, after the
+supervisor publishes, the approved mark, his rating and his note in her report.
 
-### 2. Sign-in with a demo account, and registration
+### 5. A supervisor
 
-| Step | What happens |
-|---|---|
-| 1 | Sign-in page, three demo buttons (ids used today: `rana`, `med_student`, `doctor`) |
-| 2 | A placement record is written for students, so the level quiz does not interrupt |
-| 3 | Registration step 1: name, email, password (8 or more characters), role card (nursing, medicine, supervisor) |
-| 4 | Registration step 2: year, section code, university. Submit |
-| 5 | The account is created in `localStorage`; the user lands on home with a toast about the role |
-| 6 | Sign-out, then sign-in with a wrong password shows an error; the right password opens home |
+«بوابة المشرف» → assign a case to a section → «النتائج والاعتماد»: every session, real ones marked → the file of a
+session (what the student did, the handover as written, the timeline, the reflection) → override the mark with a
+written reason or waive a critical error with one → rate → approve and publish → the student sees it.
 
-Sign-in accepts only non-demo accounts stored on the same device. Demo sessions are not restored after a reload
-(code reading only). The role is chosen by the user and nothing verifies it. The password is stored as a salted
-digest next to the account in `localStorage`. This is not a security boundary.
+### 6. A university administrator and Nabd's administration
 
-Logic: browser only. No request leaves the browser.
-
-### 3. The ER room as a doctor, from the briefing to the report
-
-| Step | What happens |
-|---|---|
-| 1 | Enter the ER room from home. The briefing sheet shows a doctor/nurse switch (allowed only before the first turn) |
-| 2 | "Start session". The clock starts; the monitor and the chat feed are shown |
-| 3 | The trainee types in the input and sends. The companion, the patient and the nurse answer |
-| 4 | Treatments and tests are ordered by typing; results arrive after simulated time |
-| 5 | The "end" button opens the hand-over sheet: diagnosis text, disposition, one SBAR text. Its confirm button is disabled until the sheet is filled |
-| 6 | The report shows the score, the sub-scores, the risk timeline, what went well, what must change, the investigation log and a summary |
-| 7 | A history entry (`er_<case id>`) and averages are saved in the account. Buttons: home, same case again, next case |
-| 8 | The last report can be reopened through the debrief view until the next case starts |
-
-Logic: browser (the `er.js` bundle). With the service on, a
-typed message goes to `/api/er-chat` (flow 3 below). With the service off, the room reads the message itself
-(flow 4). The case in progress lives only in page memory and is lost on reload.
-
-### 4. The ER room as a nurse
-
-| Step | What happens |
-|---|---|
-| 1 | `rana` (nursing track) enters the ER room. The role is nurse by track; the briefing names the nursing supervisor |
-| 2 | Start, then send a message. The reply comes from the service, or from fixed lines when offline |
-| 3 | The "end" button opens a four-field SBAR sheet (S, B, A, R). There is no diagnosis or disposition |
-| 4 | The report and the history entry `er_<case id>_n` are written |
-
-Verified in the page to step 3. Step 4 was **not verified** in the page (audit part 34). The nurse-role score is
-not ported to the server; it is computed in the browser.
-
-### 5. The professor's academic portal
-
-| Step | What happens |
-|---|---|
-| 1 | Home shows the professor section: invite code, report count, tab shortcuts |
-| 2 | The university view shows five tabs: courses and sections, assign cases, student reports, student progress, academic advisor |
-| 3 | Assign: choose one of the six ER cases and one of three sections, optional due date and note, save. Stored in `nabd_v2_assignments` |
-| 4 | Reports: cohort filter, CSV export, "show answers". Advisor: status and note, saved in `nabd_v2_advisor` |
-| 5 | A student of that section sees the assignment on home; its button opens the ER room on that case |
-
-Verified in the page: opening the portal, assigning, and the student opening the assignment. Not clicked: the
-reports export and the advisor save. Anyone can sign in as the professor; assignments and grades exist in one
-browser only.
-
-### 6. The student's profile
-
-| Step | What happens |
-|---|---|
-| 1 | Open the profile from the account menu or the sidebar |
-| 2 | Tabs: dashboard (students only), strengths, history, training record and print, settings |
-| 3 | The dashboard button "retake" reopens the level quiz; another button jumps to the history |
-
-Print and settings were not verified in the page. Logic: browser. Data: the account in `localStorage`.
-
-### Features that exist in the code but are hidden
-
-The specialty simulation, the nursing cases, "observe an expert", the coach and the respiratory room are closed
-in the legacy interface by view lists and stylesheet rules (`REMOVED_VIEWS`, `scope.css`). They are not user
-journeys today. The table of what hides each one is in part 34, "Dormant features".
+The university: courses and sections, staff, the student roster by e-mail, which of Nabd's cases are open, pass marks
+per year, the supervisors' permissions. Nabd: institutions, users, subscriptions, the case library and its review,
+sources, scoring rules, audit, settings (the realism switch, demo data on the coach page, demo reset).
 
 ## System flows
 
@@ -124,54 +50,28 @@ All paths below are in `src/Nabd.Web/Program.cs` and the controllers named. In t
 
 ### Flow 1. Loading the page
 
-`GET /` returns the page. The browser then asks for the stylesheets, the images and six script bundles.
+`GET /` (or `/login`, `/register`) returns the page: the Razor layout and its partial views, with image paths from
+`images.json`. The browser then asks for the stylesheets, the images and nine script bundles, in this order:
+`script.js`, `motion.js`, `terms.js`, `ui.js`, `er.js`, `landing.js`, `admin.js`, `app.js`, `er-plus.js`.
 
-```mermaid
-sequenceDiagram
-    participant B as Browser
-    participant S as Static files
-    participant H as HomeController
-    participant C as ClientScriptsController
-    participant P as ClientBundleProvider
-    B->>H: GET /
-    H-->>B: Razor layout + 43 partial views (HTML)
-    B->>S: GET /css/*.css, /img/**
-    S-->>B: files
-    B->>C: GET /js/script.js (also motion, terms, ui, resp, er)
-    C->>P: Find(fileName)
-    P-->>C: bundle + entity tag (null if unknown)
-    C-->>B: text/javascript, Cache-Control no-cache, ETag
-```
+- `ClientScriptsController.Get` (`GET /js/{fileName}`) asks `ClientBundleProvider.Find`, which joins the fragments of
+  each bundle by plain concatenation (optional `open` and `close` pieces, line feeds) and computes a SHA-256 entity
+  tag. An unknown name gives 404; source fragments cannot be requested. `Cache-Control: no-cache` with the tag.
+- Stylesheets and images are static files from `wwwroot`.
+- The head links a font stylesheet on a third-party host (Google Fonts, the shell's base font); the Arabic interface
+  font is self-hosted.
 
-- `HomeController.Index` (`GET /`) renders `Views/Home/Index.cshtml` inside `_Layout.cshtml`. The response is not
-  cacheable.
-- `AccountController.Login` / `Register` (`GET /login`, `GET /register`, since V6.4) render the same page with the
-  sign-in screen open on its form and their own title (decision 0012). In the browser, `landing.js` keeps the
-  address in step with the screen: opening it from a button shows `/login` or `/register`, closing it (or signing
-  in) returns to the address it came from, and Back closes it.
-- Stylesheets and images are plain static files (`app.UseStaticFiles()`) from `wwwroot/css` and `wwwroot/img`.
-- The layout lists six scripts with `defer`, in this order: `script.js`, `motion.js`, `terms.js`, `ui.js`,
-  `resp.js`, `er.js`.
-- `ClientScriptsController.Get` (`GET /js/{fileName}`) asks `ClientBundleProvider.Find`. The provider reads
-  `ClientScripts/bundles.json`, joins the fragments of each bundle by plain concatenation (optional `open` and
-  `close` pieces around them, line endings normalised to LF) and computes a SHA-256 entity tag. An unknown name
-  gives 404. Source fragments cannot be requested.
-- `Revalidated` sends `Cache-Control: no-cache` with the tag, so the browser revalidates every time.
-- The head of the page also links a font stylesheet on a third-party host (Google Fonts). The audit lists the
-  page start depending on that host as a known weakness (architecture.md, "Security posture").
+### Flow 2. The room loading its data
 
-### Flow 2. A room loading its data
-
-The rooms fetch their data with relative URLs (`data/er-cases.json`, `data/er-act.json`, `data/er-find.json`; the
-respiratory room builds `data/` + a file name). The ER room fetches `er-cases` when it opens and the two small
-offline models (`er-act`, `er-find`) for flow 4.
+The room fetches `data/er-cases.json` when it opens, and the two small offline models (`data/er-act.json`,
+`data/er-find.json`) for flow 4. The consoles and the student's academic part read `er-cases` for the cases' names.
 
 ```mermaid
 sequenceDiagram
     participant R as Room (browser)
     participant D as ClientDataController
     participant I as IClientDataDocumentSource
-    participant F as LegacyDataFiles
+    participant F as CaseDataFiles
     R->>D: GET /data/er-cases.json
     D->>I: FindAsync("er-cases")
     I->>F: IsKnown(name)?
@@ -182,16 +82,10 @@ sequenceDiagram
     D-->>R: 200 JSON, no-cache, ETag  (or 404)
 ```
 
-- `ClientDataController.Get` (`GET /data/{name}.json`) calls `IClientDataDocumentSource.FindAsync`. The
-  implementation `FileClientDataDocumentSource` first asks `LegacyDataFiles.IsKnown`. Eight names are known:
-  `er-cases`, `er-act`, `er-find`, `er-lang`, `resp-ar`, `resp-clinical`, `resp-model`, `resp-patients`. Any other
-  name returns 404 without touching the disk.
-- `LegacyDataFiles.ReadAsync` is the only code that opens the files, from `LegacyData/Files` or from
-  `LegacyData:RootPath`. The bytes are served unchanged, and cached in memory per name with a hash tag.
-- The data files are not public static files. Note that `er-cases.json` still reaches the browser, so a trainee
-  can read diagnoses and expected steps in it (architecture.md, "What is honest to say about data exposure").
-- `er-lang.json` is served too, but no client fragment fetches it. Whether any other consumer needs it is not
-  determined here; the audit says the external function reads its own copy (legacy-audit/30-data-files.md).
+Three names are known (`er-cases`, `er-act`, `er-find`); any other returns 404 without touching the disk.
+`CaseDataFiles.ReadAsync` is the only code that opens the files, from `CaseData/Files` or `CaseData:RootPath`.
+`er-cases.json` still reaches the browser, so a trainee could read diagnoses and expected steps in it
+([architecture.md](architecture.md), "Data exposure").
 
 ### Flow 3. A turn in the ER room with the understanding service on
 
@@ -237,8 +131,7 @@ Order of the checks, from `Program.cs`, `UnderstandingController` and `ProcessPa
 6. Status and body return **unchanged**, with `Cache-Control: no-store`. A status of 400 or more is logged as a
    warning (service name and status only, not the body).
 
-What the room does with the answer (client fragment `er/100-server-client.js`, contract in
-[legacy-audit/31-api-er-chat.md](legacy-audit/31-api-er-chat.md)):
+What the room does with the answer (client fragment `er/100-server-client.js`):
 
 | Answer | What the room does |
 |---|---|
@@ -287,7 +180,7 @@ sequenceDiagram
   the dose and order readers (`localRead`) and fixed Arabic lines for the patient, the companion, the nurse and
   the supervisor (fragments `110` to `220` of the ER bundle). The companion's unprompted line is skipped when
   the service is off.
-- Quality of the offline mode: an earlier user test of the legacy room, recorded outside this repository, found
+- Quality of the offline mode: an earlier user test of the room, recorded outside this repository, found
   it weaker than the online mode. The numbers are not in the sources read for this document; not determined.
 - A fixed 40-message conversation in each case, offline and with a stub service, is pinned by the conversation
   golden master ([testing-strategy.md](testing-strategy.md)).
@@ -350,7 +243,7 @@ Details checked in `SimulationUseCases.cs`:
 - **Intervention**: the session must be open (409 if ended); the action must exist in the catalog (400); the
   amount cannot be negative. The dose text is cut to 60 characters. The reason grade is fixed to "good" here.
 - **Harmful order**: the harm profile is supplied by the caller ("as the client judged it"). This input is
-  transitional, because order safety is still in the legacy client (decision 0007).
+  transitional, because order safety is still in the room (decision 0007).
 - **Test**: the test id must exist and the reason grade must be `good`, `weak` or `ungraded`. The answer carries
   the test id, the minute it was ordered and the snapshot. It does not carry the indication of the test.
 - **Complete**: only the doctor role is scored on the server (a nurse session gets 400). The destination must be
@@ -371,7 +264,7 @@ minutes; they do not survive a restart. A session id is the only protection, bec
 Time in a session is simulated. One real second is one simulated second (`Pace = 1`); the unit used in the
 model is the simulated minute.
 
-### The legacy clock (browser)
+### The room's clock (browser)
 
 `er/050-risk-tick.js` runs `tick(now)` once per animation frame while the case is open:
 
@@ -388,7 +281,7 @@ both points).
 ### The domain clock (server)
 
 `SimulationSession.Tick(elapsedSeconds)` does the same work in three named parts, so that an input can be placed
-exactly between them as the legacy code allowed. It returns at once if the session is over.
+exactly between them as the room's code allowed. It returns at once if the session is over.
 
 | Part | Method | What it does |
 |---|---|---|
@@ -430,84 +323,30 @@ All of these are pinned bit for bit by the golden masters for the doctor role an
 
 ## Developer workflows
 
-Prerequisites and configuration: [setup.md](setup.md). Strategy and results: [testing-strategy.md](testing-strategy.md).
-All commands run from the repository root.
-
 ### Build, test and run
 
-1. `dotnet restore Nabd.sln`
-2. `dotnet build Nabd.sln` (warnings are errors; public members need XML documentation).
-3. `dotnet test Nabd.sln` (164 tests at the time of writing, about ten seconds; no Node.js, browser or network).
-4. `dotnet run --project src/Nabd.Web`, then open <http://localhost:5054>. `GET /healthz` answers `ok`.
+`dotnet build`, `dotnet test`, `dotnet run --project src/Nabd.Web --launch-profile http` ([setup.md](setup.md)).
 
-### Record and check the golden masters
+### Check a change in the browser
 
-Recording needs Node.js. The committed traces mean `dotnet test` does not.
+With the site running: `node tools/qa/seats.mjs qa-out 1440 900`, then `390 844`, and `tools/qa/rules-of-entry.mjs`.
+A clean run ends with `errors: []` and no ✗ line.
 
-1. Check that the traces on disk still match the legacy script:
-   `node tests/legacy-baseline/record-er-clinical.js --check`
-2. Record the clinical traces again (writes `tests/Nabd.Tests/GoldenMasters/ErClinical/*.json`):
-   `node tests/legacy-baseline/record-er-clinical.js`
-3. Record or compare the conversation golden master:
-   `node tests/legacy-baseline/golden-conversation.js record` and `node tests/legacy-baseline/golden-conversation.js compare`
-4. Compare against the `er.js` that the application serves (application running on port 5199):
-   ```
-   curl -s http://127.0.0.1:5199/js/er.js -o served-er.js
-   NB_ER_JS=served-er.js node tests/legacy-baseline/golden-conversation.js compare
-   NB_ER_JS=served-er.js node tests/legacy-baseline/record-er-clinical.js --check
-   ```
-5. Run `dotnet test Nabd.sln`. `ErClinicalTraceTests` replays the traces against the C# model.
+### Approve a designed region after an intended change
 
-Changing a clinical rule on purpose: re-record the traces from a legacy script carrying the same change, or
-record the accepted difference in the test, with review by someone who can judge the clinical effect. Never
-weaken a baseline test to make a change pass (testing-strategy.md, "Rules for changing things").
+`node tools/approve-regions.mjs` with the site running; review the diff of `tests/Nabd.Tests/LandingBaseline/*.html`;
+commit it with the change.
 
-### Compare the two hosts in a browser
+### Change the approved room
 
-A manual check. It needs Chrome and two running hosts.
-
-1. Check out the `main` branch in a separate folder and serve it:
-   `node tools/legacy/serve-static.mjs <that checkout> 5180`
-2. Start the application with Development settings:
-   `ASPNETCORE_ENVIRONMENT=Development dotnet run --project src/Nabd.Web --no-launch-profile --urls http://127.0.0.1:5199`
-   (bash syntax; without the variable the understanding services are switched on)
-3. Run `node tools/legacy/compare-hosts.mjs`.
-4. Read the result per state and viewport: live DOM, screenshot bytes, page errors. In this phase's run the DOM
-   was identical in 22 of 22 pairs; two screenshots of signed-in home views differed with identical DOM, and such
-   views differ about as often when the legacy site is compared with itself.
-
-### Register an intentional difference in `seams.json`
-
-Any change to a file under `ClientScripts/`, `Views/` or `wwwroot/css` changes what the browser receives and
-makes the baseline tests fail until it is registered.
-
-1. Make the change and run `dotnet test Nabd.sln`. `Baseline/LegacySiteBaselineTests` names the file that differs.
-2. Open `tests/Nabd.Tests/LegacyBaseline/seams.json`. Each entry has `file`, `count`, `legacy` (the legacy text),
-   `current` (the new text) and `reason`.
-3. Add an entry (or change `count`) so that undoing the registered differences gives the legacy text again.
-4. Write the reason in plain words. The file has 18 entries today.
-5. Run `dotnet test Nabd.sln` again. It must pass without changing the legacy baseline itself
-   (`tests/Nabd.Tests/LegacyBaseline/site/` and `legacy-manifest.json` are never edited).
+The owner's decision. Show the change first; then update the two fingerprints in
+`SiteAssetsTests.The_approved_emergency_room_is_unchanged`. A change to a clinical rule also fails the golden masters
+on purpose: record new traces only for a reviewed clinical change.
 
 ### Add a use case
 
-Follows [architecture.md](architecture.md) and decision 0001. The steps below are derived from the existing use
-cases and the architecture tests; they were not run as a procedure in this phase.
-
-1. If the use case needs the outside world, add a port (an interface) under `src/Nabd.Application/Abstractions/`
-   and implement it in `src/Nabd.Infrastructure/`.
-2. Add one `sealed` class with one `HandleAsync` method in `src/Nabd.Application/` (for example under
-   `Simulation/`). It loads through a port, asks the domain to do the work and returns a `Result<T>`. No clinical
-   rule belongs in it.
-3. Put any new clinical rule in `src/Nabd.Domain/`, never in the use case. A rule change fails the golden masters
-   (see above).
-4. Register the use case with the application's service registration (`AddApplication`, called from `Program.cs`).
-5. Add a controller action that calls it. A controller takes use cases and application ports, never an
-   infrastructure type. The session API maps failure kinds to status codes in `ToResponse`.
-6. Add tests: a use case test in `tests/Nabd.Tests/Application/`, an endpoint test in `tests/Nabd.Tests/Web/`.
-   `Architecture/LayeringTests` checks the dependency direction, that use cases are sealed and that controllers
-   take no infrastructure types.
-7. Run `dotnet build Nabd.sln` and `dotnet test Nabd.sln`.
+One sealed class with one `HandleAsync` in `Nabd.Application`, a port in `Abstractions/` if it needs the outside
+world, an adapter in `Nabd.Infrastructure`, a thin action in a controller, and tests at each layer.
 
 ## Failure handling
 
@@ -524,7 +363,7 @@ unexpected exception into a short problem document; details go to the log.
 | Body is not a JSON object | 400 `{"error":"bad request"}`. Same client handling | `ProcessPatientMessage` |
 | Oversized request (over 64 KB) | 413 `{"error":"too large"}`. Same client handling as other non-listed statuses. The browser room does not send such a body in normal use | `UnderstandingController.ReadBodyAsync`, `ProcessPatientMessage` |
 | Unknown script name or data name | 404. The page or the room that asked fails to load that item | `ClientScriptsController`, `ClientDataController` |
-| A data file is missing on disk | An exception in the data source, answered as a 500 problem document. Whether the room shows anything useful is not determined | `LegacyDataFiles.ReadAsync`, exception handler |
+| A data file is missing on disk | An exception in the data source, answered as a 500 problem document. Whether the room shows anything useful is not determined | `CaseDataFiles.ReadAsync`, exception handler |
 | Session API switched off | 404 for every route | `SimulationSessionsController.Guarded` |
 | Unknown or malformed session id (session API) | 404 problem document "Unknown session." A session dropped after 120 idle minutes reads the same | `SessionStoreExtensions.FindSessionAsync`, `InMemorySimulationSessionStore.FindAsync` |
 | Unknown case when starting a session | 404 problem document "Unknown case." | `StartSimulationSession` |
@@ -535,7 +374,6 @@ unexpected exception into a short problem document; details go to the log.
 | Session store full (500 sessions) | 503 problem document "Too many sessions are running." | `StartSimulationSession`, `InMemorySimulationSessionStore.TryAddAsync` |
 | Session API over its rate limit (240 a minute) | 429. No browser client uses this API | Rate limiter |
 | An unhandled exception | A short problem document (status 500) with no stack trace; the details are logged. A test of this exact case was not found in the files read for this document: not determined | `Program.cs` (`UseExceptionHandler`) |
-| Respiratory room service (`/api/resp-chat`) | Same relay, same statuses, with its own settings. The room is closed in the legacy interface, so no user reaches it today | `UnderstandingController.RespChat` |
 
-Browser-side failures (storage blocked, a malformed saved account, a case lost on reload) are handled by the
-legacy client and are listed in the audit, not here. The case in progress is lost on reload.
+Browser-side failures (storage blocked, a malformed saved account) are handled by the store's fallbacks
+(`script/100-local-storage-store.js`, `shared/010-store.js`). The case in progress is lost on reload.

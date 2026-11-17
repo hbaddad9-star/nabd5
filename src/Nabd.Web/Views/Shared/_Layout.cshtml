@@ -15,20 +15,16 @@
 @RenderBody()
   </main>
 
-@await Html.PartialAsync("~/Views/Shared/Modals/_HandoverModal.cshtml")
-@await Html.PartialAsync("~/Views/Shared/Modals/_LevelModal.cshtml")
 @await Html.PartialAsync("~/Views/Account/_AuthScreen.cshtml", ViewData[Nabd.Web.Controllers.AccountController.AuthPageKey] as Nabd.Web.Models.AuthPage? ?? Nabd.Web.Models.AuthPage.None)
-@await Html.PartialAsync("~/Views/Shared/Modals/_ImageLightbox.cshtml")
-@await Html.PartialAsync("~/Views/Shared/Modals/_StudentAttemptModal.cshtml")
 @await Html.PartialAsync("~/Views/Shared/Layout/_SiteFooter.cshtml")
   <script src="js/script.js" defer></script>
   <script src="js/motion.js" defer></script>
   <script src="js/terms.js" defer></script>
   <script src="js/ui.js" defer></script>
-  <script src="js/resp.js" defer></script>
   <script src="js/er.js" defer></script>
   <script src="js/landing.js" defer></script>
   <script src="js/admin.js" defer></script>
+  <script src="js/app.js" defer></script>
   <script src="js/er-plus.js" defer></script>
 </body>
 </html>

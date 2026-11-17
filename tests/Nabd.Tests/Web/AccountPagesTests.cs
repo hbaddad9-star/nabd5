@@ -12,15 +12,13 @@ namespace Nabd.Tests.Web;
 /// </summary>
 public class AccountPagesTests : IClassFixture<WebApplicationFactory<Program>>
 {
-    // Every id of the screen that the legacy client reads (150-auth-session-modal, 220-registration-role-cards,
-    // 500-auth-modal-steps, 830-app-init-and-listeners).
+    // Every id of the screen that the scripts read (150-auth-session-modal, 220-registration-role-cards,
+    // 500-auth-modal-steps, 830-app-init-and-listeners, app/020-access).
     private static readonly string[] LegacyIds =
     [
-        "auth-modal", "close-auth-modal-btn", "auth-modal-title", "auth-pane-login", "login-email", "login-pass", "login-error-msg",
-        "submit-login-btn", "auth-tab-register", "nb-demo-title", "auth-pane-register", "reg-dot-1", "reg-dot-2", "reg-bar",
-        "reg-step-1", "reg-step-2", "reg-name", "reg-email", "reg-pass", "nb8-rolehead", "reg-rolecards", "reg-role", "reg-error-msg",
-        "reg-next-btn", "reg-track-chip", "reg-specialty", "reg-year", "reg-year-wrap", "reg-code", "reg-code-wrap", "reg-uni",
-        "reg-submit-error", "reg-back-btn", "submit-register-btn", "auth-tab-login",
+        "auth-modal", "close-auth-modal-btn", "auth-modal-title", "auth-pane-login", "login-email", "login-error-msg",
+        "submit-login-btn", "auth-tab-register", "nb-demo-title", "auth-pane-register", "reg-name", "reg-email", "nb8-rolehead",
+        "reg-rolecards", "reg-error-msg", "reg-next-btn", "reg-year", "reg-year-wrap", "auth-tab-login",
     ];
 
     private readonly WebApplicationFactory<Program> _factory;
@@ -68,7 +66,7 @@ public class AccountPagesTests : IClassFixture<WebApplicationFactory<Program>>
         Assert.Contains($"<title>{title}</title>", page);
         Assert.Contains("<title>نَبْض الأردن | أكاديمية المحاكاة السريرية</title>", home);
         static string Outside(string html) =>
-            Regex.Replace(LandingRegions.TokenizeServed(html, "auth"), "<title>[^<]*</title>", "<title/>");
+            Regex.Replace(html.Replace(LandingRegions.Extract(html, "auth").TrimEnd('\n'), "\u0001auth\u0001"), "<title>[^<]*</title>", "<title/>");
         Assert.Equal(Outside(home), Outside(page));
     }
 
@@ -99,9 +97,9 @@ public class AccountPagesTests : IClassFixture<WebApplicationFactory<Program>>
         var other = tab == "login" ? "register" : "login";
         Assert.DoesNotMatch($"id=\"auth-pane-{tab}\" class=\"[^\"]*\\bhidden\\b", screen);
         Assert.Matches($"id=\"auth-pane-{other}\" class=\"[^\"]*\\bhidden\\b", screen);
-        // The first registration step is the one shown (the legacy nb-step / is-on classes).
-        Assert.Matches("class=\"nb-step is-on[^\"]*\" id=\"reg-step-1\"", screen);
-        Assert.Matches("class=\"nb-step nl-auth-step\" id=\"reg-step-2\"", screen);
+        // V7: one registration step, and no password anywhere (no server identity in this phase, ADR 0008)
+        Assert.DoesNotContain("reg-step-2", screen);
+        Assert.DoesNotContain("type=\"password\"", screen);
     }
 
     [Theory]
@@ -117,11 +115,10 @@ public class AccountPagesTests : IClassFixture<WebApplicationFactory<Program>>
             Assert.Single(Regex.Matches(screen, $"data-demo-login=\"{account}\""));
         foreach (var role in new[] { "nursing", "medicine" }) // V6.7.7: staff come from the university's roster, not a card
             Assert.Single(Regex.Matches(screen, $"data-rc=\"{role}\""));
-        // The classes the legacy client reads or toggles: openAuthModal scrolls .nb-auth-simple and .nb-auth-main to
-        // the top; the registration steps are shown by .nb-step / .is-on.
+        // The classes the sign-in script reads: openAuthModal scrolls .nb-auth-simple and .nb-auth-main to the top.
         Assert.Single(Regex.Matches(screen, "class=\"nb-auth-simple[ \"]"));
         Assert.Single(Regex.Matches(screen, "class=\"nb-auth-main[ \"]"));
-        Assert.Equal(2, Regex.Matches(screen, "class=\"nb-step[ \"]").Count);
+        Assert.DoesNotContain("nb-step", screen);
     }
 
     [Fact]

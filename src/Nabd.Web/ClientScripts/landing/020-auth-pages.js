@@ -1,6 +1,6 @@
 /* =========================================================================
    Sign-in and registration as pages (ADR 0012). The screen is the legacy one (openAuthModal,
-   closeAuthModal, switchAuthModalTab, setRegStep and the forms keep their behaviour); this file only:
+   closeAuthModal, switchAuthModalTab and the forms keep their behaviour); this file only:
    - keeps the address and the title in step with it: /login or /register while it is open, back to the
      address it was opened from when it closes (also after a successful sign-in), so the browser's Back
      button closes it and a link to /login or /register opens it. The history moves that belong to the
@@ -9,8 +9,8 @@
    - on /login and /register (served open by AccountController), runs the legacy opening once the client has
      started, or goes to the signed-in home when an account is already signed in on this device;
    - keeps keyboard focus on the screen while it is open (the application behind it is covered), and gives
-     focus a place when the focused button disappears (switching forms or registration steps);
-   - shows and hides the password, and explains the Microsoft and Google buttons, which are not connected yet.
+     focus a place when the focused button disappears (switching forms);
+   - explains the Microsoft and Google buttons, which are not connected yet.
    ========================================================================= */
 (function () {
   'use strict';
@@ -74,7 +74,7 @@
     }
   }
   const watch = new MutationObserver(() => { sync(); keepFocus(); });
-  for (const el of [modal, loginPane, document.getElementById('reg-step-1'), document.getElementById('reg-step-2')])
+  for (const el of [modal, loginPane])
     if (el) watch.observe(el, { attributes: true, attributeFilter: ['class'] });
 
   // Registered in the capture phase, so it runs before the other popstate listeners (the ER room's Back handler
@@ -161,17 +161,6 @@
     window.closeAuthModal();
     if (typeof window.navigateTo === 'function') window.navigateTo(signedIn() ? 'home' : 'index');
     window.scrollTo(0, 0);
-  });
-
-  /* ---------- show or hide the password (the button's name stays; its pressed state says which) ---------- */
-  modal.addEventListener('click', e => {
-    const btn = e.target.closest('[data-auth-reveal]');
-    if (!btn) return;
-    const input = document.getElementById(btn.dataset.authReveal);
-    if (!input) return;
-    const show = input.type === 'password';
-    input.type = show ? 'text' : 'password';
-    btn.setAttribute('aria-pressed', String(show));
   });
 
   /* ---------- Microsoft and Google: not connected yet (docs/auth-external-providers.md) ---------- */

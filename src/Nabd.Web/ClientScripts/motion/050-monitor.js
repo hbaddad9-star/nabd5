@@ -55,9 +55,9 @@
         t.el.setAttribute('aria-label', 'اعرف المعدل الطبيعي');
       });
     }
-    // A room can supply its own normal ranges and alarm limits (the respiratory room has children).
+    // The room can supply its own normal ranges and alarm limits.
     const rangeOf = key => (cfg.range && cfg.range(key)) || RANGES[key];
-    const warnOf = (key, raw) => (cfg.warn ? cfg.warn(key, raw) : typeof window.nrWarn === 'function' && window.nrWarn(key, raw));
+    const warnOf = (key, raw) => (cfg.warn ? cfg.warn(key, raw) : '');
     function pick(tile) {
       const key = tile.dataset.tile;
       if (!rangeOf(key)) return;
@@ -137,7 +137,7 @@
       hrAlarm = false;
       resp = 16;
       cfg.tiles().forEach(t => {
-        // Same thresholds the nursing room already uses (nrWarn in script.js). The heart rate
+        // The room's own alarm thresholds (cfg.warn). The heart rate
         // alarm follows the case value, so the drifting display does not make it flicker.
         const raw = t.key === 'bp' ? t.val().textContent.trim() : t.key === 'hr' ? base : firstNum(t.val());
         const known = t.key === 'bp' ? /\d+\/\d+/.test(raw) : !isNaN(raw);

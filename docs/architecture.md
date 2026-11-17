@@ -1,11 +1,11 @@
 # Architecture
 
-Nabd («نَبْض الأردن») is an Arabic clinical-simulation trainer for medical and nursing students. This document
-describes the solution as it stands on the branch `refactor/clean-architecture`: what each project holds, which way
-the dependencies point, how a request travels, and what is deliberately left for the next phase.
+Nabd («نَبْض الأردن») 7 is an Arabic clinical-simulation trainer for medical and nursing students, built on ASP.NET Core
+MVC (.NET 10) with Clean Architecture. This document says what each project holds, which way the dependencies point,
+how the page reaches the browser, where the logic runs, and where the server takes over next.
 
-The clinical content of the cases was written for training and **has not been reviewed by a physician**. The data
-file says so itself (`reviewed: false`), the repository exposes that flag, and a test pins it.
+The clinical content of the cases **has not been reviewed by a physician**. The data file says so (`reviewed: false`),
+the repository exposes that flag, and a test pins it.
 
 ## The five projects
 
@@ -13,9 +13,9 @@ file says so itself (`reviewed: false`), the repository exposes that flag, and a
 Nabd.sln
 ├── src/Nabd.Domain           the clinical simulation: cases, vital signs, risk, stages, scoring
 ├── src/Nabd.Application      use cases and the contracts (ports) the outside world must fulfil
-├── src/Nabd.Infrastructure   adapters: legacy JSON data, the session store, the external services
-├── src/Nabd.Web              ASP.NET Core MVC: controllers, Razor views, client scripts, static assets
-└── tests/Nabd.Tests          unit, integration, architecture, baseline and golden-master tests
+├── src/Nabd.Infrastructure   adapters: the case data files, the session store, the understanding service
+├── src/Nabd.Web              ASP.NET Core MVC: controllers, Razor views, client scripts, images, static assets
+└── tests/Nabd.Tests          architecture, domain, golden masters, application, infrastructure, web and client tests
 ```
 
 Dependencies point inwards only:
@@ -26,9 +26,7 @@ Nabd.Web ──────────► Nabd.Application ──────�
    └──► Nabd.Infrastructure ┘   (Web references Infrastructure only to register it: the composition root)
 ```
 
-`tests/Nabd.Tests/Architecture/LayeringTests.cs` checks this on the compiled assemblies: the domain references
-nothing but the base class library; the application references the domain only; infrastructure never references
-the web; no controller takes an infrastructure type; the solution has exactly these five projects.
+`tests/Nabd.Tests/Architecture/LayeringTests.cs` checks this on the compiled assemblies.
 
 ### Nabd.Domain
 
@@ -40,10 +38,10 @@ No package or project references. Everything in it is plain C#.
 | `Catalog/` | `ClinicalCatalog`: the interventions and tests every case shares, with their repeat rules and general effects |
 | `Simulation/` | `SimulationSession`, the aggregate root: time, risk, stage, the blood-pressure cuff, interventions, harms, tests, anaphylaxis, ventricular tachycardia, arrest and handover. Value objects (`VitalSigns`, `VitalEffect`, records of what happened) and session events |
 | `Simulation/Scoring/` | `SessionScorer`: the 100-point score in six parts, the destination verdict, and the reasons that fail a session whatever its score |
-| `Common/` | `DomainException`, and the two numeric helpers kept exactly as the legacy code had them |
+| `Common/` | `DomainException`, and the two numeric helpers kept exactly as the approved room computes |
 
-`SimulationSession` is a rule-for-rule port of the clinical core of the legacy ER room (`er.js`). It is pinned by
-45 golden-master traces recorded from the legacy code and replayed **bit for bit** (see
+`SimulationSession` is a rule-for-rule port of the clinical core of the approved ER room (`er.js`). It is pinned by
+45 golden-master traces recorded from that code and replayed **bit for bit** (see
 [testing-strategy.md](testing-strategy.md) and [decision 0004](decisions/0004-clinical-core-pinned-by-golden-masters.md)).
 The session knows nothing about text, the screen or the network: it receives the outcome of an order as a command.
 
@@ -69,112 +67,106 @@ domain to do the work, and returns a view. No clinical rule lives in this layer,
 
 | Folder | Holds |
 |---|---|
-| `LegacyData/Files/` | The eight legacy JSON files, byte for byte as they were |
-| `LegacyData/` | `LegacyDataFiles` (the only code that opens those files, by known name), `JsonClinicalCaseRepository`, `FileClientDataDocumentSource`, `ErCases/ErCaseFileMapper` (legacy JSON → domain objects) |
+| `CaseData/Files/` | The four data files of the emergency room: `er-cases.json` (the six cases), `er-act.json` and `er-find.json` (the two small models the room uses offline to read what the trainee wrote), `er-lang.json` (its phrasing) |
+| `CaseData/` | `CaseDataFiles` (the only code that opens those files, by known name), `JsonClinicalCaseRepository`, `FileClientDataDocumentSource`, `ErCases/ErCaseFileMapper` (case file → domain objects) |
 | `Simulation/` | `InMemorySimulationSessionStore`: bounded, with an idle time limit |
-| `Ai/` | `HttpUnderstandingServiceGateway`: relays to the existing serverless functions |
+| `Ai/` | `HttpUnderstandingServiceGateway`: relays the room's request to the understanding service |
 
-### Nabd.Web
+### Nabd.Web (MVC)
 
 | Folder | Holds |
 |---|---|
-| `Controllers/` | `HomeController` (the page), `AccountController` (`/login`, `/register`: the page opened on the sign-in screen), `ClientScriptsController` (`/js/*.js`), `ClientDataController` (`/data/*.json`) |
-| `Models/` | `AuthPage`: which sign-in screen a request opens (none, sign-in, registration) |
-| `Controllers/Api/` | `UnderstandingController` (`/api/er-chat`, `/api/resp-chat`), `SimulationSessionsController` (`/api/simulation/sessions`) |
-| `Views/` | `Shared/_Layout.cshtml`, `Home/Index.cshtml` and the partial views that together reproduce the legacy page; `Account/` holds the sign-in pages and the sign-in screen's partials |
-| `ClientScripts/` | The browser-side client: 185 source fragments in seven bundles (the six legacy ones and `landing.js`), `bundles.json`, and `ClientBundleProvider` that joins them |
+| `Controllers/` | `HomeController` (the page), `AccountController` (`/login`, `/register`), `ClientScriptsController` (`/js/*.js`), `ClientDataController` (`/data/*.json`); `Api/UnderstandingController` (`/api/er-chat`), `Api/SimulationSessionsController` (`/api/simulation/sessions`, off by default) |
+| `Views/` | The page as Razor partials: `Home/Landing` (the public landing), `Home/Dashboard` (the signed-in home), `Home/Coach`, `Home/Profile`, `Home/Rooms` (the ER room), `Home/Admin` (the consoles' frame), `Account` (sign-in and registration), `Shared/Layout` (headers, sidebar, footer, head) |
+| `ClientScripts/` | The browser code: source fragments joined into nine bundles by `bundles.json` and `ClientBundleProvider` (below) |
+| `Images/`, `images.json` | `ImageCatalog`: the site's images by key; a view writes `@Img["key"]` ([decision 0020](decisions/0020-v611-delivery-structure.md)) |
 | `Http/` | Rate-limit policies, the same-origin filter, the cached-content result |
-| `wwwroot/css`, `wwwroot/img` | Stylesheets and images |
+| `wwwroot/` | Stylesheets, images, the self-hosted Arabic font |
 | `Program.cs` | The composition root |
 
-Controllers are thin: each action calls one use case or one application port and maps the result to HTTP
-(`HomeController` only renders the page; `ClientScriptsController` asks the web layer's own `ClientBundleProvider`).
+Controllers are thin: each action calls one use case or one port and maps the result to HTTP.
 
-## How the page reaches the browser
+## The client
 
-The user interface is **frozen**: the page, the styles and the client behaviour are the legacy ones, with one
-deliberate exception: the public landing (public header, landing view, public footer) is the owner's V6.2
-design ([decision 0010](decisions/0010-public-landing-v62-with-the-shell-preserved.md),
-[ui-integration-map.md](ui-integration-map.md)). It keeps the IDs and the sign-in flow of the legacy client, and
-its stylesheets cannot reach the rest of the application.
+The page is one Razor page with five views (`#view-index` the landing, `#view-home`, `#view-coach`, `#view-profile`,
+`#view-er`) plus the consoles' frame (`#view-admin`) and the sign-in screen. Joining is plain concatenation: nothing
+is minified or reordered.
 
-1. `GET /` → `HomeController.Index` → the layout and views render the same HTML the static `index.html` had,
-   except the three landing regions and the sign-in screen. `GET /login` and `GET /register` →
-   `AccountController` → the same page with the sign-in screen open on its form and its own title
-   ([decision 0012](decisions/0012-sign-in-and-registration-pages.md)).
-2. `GET /css/*.css`, `GET /img/**` → static files.
-3. `GET /js/script.js` (and `er.js`, `resp.js`, `ui.js`, `motion.js`, `terms.js`) → `ClientScriptsController` →
-   `ClientBundleProvider` joins the bundle's fragments in the order of `ClientScripts/bundles.json`. Joining is plain
-   concatenation: nothing is rewritten, minified or reordered.
-4. `GET /data/er-cases.json` (and the other documents) → `ClientDataController` → `IClientDataDocumentSource`.
-   The data files are no longer public static files; only the documents the application names can be asked for.
-5. `POST /api/er-chat` → `UnderstandingController` → `ProcessPatientMessage` → `IUnderstandingServiceGateway` →
-   the external function. The answer returns unchanged, status included, because the room decides by the status
-   whether to work offline.
+| Bundle | Folder | Responsibility |
+|---|---|---|
+| `script.js` | `script/` (24 fragments) | The application shell: accounts and session, sign-in screen, view navigation, sidebar, profile render, the student's academic part, the home by track, level |
+| `er.js` | `er/` (67) | **The approved emergency room**: conversation, monitor, orders, tests, deterioration, handover, report. Fingerprinted; changed only by the owner's decision |
+| `motion.js`, `terms.js`, `ui.js` | `motion/`, `terms/`, `ui/` | The room's monitor and alarm sound, the English clinical terms in the room, the sidebar drawer |
+| `landing.js` | `landing/` | The public landing, the sign-in pages' behaviour, the home's sections |
+| `admin.js` | `shared/` + `admin/` | The browser store (`NabdStore`), then the three consoles: Nabd's administration, the university's, the supervisor's |
+| `app.js` | `app/` (11, one scope) | The trainee's application: rules of entry, who sees what, home facts, reports, coach page and drills, profile, the shell's history and Back button |
+| `er-plus.js` | `erplus/` | Layers over the room: realism, assessment, the nurse–doctor call, opening a case and the role rule |
 
-`tests/Nabd.Tests/Baseline/LegacySiteBaselineTests.cs` starts the application in memory and compares every one of
-these assets with the frozen legacy site. The only differences allowed are the 20 entries of
-`tests/Nabd.Tests/LegacyBaseline/seams.json` (where stylesheets and scripts are served from, one image path
-inside a stylesheet that moved with it, the two lines that told the rooms where the understanding service is, and
-the landing's stylesheet links and script tag) and the three landing regions, which are compared with their
-approved V6.2 snapshots instead (`tests/Nabd.Tests/LandingBaseline/`).
+Stylesheets follow the same split: `style.css` and `theme.css` (the shell's base), `er.css` (the approved room),
+`landing*.css` (the landing), `auth.css` (sign-in), `app.css` (the signed-in screens' identity), `home-base.css` and
+`home.css` (the home), `academic.css` (the student's academic part), `admin.css` (consoles), `trainee.css` (the
+trainee's pages), `er-plus.css` (the room's layers, every rule under `#view-er.nbp-on`).
 
-The landing adds: `GET /css/landing-v6.css` and `/css/landing-v6-shell.css` (static), `GET /js/landing.js` (a
-seventh bundle, one fragment), `GET /fonts/noto-sans-arabic/*.woff2` and `GET /img/landing/*.webp` (static).
+The new code reaches the shell only through a short list of its global functions, which it wraps
+(`showOnlySection`, `navigateTo`, `loginWithAccount`, `saveAccountToStorage`, `getAccountFromStorageOrDefault`,
+`authState`, `renderProfileView`, `showToast`, `window.nbOpenER`, `window.__nbER`).
+
+### What the browser keeps
+
+There is no database in this phase ([decision 0008](decisions/0008-no-database-and-no-authentication-in-this-phase.md)).
+`window.NabdStore` (`shared/010-store.js`) is the one place the new code reads and writes the browser's storage.
+
+| Record | Key |
+|---|---|
+| The consoles' state (institutions, users, each university's sections, staff, roster, policy, pass marks, published results, overrides, ratings, notes; platform settings) | `localStorage nabd_v2_admin` |
+| Assignments | `localStorage nabd_v2_assignments` |
+| Accounts with their saved sessions and reports | `localStorage nabd_v2_accounts_map`; the signed-in account `nabd_v2_active_user_id` |
+| This visit only (console page, realism switch) | `sessionStorage nbx_page`, `nbx_org`, `nbx_role`, `nbp_realism` |
+| Preferences | `localStorage nbSound` (monitor sound), `nabd_terms_lang` (terms) |
+
+A saved report is the one source of what a trainee sees about himself and what the supervisor reviews (decision
+log D-55 in [agent/er-agent.ar.md](agent/er-agent.ar.md)).
+
+### The seams to the server
+
+| Today in the browser | Becomes | Where to cut |
+|---|---|---|
+| `NabdStore` reads and writes `localStorage` | calls to the server's API (accounts, sessions, institutions, assignments) | `shared/010-store.js` only |
+| The room computes the score in the browser | the server's session API (exists, off by default, [decision 0007](decisions/0007-server-session-api-off-by-default.md)) | `erplus/020-assessment.js` reads the result instead of computing it |
+| E-mail sign-in without a password | server identity with university sign-in ([auth-external-providers.md](auth-external-providers.md)) | `app/020-access.js` |
+| Image paths | already on the server | `images.json` |
 
 ## Where the logic runs today
 
-This phase is a **lossless strangler** ([decision 0002](decisions/0002-lossless-strangler-migration.md)): the proven
-browser-side client keeps running unchanged while the server grows underneath it.
-
 | Concern | Runs in | Status |
 |---|---|---|
-| Clinical dynamics of the ER room (risk, vital signs, stages, cuff, interventions, harms, tests) | Browser (legacy client) **and** `Nabd.Domain` | The domain model reproduces the legacy client exactly. The room does not call it yet |
-| Doctor-role score and verdict | Browser **and** `Nabd.Domain` | Same |
-| Nurse-role handover grade and score | Browser | Not ported |
-| Reading what the trainee wrote; order safety (dose, allergy, "too early") | Browser and the external understanding service | Not ported |
-| Voices of the patient, relative, nurse, supervisor | External understanding service; fixed lines in the browser when offline | Relayed through the application |
-| Respiratory room, specialty simulation, nursing rooms, professor portal, coach | Browser | Unchanged. Several are switched off in the legacy UI; see [legacy-audit.md](legacy-audit.md) |
-| Accounts and progress | Browser `localStorage` | Unchanged. There is no server-side identity |
+| Clinical dynamics of the ER room (risk, vital signs, stages, cuff, interventions, harms, tests) and the doctor's score | Browser (the approved room) **and** `Nabd.Domain` | The domain reproduces the room exactly; the room does not call it yet |
+| Reading what the trainee wrote; order safety (dose, allergy, "too early") | Browser and the understanding service | Not ported |
+| Voices of the patient, relative, nurse, supervisor | The understanding service; fixed lines in the browser when offline | Relayed through the application |
+| The assessment layer (rubric, errors, timeline, handover, reflection), the realism layer, the nurse's call | Browser (`er-plus.js`) | Prototype; decisions in ADRs 0016, 0017 and the decision log |
+| Consoles, home, reports, coach, profile | Browser (`admin.js`, `app.js`) | Prototype on demo data |
 
-Each client fragment is labelled with the layer its responsibility belongs to (the `README.md` in every
-`ClientScripts/<bundle>/` folder). That table is the map for moving code out of the browser one fragment at a time;
-[migration-map.md](migration-map.md) lists the order.
+## Data exposure
 
-## What is honest to say about data exposure
-
-The rule "do not expose internal clinical evaluation data to browsers" is **not yet met for the legacy rooms**:
-while a room runs the legacy client engine, the browser still downloads its case file, which contains diagnoses,
-expected steps and scoring hints. What changed in this phase:
-
-- the files moved out of the public web root into the infrastructure layer, behind a repository and a controller;
-- the new server-side session API sends only what a trainee may see (the monitor, the stage, what was done); the
-  risk, the indication of a test and the scoring rules stay on the server until the report. A test asserts this.
-
-Closing the gap means moving each room's engine to the server, which is the next phase.
-[data-catalog.md](data-catalog.md) lists, per file, what a trainee could learn from it today.
+While the room runs in the browser, the browser downloads its case file, which holds diagnoses, expected steps and
+scoring hints. The server's session API already sends only what a trainee may see (a test asserts it). Moving the room
+to the server closes the gap. [data-catalog.md](data-catalog.md) lists, per file, what a trainee could learn from it.
 
 ## Security posture
 
 | Area | State |
 |---|---|
-| Secrets | The application holds none. The model key stays in the external function's environment |
-| Authentication, authorization | **None.** Accounts are demo data in the browser, as before. Nothing server-side may rely on a role until real identity exists ([decision 0008](decisions/0008-no-database-and-no-authentication-in-this-phase.md)) |
-| Understanding-service endpoints | Same-origin filter, per-caller rate limit, 64 KB body limit, JSON and case-id validation before anything is relayed |
+| Secrets | The application holds none. The model key stays in the understanding service's environment |
+| Authentication, authorization | **None** in this phase. Accounts and roles are demo data in the browser; nothing server-side may rely on a role until real identity exists |
+| Understanding endpoint | Same-origin filter, per-caller rate limit, 64 KB body limit, JSON and case-id validation before anything is relayed |
 | Server session API | Off by default (`Simulation:ServerSessionsApi:Enabled`); bounded in-memory store |
-| Response headers | `X-Content-Type-Options: nosniff`, `X-Frame-Options: SAMEORIGIN`, `Referrer-Policy`. No Content-Security-Policy: the legacy page relies on inline handlers and inline scripts |
+| Response headers | `X-Content-Type-Options: nosniff`, `X-Frame-Options: SAMEORIGIN`, `Referrer-Policy`. No Content-Security-Policy yet: the room relies on inline handlers |
 | Errors | Problem documents without stack traces; details go to the log |
-| Known weaknesses carried over from the legacy client | Listed with severity in [legacy-audit.md](legacy-audit.md) (unescaped rendering of stored text, client-side roles, page start depending on a third-party font host) |
 
 ## Preparing for the multi-agent system
 
-Nothing of the multi-agent system is implemented. What exists is the place for it:
-
-- `Nabd.Application/Abstractions/Agents/` defines the orchestrator and the four voices, with the context an agent
-  may know (`AgentContext`) and what it answers (`AgentReply`).
-- `ProcessPatientMessage` is the single point through which a room's message leaves the application. When agents
-  exist, this use case asks the orchestrator instead of relaying; the rooms do not change.
-- `SimulationSession` raises `SessionEvent`s (stage change, harm, arrest, …). They are what
-  `IAgentOrchestrator.HandleSessionEventAsync` will react to.
-
-See [decision 0009](decisions/0009-multi-agent-contracts-only.md).
+Nothing of it is implemented. `Nabd.Application/Abstractions/Agents/` defines the orchestrator and the four voices;
+`ProcessPatientMessage` is the single point through which a room's message leaves the application (when agents exist,
+it asks the orchestrator instead of relaying); `SimulationSession` raises the events an orchestrator will react to.
+The agent's behaviour and every decision about it are in [agent/er-agent.ar.md](agent/er-agent.ar.md). See
+[decision 0009](decisions/0009-multi-agent-contracts-only.md).

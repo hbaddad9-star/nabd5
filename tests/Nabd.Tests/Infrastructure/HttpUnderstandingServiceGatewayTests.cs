@@ -32,7 +32,6 @@ public class HttpUnderstandingServiceGatewayTests
         var options = new UnderstandingServicesOptions
         {
             ErRoom = { Endpoint = "https://understanding.example/api/er-chat", TimeoutSeconds = 1 },
-            RespiratoryRoom = { Endpoint = "https://understanding.example/api/resp-chat", TimeoutSeconds = 1 },
         };
         configure?.Invoke(options);
         return new HttpUnderstandingServiceGateway(new Clients(transport), Options.Create(options), NullLogger<HttpUnderstandingServiceGateway>.Instance);
@@ -59,14 +58,14 @@ public class HttpUnderstandingServiceGatewayTests
     }
 
     [Fact]
-    public async Task Each_room_goes_to_its_own_endpoint_and_a_configured_origin_is_used()
+    public async Task An_error_status_is_passed_on_and_a_configured_origin_is_used()
     {
         var transport = new FakeTransport((_, _) => Task.FromResult(Reply(HttpStatusCode.Gone, "{\"error\":\"room closed\"}")));
 
-        var response = await Gateway(transport, o => o.RespiratoryRoom.Origin = "https://nabd.example").SendAsync(Turn(UnderstandingService.RespiratoryRoom));
+        var response = await Gateway(transport, o => o.ErRoom.Origin = "https://nabd.example").SendAsync(Turn());
 
         Assert.Equal(410, response.StatusCode); // an error status is passed on, not hidden
-        Assert.Equal("https://understanding.example/api/resp-chat", transport.Seen.Single().Uri.ToString());
+        Assert.Equal("https://understanding.example/api/er-chat", transport.Seen.Single().Uri.ToString());
         Assert.Equal("https://nabd.example", transport.Seen.Single().Origin);
     }
 

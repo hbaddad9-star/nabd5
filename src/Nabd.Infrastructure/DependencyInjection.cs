@@ -5,7 +5,7 @@ using Nabd.Application.Abstractions.Ai;
 using Nabd.Application.Abstractions.Data;
 using Nabd.Application.Abstractions.Simulation;
 using Nabd.Infrastructure.Ai;
-using Nabd.Infrastructure.LegacyData;
+using Nabd.Infrastructure.CaseData;
 using Nabd.Infrastructure.Simulation;
 
 namespace Nabd.Infrastructure;
@@ -20,8 +20,8 @@ public static class DependencyInjection
         ArgumentNullException.ThrowIfNull(configuration);
 
         // Legacy JSON data, read only here.
-        services.AddOptions<LegacyDataOptions>().Bind(configuration.GetSection(LegacyDataOptions.SectionName));
-        services.AddSingleton<LegacyDataFiles>();
+        services.AddOptions<CaseDataOptions>().Bind(configuration.GetSection(CaseDataOptions.SectionName));
+        services.AddSingleton<CaseDataFiles>();
         services.AddSingleton<IClinicalCaseRepository, JsonClinicalCaseRepository>();
         services.AddSingleton<IClientDataDocumentSource, FileClientDataDocumentSource>();
 

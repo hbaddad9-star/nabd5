@@ -7,7 +7,6 @@
     onScroll();
     window.addEventListener('scroll', onScroll, { passive: true });
     window.addEventListener('resize', onScroll, { passive: true });
-    window.addEventListener('resize', fitNurseChat, { passive: true });
     onViewChange();
 
     // Views switch by toggling .hidden; rooms and lists are injected later.
@@ -23,7 +22,6 @@
       requestAnimationFrame(() => {
         pending = false;
         onViewChange();
-        fitNurseChat();
         releaseStuck();
         observeReveals();
         observeCounts();

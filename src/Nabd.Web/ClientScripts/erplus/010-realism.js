@@ -19,10 +19,13 @@
   const reduce = () => { try { return window.matchMedia('(prefers-reduced-motion: reduce)').matches; } catch (e) { return false; } };
 
   /* ?realism=off (or =on) is remembered for the visit: the application's own navigation drops the address's query */
-  try { const q = /[?&]realism=(off|on)\b/.exec(location.search); if (q) sessionStorage.setItem('nbp_realism', q[1]); } catch (e) {}
+  const Store = window.NabdStore;
+  { const q = /[?&]realism=(off|on)\b/.exec(location.search); if (q && Store) Store.session.set('nbp_realism', q[1]); }
   function enabled() {
-    try { if (sessionStorage.getItem('nbp_realism') === 'off') return false; } catch (e) {}
-    try { const s = JSON.parse(localStorage.getItem('nabd_v2_admin') || '{}'); if (s && s.settings && s.settings.erRealism === false) return false; } catch (e) {}
+    if (!Store) return true;
+    if (Store.session.get('nbp_realism') === 'off') return false;
+    const s = Store.consoleState();
+    if (s && s.settings && s.settings.erRealism === false) return false;
     return true;
   }
   const user = () => { try { return authState.user || {}; } catch (e) { return {}; } };

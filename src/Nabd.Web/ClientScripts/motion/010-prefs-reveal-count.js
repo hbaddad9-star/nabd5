@@ -79,7 +79,7 @@
   }
 
   /* ---------- 3. count-up for dashboard figures ---------- */
-  const COUNT = '#uni-prof-kpi-count, #uni-prof-kpi-avg, #uni-prof-kpi-sub, #profile-stat-sessions, #profile-stat-spec, #profile-stat-er';
+  const COUNT = '#profile-stat-sessions, #profile-stat-er';
   let countIO = null;
 
   function countUp(el) {

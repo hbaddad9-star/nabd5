@@ -1,0 +1,159 @@
+{
+  "note": "The site's images, one place (V6.11, owner: 'the images in their own file, so we can change them'). To change an image: put the new file under wwwroot/img/ and change its path here; the pages use the key, never the path. Keep the same proportions; 'size' is the current file's pixels (a replacement may be larger, at the same ratio). The 'legacy' list is the images that the pinned legacy client writes itself (its scripts and stylesheets are kept byte for byte): to change one of those, replace the file at the same path. What is still needed (X-rays, ECGs, body photographs) is listed in docs/image-library/README.ar.md.",
+  "images": {
+    "auth.brand": {
+      "src": "img/landing/hero-clinical-team.webp",
+      "size": "790x349",
+      "where": "sign-in and registration, the photo beside the form (Views/Account/_AuthBrandPanel)"
+    },
+    "landing.hero": {
+      "src": "img/landing/hero-clinical-team.webp",
+      "size": "790x349",
+      "where": "landing page, the first screen (Views/Home/Landing/_Hero)"
+    },
+    "landing.cta": {
+      "src": "img/landing/cta-stethoscope.webp",
+      "size": "426x103",
+      "where": "landing page, the closing band's background (Views/Home/Landing/_FinalCta)"
+    },
+    "landing.campus": {
+      "src": "img/landing/v63/campus-just.webp",
+      "size": "640x400",
+      "where": "landing page, 'for institutions', the campus photo (Views/Home/Landing/_Institutions)"
+    },
+    "landing.why.critical": {
+      "src": "img/landing/v63/why-critical-cases.webp",
+      "size": "640x400",
+      "where": "landing page, 'for institutions', critical cases (Views/Home/Landing/_Institutions)"
+    },
+    "landing.why.feedback": {
+      "src": "img/landing/v63/why-feedback.webp",
+      "size": "640x400",
+      "where": "landing page, 'for institutions', feedback (Views/Home/Landing/_Institutions)"
+    },
+    "landing.why.safe": {
+      "src": "img/landing/v63/why-safe-practice.webp",
+      "size": "640x400",
+      "where": "landing page, 'for institutions', safe practice (Views/Home/Landing/_Institutions)"
+    },
+    "landing.step.briefing": {
+      "src": "img/landing/v63/step-1-briefing.webp",
+      "size": "640x480",
+      "where": "landing page, 'how it works', step 1 (Views/Home/Landing/_Method)"
+    },
+    "landing.step.talk": {
+      "src": "img/landing/v63/step-2-talk.webp",
+      "size": "640x480",
+      "where": "landing page, 'how it works', step 2 (Views/Home/Landing/_Method)"
+    },
+    "landing.step.workup": {
+      "src": "img/landing/v63/step-3-workup.webp",
+      "size": "640x480",
+      "where": "landing page, 'how it works', step 3 (Views/Home/Landing/_Method)"
+    },
+    "landing.step.report": {
+      "src": "img/landing/v63/step-4-report.webp",
+      "size": "640x480",
+      "where": "landing page, 'how it works', step 4 (Views/Home/Landing/_Method)"
+    },
+    "landing.showcase.frame": {
+      "src": "img/landing/v64/laptop.svg",
+      "size": "vector",
+      "where": "landing page, the laptop frame of the room's screenshot (Views/Home/Landing/_SimulationShowcase)"
+    },
+    "landing.showcase.screen": {
+      "src": "img/landing/v64/showcase-respiratory-chat.webp",
+      "size": "1600x1000",
+      "where": "landing page, the room's screenshot inside the laptop (Views/Home/Landing/_SimulationShowcase)"
+    },
+    "landing.sp.emergency": {
+      "src": "img/landing/specialty-emergency.webp",
+      "size": "519x336",
+      "where": "landing page, specialties, emergency (Views/Home/Landing/_Specialties)"
+    },
+    "landing.sp.respiratory": {
+      "src": "img/landing/specialty-respiratory.webp",
+      "size": "522x336",
+      "where": "landing page, specialties, respiratory (Views/Home/Landing/_Specialties)"
+    },
+    "landing.sp.cardiology": {
+      "src": "img/landing/specialty-cardiology.webp",
+      "size": "516x336",
+      "where": "landing page, specialties, cardiology (Views/Home/Landing/_Specialties)"
+    },
+    "landing.sp.critical": {
+      "src": "img/landing/specialty-critical-care.webp",
+      "size": "519x336",
+      "where": "landing page, specialties, critical care (Views/Home/Landing/_Specialties)"
+    },
+    "home.welcome": {
+      "src": "img/welcome.jpg",
+      "size": "960x540",
+      "where": "signed-in home, the photo beside the welcome (Views/Home/Dashboard/_Welcome)"
+    },
+    "home.coach": {
+      "src": "img/v9/solution2.jpg",
+      "size": "960x680",
+      "where": "signed-in home, the clinical coach's card (drawn by app/050-home.js, read from the home's data-nbx-img-coach)"
+    },
+    "field.respiratory": {
+      "src": "img/v9/sp-resp.jpg",
+      "size": "640x420",
+      "where": "signed-in home, training sections, respiratory (Views/Home/Dashboard/_Fields)"
+    },
+    "field.cardio": {
+      "src": "img/v9/sp-cardio.jpg",
+      "size": "640x420",
+      "where": "signed-in home, training sections, cardiology (Views/Home/Dashboard/_Fields)"
+    },
+    "field.sepsis": {
+      "src": "img/v9/sp-sepsis.jpg",
+      "size": "640x420",
+      "where": "signed-in home, training sections, sepsis (Views/Home/Dashboard/_Fields)"
+    },
+    "field.diabetes": {
+      "src": "img/v9/sp-diabetes.jpg",
+      "size": "640x420",
+      "where": "signed-in home, training sections, diabetes (Views/Home/Dashboard/_Fields)"
+    },
+    "field.peds": {
+      "src": "img/v9/sp-peds.jpg",
+      "size": "640x420",
+      "where": "signed-in home, training sections, paediatrics (Views/Home/Dashboard/_Fields)"
+    },
+    "field.obgyn": {
+      "src": "img/v9/sp-obgyn.jpg",
+      "size": "640x420",
+      "where": "signed-in home, training sections, obstetrics (Views/Home/Dashboard/_Fields)"
+    },
+    "field.surgery": {
+      "src": "img/v9/sp-surgery.jpg",
+      "size": "640x420",
+      "where": "signed-in home, training sections, surgery (Views/Home/Dashboard/_Fields)"
+    },
+    "field.gi": {
+      "src": "img/cases/gi.jpg",
+      "size": "960x748",
+      "where": "signed-in home, training sections, gastro (Views/Home/Dashboard/_Fields)"
+    },
+    "field.ortho": {
+      "src": "img/cases/ortho.jpg",
+      "size": "960x584",
+      "where": "signed-in home, training sections, orthopaedics (Views/Home/Dashboard/_Fields)"
+    },
+    "field.nursing.vitals": {
+      "src": "img/nc/vitals.jpg",
+      "size": "960x694",
+      "where": "signed-in home, training sections, nursing skills (Views/Home/Dashboard/_Fields)"
+    },
+    "field.nursing.sepsis": {
+      "src": "img/nc/sepsis.jpg",
+      "size": "960x720",
+      "where": "signed-in home, training sections, nursing sepsis (Views/Home/Dashboard/_Fields)"
+    }
+  },
+  "legacy": {
+    "note": "Images a script or stylesheet writes itself (not through a view's key). Replace the file at the same path; do not rename it.",
+    "files": []
+  }
+}

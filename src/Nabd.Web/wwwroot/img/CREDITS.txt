@@ -1,168 +1,53 @@
-Photos in this folder come from Wikimedia Commons. Each keeps its own licence.
+Photos in this folder come from Wikimedia Commons, cropped and resized. Each keeps its own licence; one record per file.
 
-hero.jpg
-  https://commons.wikimedia.org/wiki/File:Craig_Joint_Theater_Hospital_Helps_Build_Afghan_Nursing_Foundation_DVIDS212443.jpg
-  Tech. Sgt. John Jung — Public domain
-welcome.jpg
-  https://commons.wikimedia.org/wiki/File:PHOTOS_INSIDE_THE_CLASSROOM_UPDATED014.jpg
-  Monirb — CC BY-SA 4.0
-univ.jpg
-  https://commons.wikimedia.org/wiki/File:US_Navy_050223-N-8796S-085_Cmdr._Suzanne_Clark,_a_U.S._Navy_Nurse_assigned_to_the_Military_Sealift_Command_(MSC)_hospital_ship_USNS_Mercy_(T-AH_19),_takes_questions_after_giving_a_lecture_on_diabetes_to_Indonesian_nursing_stude.jpg
-  U.S. Navy photo by Photographer's Mate 2nd Class Timothy Smith — Public domain
-cases/cardio.jpg
-  https://commons.wikimedia.org/wiki/File:Reserve_Citizen_Airmen_bolster_readiness_through_LAMAT_25_(8978308).jpg
-  U.S. Air Force photo by Maj. Stephani Schafer — Public domain
-cases/resp.jpg
-  https://commons.wikimedia.org/wiki/File:Medical_professional_examines_chest_X-rays_in_a_clinic_setting.jpg
-  Shixart1985 — CC BY 2.0
 cases/gi.jpg
   https://commons.wikimedia.org/wiki/File:US_Navy_090715-N-9689V-008_Republic_of_Singapore_Navy_Maj._Boon_Hor_Ho_examines_a_local_man_suffering_from_abdominal_pain_during_a_Pacific_Partnership_2009_medical_civic_action_project_at_Niu%27ui_Hospital.jpg
   U.S. Navy photo by Mass Communication Specialist 2nd Class Joshua Valcarcel — Public domain
-cases/obgyn.jpg
-  https://commons.wikimedia.org/wiki/File:Pacific_Partnership_2025_Provides_Medical_Care_to_Samoa_Locals_During_a_Community_Health_Engagement_at_Faleolo_Medical_Center_(9379658).jpg
-  U.S. Navy photo by Petty Officer 3rd Class Ethan Lambert — Public domain
-cases/abdomen.jpg
-  https://commons.wikimedia.org/wiki/File:Experiencing_menstrual_pain_with_hot_water_bottle.jpg
-  Vulvani — CC BY-SA 4.0
+
 cases/ortho.jpg
   https://commons.wikimedia.org/wiki/File:Trimalleolar_Ankle_Fracture.jpg
   Chaim Mintz — CC BY-SA 4.0
-cases/peds.jpg
-  https://commons.wikimedia.org/wiki/File:Doctor_checks_a_childs_heartbeat_at_a_medical_office.jpg
-  Shixart1985 — CC BY 2.0
-nc/bp.jpg
-  https://commons.wikimedia.org/wiki/File:US_Navy_070919-N-6278K-106_Laura_Seris,_a_registered_nurse_and_Project_Hope_volunteer_attached_to_Military_Sealift_Command_hospital_ship_USNS_Comfort_(T-AH_20),_takes_a_blood_pressure_reading_from_a_patient.jpg
-  U.S. Navy photo by Mass Communication Specialist 2nd Class Joan E. Kretschmer — Public domain
-nc/bleed.jpg
-  https://commons.wikimedia.org/wiki/File:Fire_Controlman_watching_arm_being_wrapped_during_first_aid_class_aboard_USS_Benfold_(DDG-65)_180628-N-GR120-0104.jpg
-  Mass Communication Specialist 2nd Class Anna Van Nuys — CC BY-SA 2.0
-nc/wound.jpg
-  https://commons.wikimedia.org/wiki/File:US_Navy_080628-N-9689V-007_Lt._Todd_Hlavac,_a_staff_nurse_assigned_to_the_Military_Sealift_Command_hospital_ship_USNS_Mercy_(T-AH_19),_changes_the_dressing_for_a_Vietnamese_patient_before_his_discharge_to_a_local_hospital.jpg
-  U.S. Navy photo by Mass Communication Specialist 3rd Class Joshua Valcarcel — Public domain
-nc/sugar.jpg
-  https://commons.wikimedia.org/wiki/File:Blood_Glucose_Check_-_Howrah_-_2015-04-12_7637.JPG
-  Biswarup Ganguly — CC BY 3.0
-nc/fever.jpg
-  https://commons.wikimedia.org/wiki/File:Healthcare_professional_checks_temperature_with_digital_thermometer_during_patient_consultation_in_a_medical_office_undefined.jpg
-  Shixart1985 — CC BY 2.0
-nc/iv.jpg
-  https://commons.wikimedia.org/wiki/File:Perfusion_en_intraveineuse_dans_la_main.jpg
-  Futurhit12 — CC BY-SA 4.0
-nc/vitals.jpg
-  https://commons.wikimedia.org/wiki/File:US_Navy_110714-N-RM525-060_Hospitalman_Seckisiesha_Isaac,_from_New_York,_prepares_to_take_a_woman%27s_temperature_at_a_pre-screening_vital_signs_stat.jpg
-  U.S. Navy photo by Mass Communication Specialist 2nd Class Jonathen E. Davis — Public domain
-nc/chest.jpg
-  https://commons.wikimedia.org/wiki/File:Heartache-1846050_1920.jpg
-  freestocks.org — CC0
-nc/hypo.jpg
-  https://commons.wikimedia.org/wiki/File:Hypobox.jpg
-  Whispyhistory — CC BY-SA 4.0
+
 nc/sepsis.jpg
   https://commons.wikimedia.org/wiki/File:Monitor_theo_d%E1%BB%8Fi_b%E1%BB%87nh_nh%C3%A2n.jpg
   Huynhvn — CC0
-nb/bp.jpg
-  https://commons.wikimedia.org/wiki/File:Nurse_takes_a_patient's_blood_pressure.jpg
-  see the file page for author and licence
-nb/bp2.jpg
-  https://commons.wikimedia.org/wiki/File:Nurse_checks_blood_pressure.jpg
-  see the file page for author and licence
-nb/amman.jpg
-  https://commons.wikimedia.org/wiki/File:Sunset_over_citadel_in_Amman,_Jordan.jpg
-  see the file page for author and licence
-nb/ecg.jpg
-  https://commons.wikimedia.org/wiki/File:Normal_12_lead_EKG.jpg
-  see the file page for author and licence
-nb/iv.jpg
-  https://commons.wikimedia.org/wiki/File:Intravenous_cannula_01.JPG
-  see the file page for author and licence
-nb/steth.jpg
-  https://commons.wikimedia.org/wiki/File:Physical_exam_of_child_with_stethoscope_on_chest.jpeg
-  see the file page for author and licence
-nb/hands.jpg
-  https://commons.wikimedia.org/wiki/File:MNHandWashingNurse.jpg
-  see the file page for author and licence
-nb/cxr_normal.png
-  https://commons.wikimedia.org/wiki/File:Chest_Xray_PA_3-8-2010.png
-  see the file page for author and licence
-nb/cxr_pneu.jpg
-  https://commons.wikimedia.org/wiki/File:Pneumonia_x-ray.jpg
-  see the file page for author and licence
-nb/thermo.jpg
-  https://commons.wikimedia.org/wiki/File:Fieberthermometer_BW_2.JPG
-  see the file page for author and licence
-nb/bandage.jpg
-  https://commons.wikimedia.org/wiki/File:Fingergazevernband.jpg
-  see the file page for author and licence
-nb/ankle_fx.jpg
-  cropped (left panel) from https://commons.wikimedia.org/wiki/File:Trimalleolar_Ankle_Fracture.jpg
-  Chaim Mintz — CC BY-SA 4.0
-or/banner.jpg
-  https://commons.wikimedia.org/wiki/File:Reserve_Citizen_Airmen_build_partnerships_in_operating_room_(8948181).jpg
-  U.S. Air Force photo by Maj. Stephani Schafer — Public domain
-or/preop.jpg
-  https://commons.wikimedia.org/wiki/File:USNS_Comfort_Prepares_Patients_for_Surgeries_(9113687).jpg
-  U.S. Navy photo by Petty Officer 2nd Class Deven Fernandez — Public domain
-or/checklist.jpg
-  https://commons.wikimedia.org/wiki/File:Reserve_Citizen_Airmen_build_partnerships_in_operating_room_(8948178).jpg
-  U.S. Air Force photo by Maj. Stephani Schafer — Public domain
-or/pacu.jpg
-  https://commons.wikimedia.org/wiki/File:US_Navy_100727-N-6410J-022_Medical_personnel_aboard_the_Military_Sealift_Command_hospital_ship_USNS_Mercy_(T-AH_19)_care_for_an_Indonesian_surgical_patient_in_the_post_anesthesia_care_unit_during_Pacific_Partnership_2010.jpg
-  U.S. Navy photo by Mass Communication Specialist 3rd Class Matthew Jackson — Public domain
 
+nc/vitals.jpg
+  https://commons.wikimedia.org/wiki/File:US_Navy_110714-N-RM525-060_Hospitalman_Seckisiesha_Isaac,_from_New_York,_prepares_to_take_a_woman%27s_temperature_at_a_pre-screening_vital_signs_stat.jpg
+  U.S. Navy photo by Mass Communication Specialist 2nd Class Jonathen E. Davis — Public domain
 
-v9 (2026-11-08): landing, student home and sign-in photos, from Wikimedia Commons, cropped and resized.
-v9/hero.jpg, v9/login.jpg
-  https://commons.wikimedia.org/wiki/File:ANDY6413_02.jpg
-  Andrey Chernogorodov — CC BY 4.0
-v9/solution.jpg, v9/aud-students.jpg
-  https://commons.wikimedia.org/wiki/File:ANDY6413_03.jpg
-  Andrey Chernogorodov — CC BY 4.0
-v9/sp-sepsis.jpg
-  https://commons.wikimedia.org/wiki/File:Hospital_patient_on_floor.jpg
-  Downtowngal — CC BY-SA 4.0
-v9/sp-er.jpg
-  https://commons.wikimedia.org/wiki/File:Patient_lying_in_bed_in_intensive_care_unit_of_hospital_with_apparatuses_and_hemodialysis_machine.jpg
-  Pittigrilli — CC BY-SA 4.0
-v9/sp-peds.jpg
-  https://commons.wikimedia.org/wiki/File:US_Navy_080716-N-6387D-005_Chae_Kim,_a_University_of_California-San_Diego_Pre-Dental_Society_sophomore_student,_shares_a_moment_with_a_young_Timorese_patient_in_the_pediatrics_ward_aboard_the_Military_Sealift_Command_hospital_s.jpg
-  U.S. Navy photo by Mass Communication Specialist 1st Class A. Nick De La Cruz — Public domain
-v9/aud-nurses.jpg, v9/sp-nursing.jpg
-  https://commons.wikimedia.org/wiki/File:Emergency_Response_Training_at_USNH_Naples_(6496291).jpg
-  Christina Clarke — Public domain
-v9/aud-uni.jpg
-  https://commons.wikimedia.org/wiki/File:Close_up_of_a_female_doctor_in_a_blue_suit_with_a_Stethoscope_at_home.jpg
-  Shixart1985 — CC BY 2.0
-v9/sp-obgyn.jpg
-  https://commons.wikimedia.org/wiki/File:Close-up_of_a_doctor_listening_to_a_baby_with_stethoscope.jpg
-  Shixart1985 — CC BY 2.0
-v9/problem.jpg
-  https://commons.wikimedia.org/wiki/File:US_Navy_060702-N-9076B-060_U.S._Navy_Lt.j.g._Cathrine_Soteras_of_Long_Beach,_Calif.,_helps_Operation_Smile_nurse_Jhen_Valdez_with_a_small_child_in_a_recovery_room_on_board_the_U.S._Naval_hospital_ship_USNS_Mercy_(T-AH_19).jpg
-  U.S. Navy photo by Chief Mass Communication Specialist Don Bray — Public domain
-v9/sp-surgery.jpg
-  https://commons.wikimedia.org/wiki/File:2016_30_Cleft_Lip_Surgery-15_(30072215853).jpg
-  AMISOM Public Information — CC0
-v9/vision.jpg, v9/welcome.jpg
-  https://commons.wikimedia.org/wiki/File:The_impact_on_human_life_(8266126).jpg
-  U.S. Air Force photo by Staff Sgt. Madeline Herzog — Public domain
-v9/sp-diabetes.jpg
-  https://commons.wikimedia.org/wiki/File:Capteur_de_glyc%C3%A9mie_pour_personnes_diab%C3%A9tiques.jpg
-  Celeda — CC BY-SA 4.0
+v9/solution2.jpg
+  https://commons.wikimedia.org/wiki/File:Progressive_Skills_Training_at_LRMC_(9659121).jpg
+  Travis Jones — Public domain
+
 v9/sp-cardio.jpg
   https://commons.wikimedia.org/wiki/File:18_years_old_boy_normal_ECG.jpg
   Mahdi2ha — CC BY-SA 4.0
+
+v9/sp-diabetes.jpg
+  https://commons.wikimedia.org/wiki/File:Capteur_de_glyc%C3%A9mie_pour_personnes_diab%C3%A9tiques.jpg
+  Celeda — CC BY-SA 4.0
+
+v9/sp-obgyn.jpg
+  https://commons.wikimedia.org/wiki/File:Close-up_of_a_doctor_listening_to_a_baby_with_stethoscope.jpg
+  Shixart1985 — CC BY 2.0
+
+v9/sp-peds.jpg
+  https://commons.wikimedia.org/wiki/File:US_Navy_080716-N-6387D-005_Chae_Kim,_a_University_of_California-San_Diego_Pre-Dental_Society_sophomore_student,_shares_a_moment_with_a_young_Timorese_patient_in_the_pediatrics_ward_aboard_the_Military_Sealift_Command_hospital_s.jpg
+  U.S. Navy photo by Mass Communication Specialist 1st Class A. Nick De La Cruz — Public domain
+
 v9/sp-resp.jpg
   https://commons.wikimedia.org/wiki/File:X-ray_of_healthy_lungs_taken_at_the_Institute_of_Tropical_Medicine_in_Antwerp,_on_9_December_2016_(1).tif
   N.a. Radiology by Dr. Johan Verbeken. Scan and image editing by Vincent Mia Edie — Public domain
 
-v9 (2026-11-08, second pass): v9/hero2.jpg is ANDY6413 03.jpg above; v9/vision2.jpg is the Shixart1985 doctor photo above.
-v9/jordan.jpg
-  https://commons.wikimedia.org/wiki/File:Jordan_University_Hospital_building.jpg
-  Jordan University Hospital — CC BY-SA 4.0
-v9/aud-uni.jpg
-  https://commons.wikimedia.org/wiki/File:Jordan_University_of_Science_and_Technology_tour_2025_(7).jpg
-  Aroobhj — CC0
+v9/sp-sepsis.jpg
+  https://commons.wikimedia.org/wiki/File:Hospital_patient_on_floor.jpg
+  Downtowngal — CC BY-SA 4.0
 
-v9 (2026-11-08, third pass, owner): v9/hero.jpg and v9/login.jpg (ANDY6413 02.jpg) were removed. v9/login2.jpg is "The impact on human life" above.
-v9/solution2.jpg
-  https://commons.wikimedia.org/wiki/File:Progressive_Skills_Training_at_LRMC_(9659121).jpg
-  Travis Jones — Public domain
+v9/sp-surgery.jpg
+  https://commons.wikimedia.org/wiki/File:2016_30_Cleft_Lip_Surgery-15_(30072215853).jpg
+  AMISOM Public Information — CC0
+
+welcome.jpg
+  https://commons.wikimedia.org/wiki/File:PHOTOS_INSIDE_THE_CLASSROOM_UPDATED014.jpg
+  Monirb — CC BY-SA 4.0

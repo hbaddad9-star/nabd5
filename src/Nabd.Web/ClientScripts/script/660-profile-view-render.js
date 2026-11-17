@@ -18,7 +18,6 @@
       document.getElementById('profile-email-uni').textContent = `${u.email} · ${u.uni}`;
 
       document.getElementById('profile-stat-sessions').textContent = String(u.stats.completed);
-      document.getElementById('profile-stat-spec').textContent = u.stats.avgSpec;
       document.getElementById('profile-stat-er').textContent = u.stats.avgEr;
       // nurse mode 2026-11-07: doctor and nurse ER averages are kept apart; say which one is shown, or both.
       const erLbl = document.getElementById('profile-stat-er').nextElementSibling;
@@ -78,8 +77,6 @@
       if (certSerial) certSerial.textContent = `NABD-2026-${(u.id || 'USR').toUpperCase().slice(0, 6)}-${100 + (u.stats.completed || 0)}`;
       const certSess = document.getElementById('cert-stat-sessions');
       if (certSess) certSess.textContent = `${u.stats.completed} جلسات`;
-      const certSpec = document.getElementById('cert-stat-spec');
-      if (certSpec) certSpec.textContent = u.stats.avgSpec;
       const certEr = document.getElementById('cert-stat-er');
       if (certEr) certEr.textContent = u.stats.avgEr;
       const certStatus = document.getElementById('cert-stat-status');

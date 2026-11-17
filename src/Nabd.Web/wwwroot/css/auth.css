@@ -12,7 +12,7 @@
 
    The legacy stylesheets reach this screen through generic rules ([role="dialog"], [role="dialog"] > div,
    html #auth-modal, fonts of buttons and headings), several with !important. So that none of them has to be
-   edited, the declarations are !important inside @layer nl-refine, which landing-v6.css places first in its
+   edited, the declarations are !important inside @layer nl-refine, which landing.css places first in its
    layer order: an important declaration in a layer wins over every unlayered one. Two consequences:
    - "display" of anything that can carry the class hidden (the screen, the two forms, the error boxes, the
      fields the registration hides) is set outside the layer, below, as an ordinary declaration, so that the
@@ -27,7 +27,6 @@
 #auth-modal .nl-auth-alert { display: block; }
 
 /* V6.7.5: the section code is not asked (the e-mail roster decides) */
-#auth-modal #reg-code-wrap[hidden] { display: none; }
 @layer nl-refine {
   #auth-modal {
     --nl-a-navy: #082f3d;
@@ -177,7 +176,7 @@
 
   /* ---------- fields ---------- */
   #auth-modal .nl-auth-label { color: var(--nl-a-ink) !important; font-size: 13px !important; font-weight: 750 !important; }
-  #auth-modal .nl-auth-optional { color: var(--nl-a-muted) !important; font-weight: 500 !important; }
+  
   #auth-modal .nl-auth-input-wrap { position: relative !important; }
   #auth-modal .nl-auth-input {
     width: 100% !important;
@@ -228,32 +227,14 @@
   #auth-modal .nl-auth-input:focus { border-color: var(--nl-a-teal) !important; box-shadow: 0 0 0 3px rgba(23, 106, 114, .16) !important; }
   /* A field reached by keyboard gets a ring too (the rule above has outline: none): solid teal, 6.2:1 on white. */
   #auth-modal .nl-auth-input:focus-visible { outline: 2px solid var(--nl-a-teal) !important; outline-offset: 1px !important; }
-  #auth-modal .nl-auth-input.nl-has-toggle { padding-inline-end: 50px !important; }
+  
   /* The two password fields: the value stays left to right, as typed (a revealed «Pass1234!» must read the same),
      the Arabic placeholder starts at the right, and the eye button sits at the left end without covering either. */
-  #auth-modal #login-pass,
-  #auth-modal #reg-pass { direction: ltr !important; text-align: left !important; padding-left: 50px !important; padding-right: 46px !important; }
-  #auth-modal #login-pass:placeholder-shown,
-  #auth-modal #reg-pass:placeholder-shown { direction: rtl !important; text-align: right !important; }
-  #auth-modal .nl-auth-reveal {
-    position: absolute !important;
-    inset-inline-end: 7px !important;
-    top: 50% !important;
-    display: grid !important;
-    place-items: center !important;
-    width: 36px !important;
-    height: 36px !important;
-    padding: 0 !important;
-    transform: translateY(-50%) !important;
-    color: var(--nl-a-muted) !important;
-    background: transparent !important;
-    border: 0 !important;
-    border-radius: 7px !important;
-    cursor: pointer !important;
-  }
-  #auth-modal .nl-auth-reveal:hover,
-  #auth-modal .nl-auth-reveal[aria-pressed="true"] { color: var(--nl-a-navy) !important; background: #edf3f5 !important; }
-  #auth-modal .nl-auth-reveal svg { width: 19px !important; height: 19px !important; }
+  
+  
+  
+  
+  
   #auth-modal .nl-auth-hint { color: var(--nl-a-muted) !important; font-size: 11.5px !important; line-height: 1.7 !important; }
   #auth-modal .nl-auth-alert {
     margin: 0 !important;
@@ -289,24 +270,10 @@
   }
   #auth-modal .nl-auth-submit:hover { background: #89543d !important; transform: translateY(-1px) !important; box-shadow: inset 0 1px 0 rgba(255, 255, 255, .22), 0 16px 28px -12px rgba(137, 84, 61, .78) !important; }
   #auth-modal .nl-auth-submit:active { transform: translateY(0) !important; }
-  #auth-modal .nl-auth-secondary {
-    display: inline-flex !important;
-    align-items: center !important;
-    justify-content: center !important;
-    min-height: 52px !important;
-    padding: 0 22px !important;
-    color: var(--nl-a-navy) !important;
-    background: #fff !important;
-    border: 1px solid var(--nl-a-field) !important;
-    border-radius: 12px !important;
-    box-shadow: none !important;
-    font-size: 14.5px !important;
-    font-weight: 750 !important;
-    cursor: pointer !important;
-  }
-  #auth-modal .nl-auth-secondary:hover { background: #f2f6f7 !important; }
-  #auth-modal .nl-auth-actions { display: flex !important; gap: 10px !important; }
-  #auth-modal .nl-auth-actions .nl-auth-submit { flex: 1 1 auto !important; width: auto !important; margin: 0 !important; }
+  
+  
+  
+  
   #auth-modal .nl-auth-switch { margin: 6px 0 0 !important; color: var(--nl-a-copy) !important; text-align: center !important; font-size: 13.5px !important; }
   #auth-modal .nl-auth-switch button {
     padding: 0 !important;
@@ -428,24 +395,13 @@
   #auth-modal .nl-auth-demo-grid small { display: block !important; margin-top: 2px !important; color: var(--nl-a-muted) !important; font-size: 11.5px !important; line-height: 1.6 !important; }
 
   /* ---------- registration: steps, account type, track ---------- */
-  #auth-modal .nl-auth-steps { display: flex !important; align-items: center !important; gap: 8px !important; margin: 2px 0 6px !important; }
-  #auth-modal .nl-auth-dot {
-    display: grid !important;
-    place-items: center !important;
-    width: 26px !important;
-    height: 26px !important;
-    flex: 0 0 auto !important;
-    color: var(--nl-a-copy) !important; /* 4.96:1 on the pale disc */
-    background: #e6eef1 !important;
-    border-radius: 50% !important;
-    font-size: 12px !important;
-    font-weight: 800 !important;
-  }
-  #auth-modal .nl-auth-dot.on { color: #fff !important; background: var(--nl-a-navy) !important; }
-  #auth-modal .nl-auth-step-name { color: var(--nl-a-copy) !important; font-size: 12.5px !important; font-weight: 700 !important; white-space: nowrap !important; }
-  #auth-modal .nl-auth-bar { flex: 1 1 auto !important; min-width: 18px !important; height: 2px !important; background: var(--nl-a-line) !important; border-radius: 2px !important; }
-  #auth-modal .nl-auth-bar.on { background: var(--nl-a-teal) !important; }
-  #auth-modal .nl-auth-step > * + * { margin-top: 15px !important; }
+  
+  
+  
+  
+  
+  
+  
   #auth-modal .nl-auth-roles { display: grid !important; grid-template-columns: repeat(3, minmax(0, 1fr)) !important; gap: 8px !important; margin: 0 !important; }
   #auth-modal .nl-auth-roles button {
     display: flex !important;
@@ -482,17 +438,9 @@
   #auth-modal .nl-auth-role-icon svg { width: 19px !important; height: 19px !important; }
   #auth-modal .nl-auth-roles strong { color: var(--nl-a-navy) !important; font-size: 13px !important; font-weight: 800 !important; line-height: 1.4 !important; }
   #auth-modal .nl-auth-roles small { color: var(--nl-a-muted) !important; font-size: 11px !important; line-height: 1.55 !important; }
-  #auth-modal .nl-auth-trackchip {
-    display: grid !important;
-    gap: 3px !important;
-    padding: 12px 14px !important;
-    background: var(--nl-a-teal-soft) !important;
-    border: 1px solid #cfe0e3 !important;
-    border-inline-start: 3px solid var(--nl-a-teal) !important;
-    border-radius: 10px !important;
-  }
-  #auth-modal .nl-auth-trackchip b { color: var(--nl-a-navy) !important; font-size: 14.5px !important; font-weight: 800 !important; }
-  #auth-modal .nl-auth-trackchip span { color: var(--nl-a-copy) !important; font-size: 12.5px !important; line-height: 1.7 !important; }
+  
+  
+  
 
   /* ---------- privacy note and footer ---------- */
   #auth-modal .nl-auth-security-note {
@@ -686,7 +634,7 @@
     #auth-modal .nl-auth-roles { gap: 6px !important; }
     #auth-modal .nl-auth-roles button { padding: 11px 4px 10px !important; }
     #auth-modal .nl-auth-roles small { display: none !important; }
-    #auth-modal .nl-auth-step-name { font-size: 11.5px !important; }
+    
   }
   @media (prefers-reduced-motion: reduce) {
     #auth-modal .nl-auth-submit,
@@ -806,7 +754,7 @@
   #auth-modal .nl-auth-demo-av { width: 26px !important; height: 26px !important; flex: 0 0 auto !important; border-radius: 6px !important; }
   #auth-modal .nl-auth-demo-av svg { width: 15px !important; height: 15px !important; }
   /* registration: one step (the stepper stays in the markup for the legacy script), two tracks side by side */
-  #auth-modal .nl-auth-steps { display: none !important; }
+  
   #auth-modal .nl-auth-roles { grid-template-columns: repeat(2, minmax(0, 1fr)) !important; gap: 8px !important; }
   #auth-modal .nl-auth-roles button { padding: 9px 10px !important; }
   #auth-modal .nl-auth-roles small { display: none !important; }
@@ -832,9 +780,9 @@
     #auth-modal .nl-auth-demo-grid small { display: block !important; margin: 0 !important; font-size: 12px !important; line-height: 1.5 !important; }
     #auth-modal .nl-auth-demo-grid b { font-size: 13px !important; line-height: 1.5 !important; }
     #auth-modal .nl-auth-demo-av { width: 30px !important; height: 30px !important; }
-    #auth-modal #reg-step-1 { columns: 2 !important; column-gap: 60px !important; column-rule: 1px solid #e0e8ec !important; }
-    #auth-modal #reg-step-1 > * { break-inside: avoid !important; }
-    #auth-modal #reg-step-1 > .nl-auth-field:nth-of-type(4) { break-before: column !important; }
+    
+    
+    
   }
   @media (max-width: 560px) {
     #auth-modal .nl-auth-shell { background: linear-gradient(180deg, #082f3d 0, #082f3d 190px, #eef3f5 190px) !important; }
@@ -844,4 +792,9 @@
     #auth-modal .nl-auth-demo-grid b { font-size: 12px !important; white-space: normal !important; }
     #auth-modal .nl-auth-demo-grid button, #auth-modal .nl-auth-demo-grid .nl-auth-demo-admin { flex-direction: column !important; gap: 4px !important; }
   }
+
+  /* V6.11: the track's hint beside its label (the track is chosen once and decides the role in the room) */
+  #auth-modal .nl-auth-label small { font-size: 12px !important; font-weight: 400 !important; color: var(--nl-a-muted) !important; }
+  /* V6.11: a note, not an error (an e-mail without an account moved to registration) */
+  #auth-modal .nl-auth-alert[data-tone="info"] { color: var(--nl-a-ink) !important; background: var(--nl-a-teal-soft) !important; border: 1px solid #c9dfe1 !important; border-inline-start: 3px solid var(--nl-a-teal) !important; }
 }

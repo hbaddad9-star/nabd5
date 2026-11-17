@@ -5,7 +5,7 @@ using System.Text.Json;
 using Microsoft.AspNetCore.Hosting;
 using Microsoft.AspNetCore.Mvc.Testing;
 using Microsoft.Extensions.Options;
-using Nabd.Infrastructure.LegacyData;
+using Nabd.Infrastructure.CaseData;
 using Nabd.Tests.Support;
 using Nabd.Web.Http;
 
@@ -72,7 +72,7 @@ public class ReviewFindingsTests : IClassFixture<WebApplicationFactory<Program>>
     [Theory]
     [InlineData("/")]
     [InlineData("/js/ui.js")]
-    [InlineData("/data/er-lang.json")]
+    [InlineData("/data/er-act.json")]
     [InlineData("/healthz")]
     public async Task Head_requests_are_answered_like_get(string path)
     {
@@ -216,9 +216,9 @@ public class ReviewFindingsTests : IClassFixture<WebApplicationFactory<Program>>
         var folder = Directory.CreateTempSubdirectory("nabd-cases-");
         try
         {
-            var repository = new JsonClinicalCaseRepository(new LegacyDataFiles(Options.Create(new LegacyDataOptions { RootPath = folder.FullName })));
+            var repository = new JsonClinicalCaseRepository(new CaseDataFiles(Options.Create(new CaseDataOptions { RootPath = folder.FullName })));
             await Assert.ThrowsAnyAsync<IOException>(() => repository.FindAsync("asthma"));
-            File.Copy(Path.Combine(TestData.LegacyDataFiles.RootPath, "er-cases.json"), Path.Combine(folder.FullName, "er-cases.json"));
+            File.Copy(Path.Combine(TestData.CaseDataFiles.RootPath, "er-cases.json"), Path.Combine(folder.FullName, "er-cases.json"));
             Assert.NotNull(await repository.FindAsync("asthma"));
         }
         finally

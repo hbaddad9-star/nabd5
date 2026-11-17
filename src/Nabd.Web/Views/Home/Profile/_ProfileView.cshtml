@@ -28,10 +28,6 @@
             <div class="text-xs text-slate-500 mt-0.5">جلسات مكتملة</div>
           </div>
           <div class="bg-slate-50 border border-slate-200/80 rounded-2xl px-4 py-3 text-center">
-            <div class="text-xl font-bold text-teal-700 font-num" id="profile-stat-spec">--</div>
-            <div class="text-xs text-slate-500 mt-0.5">معدل التخصصي</div>
-          </div>
-          <div class="bg-slate-50 border border-slate-200/80 rounded-2xl px-4 py-3 text-center">
             <div class="text-xl font-bold text-sky-700 font-num" id="profile-stat-er">--</div>
             <div class="text-xs text-slate-500 mt-0.5">معدل الطوارئ</div>
           </div>
@@ -137,24 +133,7 @@
       <div id="profile-pane-settings" class="hidden bg-white border border-slate-200/90 rounded-3xl p-6 sm:p-8 shadow-xs space-y-6 max-w-2xl">
         <h2 class="text-base font-bold text-slate-900 border-b border-slate-100 pb-3">إعدادات الحساب وتفضيلات المحاكاة</h2>
         <div class="space-y-4 text-sm">
-          <label id="setting-tts-row" class="flex items-center justify-between p-3.5 rounded-xl bg-slate-50 border border-slate-200/80 cursor-pointer">
-            <div>
-              <div class="font-bold text-slate-800">النطق الصوتي الآلي لردود المريض</div>
-              <div class="text-xs text-slate-500">تشغيل القراءة الصوتية التلقائية عند توفرها في المتصفح</div>
-            </div>
-            <input type="checkbox" id="setting-tts-default" class="w-4 h-4 text-teal-600 rounded" />
-          </label>
 
-          <details class="nb-api" id="coach-api-box" style="border:1px solid #DCE5E9;border-radius:.9rem;overflow:hidden">
-            <summary>ربط تجريبي بـ API (اختياري) <span id="coach-api-state">متوقف</span></summary>
-            <div class="nb-api-body">
-              <p>للتجربة فقط. يُفضّل أن يشير العنوان إلى خادم وسيط عندك يحتفظ بالمفتاح، لا إلى مزوّد مباشرة. يُرسل فقط نص إجابتك وعنوان المحور ونقاط ضعفك. عند أي فشل يعود المدرب للتقييم المحلي.</p>
-              <input id="coach-api-url" type="url" dir="ltr" placeholder="https://your-proxy.example.com/coach">
-              <input id="coach-api-key" type="password" dir="ltr" placeholder="مفتاح اختياري (يُحفظ للجلسة فقط)">
-              <label><input id="coach-api-on" type="checkbox"> تفعيل المدرب عبر API</label>
-              <button type="button" id="coach-api-save" class="nb-btn-ghost">حفظ</button>
-            </div>
-          </details>
 
           <div class="p-4 rounded-xl bg-slate-50 border border-slate-200/80 flex flex-col sm:flex-row sm:items-center justify-between gap-3">
             <div>
@@ -226,10 +205,6 @@
             <div class="p-3.5 rounded-2xl bg-white border border-teal-200/90 shadow-2xs">
               <div class="text-xs text-slate-500 font-semibold">إجمالي الجلسات المنجزة</div>
               <div id="cert-stat-sessions" class="text-xl font-bold text-slate-900 font-num mt-1">8 جلسات</div>
-            </div>
-            <div class="p-3.5 rounded-2xl bg-white border border-teal-200/90 shadow-2xs">
-              <div class="text-xs text-slate-500 font-semibold">معدل التقييم التخصصي</div>
-              <div id="cert-stat-spec" class="text-xl font-bold text-teal-800 font-num mt-1">86%</div>
             </div>
             <div class="p-3.5 rounded-2xl bg-white border border-teal-200/90 shadow-2xs">
               <div class="text-xs text-slate-500 font-semibold">معدل غرفة الطوارئ</div>

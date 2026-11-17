@@ -60,7 +60,7 @@
 /* Entrance (2026-11-14, owner: "the page is too still"): the home's cards rise into place once, as they scroll
    into view. Only what is below the fold is held back; nothing is held back when motion is reduced or the
    browser has no IntersectionObserver; parts drawn later (the steps, the assignments) are picked up as they
-   appear. Adds the classes nh-rise / nh-in only (home-v66.css, section 7). */
+   appear. Adds the classes nh-rise / nh-in only (home.css, section 7). */
 (function () {
   'use strict';
 

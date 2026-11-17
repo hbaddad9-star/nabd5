@@ -33,12 +33,10 @@ public sealed class UnderstandingServicesOptions
     /// <summary>The service behind the emergency room.</summary>
     public UnderstandingEndpointOptions ErRoom { get; set; } = new();
 
-    /// <summary>The service behind the respiratory room.</summary>
-    public UnderstandingEndpointOptions RespiratoryRoom { get; set; } = new();
 
     /// <summary>The options of one service.</summary>
     public UnderstandingEndpointOptions For(UnderstandingService service) =>
-        service == UnderstandingService.ErRoom ? ErRoom : RespiratoryRoom;
+        service == UnderstandingService.ErRoom ? ErRoom : throw new ArgumentOutOfRangeException(nameof(service));
 }
 
 /// <summary>

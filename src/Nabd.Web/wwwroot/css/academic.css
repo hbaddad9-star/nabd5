@@ -1,0 +1,290 @@
+/* =========================================================================
+   phase8 2026-11-07: academic.css
+   Sign-in side panel and role cards, the "what will you do now?" card on the
+   student home, and the academic portal (courses, case assignment, reports,
+   progress, academic advisor) plus the student side of it.
+   Loaded after theme.css, scope.css and landing8.css; it only uses the
+   theme.css tokens (--signal, --navy, --ink, --tint, --line, --r, --r-lg).
+   The site has no dark theme (style.css: color-scheme: light), so there is
+   no dark variant here either.
+   Nothing here touches the ER room or its vital-signs monitor.
+   ========================================================================= */
+
+/* ---------- shared bits ---------- */
+.nb8-demo-tag {
+  display: inline-flex; align-items: center; gap: .3rem;
+  font-size: .7rem; font-weight: 500; line-height: 1.5;
+  padding: .12rem .6rem; border-radius: 999px;
+  background: #FFF7E8; color: #7A5200; border: 1px solid #EED9AC;
+  white-space: nowrap;
+}
+.nb8-empty { margin: 0; font-size: .85rem; color: var(--ink-2); line-height: 1.8; }
+
+.nb8-go {
+  display: inline-flex; align-items: center; justify-content: center; gap: .35rem;
+  min-height: 2.6rem; padding: .6rem 1.1rem; border-radius: 12px;
+  background: var(--signal); color: #fff; font-size: .86rem; font-weight: 500;
+  border: 0; cursor: pointer; transition: background-color .15s;
+}
+.nb8-go:hover { background: var(--signal-strong); }
+
+.nb8-chip {
+  display: inline-flex; align-items: center; padding: .15rem .65rem; border-radius: 999px;
+  background: var(--tint); color: var(--signal-strong); font-size: .74rem; font-weight: 500; white-space: nowrap;
+}
+
+
+
+/* ---------- 1. sign-in: brand side panel + role cards ---------- */
+
+@media (min-width: 860px) {
+  
+  
+  
+}
+
+
+
+
+
+
+
+
+
+
+
+
+/* role question + cards: one card per row so the subtitles stay readable on every width */
+#auth-modal .nb8-rolehead > span { font-size: .95rem !important; color: var(--ink) !important; font-weight: 500; }
+#auth-modal #reg-rolecards { display: grid; grid-template-columns: minmax(0, 1fr) !important; gap: .5rem; margin-bottom: 1rem; }
+#auth-modal #reg-rolecards button {
+  position: relative; display: grid; gap: .15rem; text-align: right;
+  padding: .75rem 2.7rem .75rem .9rem !important;
+  min-height: 3.4rem;
+}
+#auth-modal #reg-rolecards button::before {
+  content: ""; position: absolute; inset-inline-start: .95rem; top: 50%; transform: translateY(-50%);
+  width: 1.05rem; height: 1.05rem; border-radius: 50%;
+  border: 1.5px solid #A9C2C9; background: var(--surface);
+  transition: border-color .15s, box-shadow .15s;
+}
+#auth-modal #reg-rolecards button.is-on::before { border-color: var(--signal); box-shadow: inset 0 0 0 3.5px var(--surface), inset 0 0 0 10px var(--signal); }
+#auth-modal #reg-rolecards strong { font-size: .92rem; font-weight: 500 !important; color: var(--ink) !important; }
+#auth-modal #reg-rolecards span { font-size: .78rem; color: var(--ink-2) !important; line-height: 1.6; }
+#auth-modal #reg-track-chip span { display: block; margin-top: .2rem; font-size: .78rem; color: var(--ink-2); line-height: 1.7; }
+
+
+/* ---------- 2. student home: "what will you do now?" ---------- */
+#view-home .nb8-guide {
+  background: var(--surface); border: 1px solid var(--line); border-radius: var(--r-lg);
+  padding: clamp(1.15rem, 3vw, 1.9rem); display: grid; gap: 1.1rem; min-width: 0;
+}
+#view-home .nb8-guide.hidden { display: none !important; }
+#view-home .nb8-guide-head .v7-eyebrow { margin-bottom: .3rem; }
+#view-home .nb8-guide-head h2 { margin: 0; color: var(--ink) !important; font-size: clamp(1.2rem, 2.4vw, 1.5rem) !important; }
+#view-home .nb8-guide-head p { margin: .45rem 0 0; color: var(--ink-2); font-size: .92rem; line-height: 1.95; max-width: 72ch; }
+#view-home .nb8-guide-steps {
+  list-style: none; margin: 0; padding: 0; display: grid; gap: .6rem;
+  grid-template-columns: repeat(auto-fit, minmax(min(100%, 12rem), 1fr));
+}
+#view-home .nb8-guide-steps li {
+  position: relative; display: grid; grid-template-columns: auto minmax(0, 1fr); gap: .7rem; align-items: start;
+  background: var(--tint-2); border: 1px solid var(--line); border-radius: var(--r); padding: .9rem .9rem .95rem;
+}
+#view-home .nb8-step-ic { width: 2.3rem; height: 2.3rem; border-radius: 11px; display: grid; place-items: center; background: var(--tint); color: var(--signal-strong); }
+#view-home .nb8-step-ic svg { width: 1.2rem; height: 1.2rem; }
+#view-home .nb8-step-n { position: absolute; top: .55rem; inset-inline-end: .75rem; font-size: .72rem; color: var(--ink-3); }
+#view-home .nb8-guide-steps strong { display: block; padding-inline-end: 1.1rem; font-size: .9rem; color: var(--ink); line-height: 1.6; }
+#view-home .nb8-guide-steps small { display: block; margin-top: .2rem; font-size: .8rem; color: var(--ink-2); line-height: 1.75; }
+
+
+/* ---------- 3. professor home section ---------- */
+#home-professor-section .inline-flex, #home-student-uni-section .inline-flex { flex-wrap: wrap; }
+/* the old custom-session builder on home is replaced by the "assign" tab; markup and code stay */
+
+
+.nb8-quick button {
+  flex: none; white-space: nowrap; padding: .55rem .95rem; border-radius: 12px; font-size: .82rem; font-weight: 500;
+  background: var(--surface); color: var(--ink); border: 1px solid var(--line); transition: border-color .15s, background-color .15s;
+}
+
+
+/* ---------- 4. portal frame and tabs ---------- */
+#view-university { min-width: 0; }
+
+
+.nb8-tabs button {
+  flex: none; white-space: nowrap; padding: .62rem 1rem; border-radius: 10px; border: 0;
+  background: transparent; color: var(--ink-2); font-size: .86rem; font-weight: 500; cursor: pointer;
+  transition: background-color .15s, color .15s;
+}
+
+
+
+
+
+
+
+
+
+
+
+
+
+/* courses */
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+/* assignment form + list */
+
+
+
+
+
+
+
+
+
+
+#nb8-as-status { font-size: .8rem; color: #17633D; line-height: 1.7; }
+#nb8-as-status.is-bad { color: #A12C2C; }
+.nb8-as-list { display: grid; }
+.nb8-as-row {
+  display: grid; grid-template-columns: minmax(0, 1.3fr) minmax(0, 1.2fr) auto; gap: .5rem 1rem; align-items: center;
+  padding: .8rem 0; border-top: 1px solid var(--line-2);
+}
+.nb8-as-row:first-child { border-top: 0; padding-top: 0; }
+
+
+.nb8-as-meta { display: flex; flex-wrap: wrap; gap: .35rem; }
+.nb8-as-meta span { font-size: .74rem; color: var(--ink-2); background: var(--tint-2); border: 1px solid var(--line-2); border-radius: 999px; padding: .1rem .55rem; }
+
+.nb8-as-row > button { justify-self: end; font-size: .78rem; color: #8A2B2B; background: none; border: 1px solid #EBCACA; border-radius: 12px; padding: .4rem .8rem; white-space: nowrap; }
+.nb8-as-row > button:hover { background: #FBEFEF; }
+
+
+
+
+
+
+/* progress */
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+/* advisor */
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+/* ---------- 5. student side (home section + portal) ---------- */
+.nb8-stu { min-width: 0; }
+#home-student-uni-section .nb8-legacy, #uni-student-content .nb8-legacy { display: none !important; }
+
+.nb8-secline {
+  display: flex; flex-wrap: wrap; align-items: center; gap: .35rem .6rem; margin-bottom: .9rem;
+  background: var(--tint); border-radius: 12px; padding: .6rem .85rem; font-size: .82rem; color: var(--ink-2);
+}
+.nb8-secline b { color: var(--ink); font-weight: 500; }
+.nb8-secline small { font-size: .78rem; color: var(--ink-2); }
+.nb8-as-grid { display: grid; gap: .8rem; grid-template-columns: repeat(auto-fit, minmax(min(100%, 17rem), 1fr)); }
+.nb8-as-card, .nb8-res {
+  display: flex; flex-direction: column; gap: .55rem; min-width: 0;
+  background: var(--tint-2); border: 1px solid var(--line); border-radius: var(--r); padding: 1rem;
+}
+.nb8-as-card.is-done { border-color: #BFE3CC; }
+.nb8-as-top { display: flex; justify-content: space-between; align-items: center; gap: .5rem; flex-wrap: wrap; }
+.nb8-as-top > b { font-size: 1.05rem; color: #17633D; }
+.nb8-due { font-size: .76rem; color: var(--ink-2); }
+.nb8-due.is-late { color: #9A3412; }
+.nb8-as-card h3, .nb8-res h3 { margin: 0; font-size: .98rem; color: var(--ink); line-height: 1.6; }
+.nb8-arrival { margin: 0; font-size: .82rem; color: var(--ink-2); line-height: 1.85; border-inline-start: 2px solid var(--line); padding-inline-start: .65rem; }
+.nb8-as-note, .nb8-res p { margin: 0; font-size: .82rem; color: var(--ink); line-height: 1.8; }
+.nb8-done { margin: 0; font-size: .8rem; color: #17633D; }
+.nb8-as-card .nb8-go { margin-top: auto; width: 100%; }
+
+.nb8-locked { align-self: flex-start; padding: .5rem .9rem; border-radius: 12px; background: var(--line-2); color: var(--ink-2); font-size: .8rem; border: 0; }
+
+
+.nb8-notes .nb-item, #path-notes .nb-item { padding: .6rem .75rem; border-radius: 12px; background: var(--tint-2); font-size: .82rem; line-height: 1.8; }
+
+
+
+
+
+
+
+/* ---------- 6. small screens (down to 360px) ---------- */
+@media (max-width: 640px) {
+  
+  .nb8-as-row { grid-template-columns: minmax(0, 1fr); }
+  .nb8-as-row > button { justify-self: start; }
+  
+  .nb8-tabs button { padding: .55rem .8rem; font-size: .82rem; }
+  #view-home .nb8-guide-steps li { padding: .8rem; }
+  
+  
+}
+@media (prefers-reduced-motion: reduce) {
+  .nb8-go, .nb8-tabs button, .nb8-quick button, #auth-modal #reg-rolecards button::before { transition: none; }
+}
+
+/* phase8 2026-11-07: section codes stay on one line inside Arabic text */
+.nb8-card [dir="ltr"], .nb8-stu [dir="ltr"], .nb8-as-meta [dir="ltr"] { white-space: nowrap; unicode-bidi: isolate; }

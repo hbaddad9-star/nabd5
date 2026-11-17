@@ -47,7 +47,9 @@
   };
   window.navigateTo = function (viewId, options) {
     if (viewId === 'admin' && !isAdmin()) viewId = (authState && authState.isAuthenticated) ? 'home' : 'index';
-    else if (viewId === 'home' && isAdmin()) viewId = 'admin';
+    /* V6.11 QA: 'coach' is a removed view in the legacy client, which turns it into 'home' after this point; a
+       console account sent there returns to its console like any other trainee page */
+    else if ((viewId === 'home' || viewId === 'coach') && isAdmin()) viewId = 'admin';
     /* V6.7.6: a student's assignments live on her home (the legacy portal shows its own old sections) */
     else if (viewId === 'university' && authState && authState.isAuthenticated && authState.user && authState.user.role === 'student') {
       const r = legacyNav('home', options);
@@ -214,7 +216,7 @@
   let S;
   function load() {
     try {
-      const raw = localStorage.getItem(KEY); const v = raw && JSON.parse(raw);
+      const v = window.NabdStore.consoleState();
       /* version 4 (V6.7.4): the demo chain lives in one university; an older demo store starts again from the seed */
       if (v && v.v === 5) {
         S = v; /* V6.7.6: generic institution names */
@@ -225,7 +227,7 @@
     } catch (e) {}
     S = seed();
   }
-  function save() { try { localStorage.setItem(KEY, JSON.stringify(S)); } catch (e) {} }
+  function save() { window.NabdStore.saveConsoleState(S); }
   function log(what, kind) {
     S.audit.unshift({ at: new Date().toISOString(), who: me(), what, kind: kind || 'system' });
     S.audit = S.audit.slice(0, 200);
@@ -305,14 +307,14 @@
   const PAGE_FN = { overview, org, unis, users, subs, cases, sources, rules, audit, settings };
   const allowed = p => (ROLE_PAGES[consoleRole()] || ROLE_PAGES.admin).includes(p);
   let page = 'overview', orgId = '', pageRole = '';
-  try { const p = sessionStorage.getItem('nbx_page'); if (p && PAGES[p]) page = p; orgId = sessionStorage.getItem('nbx_org') || ''; pageRole = sessionStorage.getItem('nbx_role') || ''; } catch (e) {}
+  { const SS = window.NabdStore.session, p = SS.get('nbx_page'); if (p && PAGES[p]) page = p; orgId = SS.get('nbx_org') || ''; pageRole = SS.get('nbx_role') || ''; }
   const filters = { uni: 'all', uniQ: '', role: 'all', userQ: '', audit: 'all' };
 
   function go(p, id) {
     if (!PAGES[p]) return;
     page = p;
     if (p === 'org' && id) orgId = id;
-    try { sessionStorage.setItem('nbx_page', p); sessionStorage.setItem('nbx_org', orgId); } catch (e) {}
+    window.NabdStore.session.set('nbx_page', p); window.NabdStore.session.set('nbx_org', orgId);
     render();
     const main = document.getElementById('nbx-main');
     if (main) { main.scrollTop = 0; main.focus({ preventScroll: true }); }
@@ -323,7 +325,7 @@
     if (root.classList.contains('hidden')) return;
     const u = authState.user || {};
     /* a different console account starts on its own first page (the review queue, or the overview) */
-    if (consoleRole() !== pageRole) { pageRole = consoleRole(); page = (ROLE_PAGES[pageRole] || ROLE_PAGES.admin)[0]; try { sessionStorage.setItem('nbx_role', pageRole); sessionStorage.setItem('nbx_page', page); } catch (e) {} }
+    if (consoleRole() !== pageRole) { pageRole = consoleRole(); page = (ROLE_PAGES[pageRole] || ROLE_PAGES.admin)[0]; window.NabdStore.session.set('nbx_role', pageRole); window.NabdStore.session.set('nbx_page', page); }
     if (!allowed(page)) page = (ROLE_PAGES[consoleRole()] || ROLE_PAGES.admin)[0];
     let theOrg = page === 'org' ? S.unis.find(x => x.id === orgId) : null;
     if (page === 'org' && !theOrg) page = 'unis';
@@ -805,6 +807,7 @@
         ${card('غرفة الطوارئ', `<div class="nbx-switches"><label class="nbx-switch"><span><b>وضع الواقعية</b><small>مقاطعات الأهل والفريق، إنذار باللون وصوت النبض، نافذة التدخل، وملخص قصير قبل الجلسة. التلميحات بالجرعات لطلاب السنة الأولى والثانية فقط.</small></span><input type="checkbox" role="switch" data-nbx-set="erRealism"${st.erRealism === false ? '' : ' checked'}><i aria-hidden="true"></i></label></div>
           <p class="nbx-foot-note">عند إيقافه تعود الغرفة إلى نسختها المرجعية المعتمدة كما هي.</p>`)}
         ${card('بيانات العرض', `<p class="nbx-text">كل ما في لوحة التحكم بيانات عرض محفوظة في هذا المتصفح فقط. إعادة الضبط ترجعها إلى حالتها الأولى.</p>
+          <div class="nbx-switches"><label class="nbx-switch"><span><b>بيانات عرض في صفحة المدرب</b><small>يظهر للمتدرب رابط «أضف بيانات عرض» ليرى المدرب بجلسات تجريبية. أوقفه في الاستخدام الفعلي.</small></span><input type="checkbox" role="switch" data-nbx-set="coachDemo"${st.coachDemo === false ? '' : ' checked'}><i aria-hidden="true"></i></label></div>
           <button type="button" class="nbx-btn nbx-btn-danger" data-nbx-act="reset-demo" data-nbx-confirm="تأكيد إعادة الضبط">إعادة ضبط بيانات العرض</button>`)}
       </div>`;
   }
@@ -1094,6 +1097,7 @@
       if (k === 'announce') log(t.checked ? 'أظهر إعلاناً على الصفحة الرئيسية' : 'أخفى إعلان الصفحة الرئيسية', 'system');
       else if (k === 'maintenance') log(t.checked ? 'فعّل وضع الصيانة' : 'أوقف وضع الصيانة', 'system');
       else if (k === 'erRealism') log(t.checked ? 'فعّل وضع الواقعية في غرفة الطوارئ' : 'أوقف وضع الواقعية في غرفة الطوارئ (النسخة المرجعية)', 'rules');
+      else if (k === 'coachDemo') log(t.checked ? 'أظهر رابط بيانات العرض في صفحة المدرب' : 'أخفى رابط بيانات العرض من صفحة المدرب', 'system');
       else if (k === 'retention') log(`غيّر مدة الاحتفاظ بالسجلات إلى ${t.value} شهراً`, 'privacy');
       save(); paintAnnouncement();
       return;
@@ -1169,7 +1173,7 @@
     setCaseFilter: fn => { caseOk = fn; }, setCounts: fn => { extraCounts = fn; }, setOrgCard: fn => { orgCard = fn; }, setOnAssign: fn => { onAssign = fn; }, consoleRole, assignForm,
     addPages: defs => {
       Object.entries(defs).forEach(([k, [title, sub, fn]]) => { PAGES[k] = [title, sub]; PAGE_FN[k] = fn; });
-      try { const p = sessionStorage.getItem('nbx_page'); if (p && defs[p]) page = p; } catch (e) {}
+      { const p = window.NabdStore.session.get('nbx_page'); if (p && defs[p]) page = p; }
     }
   });
 

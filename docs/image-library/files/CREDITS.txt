@@ -1,0 +1,21 @@
+The clinical images kept for the emergency room's imaging (not served by the site yet). Wikimedia Commons; each keeps its own licence.
+
+ecg-strip.jpg
+  https://commons.wikimedia.org/wiki/File:Normal_12_lead_EKG.jpg
+  see the file page for author and licence
+  (was img/nb/ecg.jpg)
+
+xr-cxr-normal.png
+  https://commons.wikimedia.org/wiki/File:Chest_Xray_PA_3-8-2010.png
+  see the file page for author and licence
+  (was img/nb/cxr_normal.png)
+
+xr-cxr-pneumonia.jpg
+  https://commons.wikimedia.org/wiki/File:Pneumonia_x-ray.jpg
+  see the file page for author and licence
+  (was img/nb/cxr_pneu.jpg)
+
+xr-ankle-fx.jpg
+  cropped (left panel) from https://commons.wikimedia.org/wiki/File:Trimalleolar_Ankle_Fracture.jpg
+  Chaim Mintz — CC BY-SA 4.0
+  (was img/nb/ankle_fx.jpg)

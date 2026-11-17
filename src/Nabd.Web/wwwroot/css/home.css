@@ -1,0 +1,359 @@
+/* =========================================================================
+   Nabd signed-in home, V6.6 (2026-11-14, ADR 0014): the page a student or a professor lands on after sign-in,
+   in the approved landing's identity, drawn formally: white cards with hairline borders and quiet shadows, navy
+   type, copper only for the page's main action and the eyebrows; no decorative rhythm lines, no glows.
+   Parts: the welcome (the trainee's line and actions beside a framed photo, then four facts), the ER entry (three
+   of its tools and the method of a case), the training sections (a centred head, a filter, one card per section),
+   the university assignments (the section's line and assignments beside how an assignment works), progress and
+   the «ماذا ستفعل الآن؟» steps. Cards rise into place as they scroll into view (landing/030-home-sections.js adds
+   .nh-rise / .nh-in; never under reduced motion). The welcome, the ER entry, the training sections and the
+   university assignments have their own markup (Views/Home/Dashboard, region "home"); the rest is legacy markup.
+   V6.7 design system (2026-11-14, owner: official, medical, not a template): radii 10 / 8 / 6, depth by
+   hairlines (the card shadow is a single pixel), no decorative dashes on the eyebrows, no lift or zoom on hover
+   (a border change only), a short fade for the entrance, tabular figures.
+   Hand-written; loaded last. Read docs/ui-design-system.md, sections "The signed-in home (V6.6)" and "V6.7".
+
+   Rules of this file (LandingTests checks them):
+   - every selector starts from #view-home, the signed-in home. The ER room (#view-er), the respiratory room
+     (#view-resp), their chat, monitor, orders, handover and report, the other views, the header, the drawer,
+     the dialogs, the landing and the sign-in screen are never selected, and no sibling combinator is used, so
+     nothing here can reach them;
+   - declarations are !important inside @layer nl-refine (the layer landing.css places first: a layered
+     important declaration wins over every unlayered one, and over app.css by coming later);
+   - display and visibility are never set inside the layer, except on this file's own ::before / ::after: the
+     scripts and the legacy stylesheets show and hide the home's parts (.hidden, the role-based sections, the
+     phone-only button, the filtered cards), and a layered important display would beat them. The displays this
+     file needs are set outside the layer, as ordinary declarations, on its own nh- elements (which nothing
+     hides) and on the progress band;
+   - two-column grids of legacy parts are declared for wide screens only (min-width: 769px).
+   Palette: the landing's (navy #082f3d, copper #c98768 / action #9b6247, teal #176a72, paper #f3f6f7).
+   ========================================================================= */
+
+/* ---------- display outside the layer (see the rules above) ---------- */
+
+#view-home .nh-hero-main { display: grid; }
+#view-home .nh-hero-copy { display: flex; flex-direction: column; }
+#view-home .nh-hero-meta { display: flex; flex-wrap: wrap; align-items: center; }
+#view-home .nh-hero-facts { display: grid; }
+#view-home .nh-hero-facts > div { display: grid; }
+#view-home .nh-er-feats { display: grid; }
+#view-home .nh-er-feats > li { display: flex; align-items: center; }
+#view-home .nh-er-feats > li > span:last-child,
+#view-home .nh-uni-flow > li > span:last-child { display: grid; }
+/* an icon tile: the icon in its middle */
+#view-home .nh-ic { display: grid; place-items: center; }
+#view-home .nh-uni-grid { display: grid; }
+#view-home .nh-uni-main { display: grid; align-content: start; }
+#view-home .nh-uni-head { display: grid; justify-items: start; }
+#view-home .nh-uni-kicker { display: inline-flex; align-items: center; flex-wrap: wrap; }
+#view-home .nh-uni-badge { display: inline-block; }
+#view-home .nh-uni-aside { display: flex; flex-direction: column; }
+#view-home .nh-uni-aside-title { display: block; }
+#view-home .nh-uni-flow { display: grid; }
+#view-home .nh-uni-flow > li { display: grid; }
+#view-home .nh-er-actions { display: flex; flex-wrap: wrap; align-items: center; }
+#view-home .nh-fields-bar { display: flex; flex-direction: column; align-items: center; }
+#view-home .nh-fields-filter { display: flex; flex-wrap: wrap; justify-content: center; }
+#view-home .h9-fields li > .nh-field-body { display: grid; }
+/* home-base.css hides the card's lines on small phones; the Arabic name and the terms stay, the description goes */
+#view-home .h9-fields li > .nh-field-body > span { display: block; }
+#view-home .nh-eyebrow { display: inline-block; }
+@media (max-width: 768px) { #view-home .nh-hero .nh-hero-media figcaption { display: none; } }
+@media (max-width: 480px) { #view-home .h9-fields li > .nh-field-body > .nh-field-desc { display: none; } }
+
+@layer nl-refine {
+  /* V6.9.3 (owner): the trainee first, then what to do now, the emergency room, his numbers, his assignments, and
+     the sections. home-base.css orders the children of #view-home; these win over it from the layer. */
+  #view-home > .v7-welcome { order: 1 !important; }
+  
+  #view-home > #nb8-guide { order: 3 !important; }
+  #view-home > #home-er-card { order: 4 !important; }
+  #view-home > #home-path { order: 5 !important; }
+  #view-home > #home-student-uni-section { order: 6 !important; }
+  #view-home > #home-fields9 { order: 7 !important; }
+
+  #view-home {
+    --h-navy: #082f3d;
+    --h-navy-2: #0b3a49;
+    --h-ink: #102f40;
+    --h-copy: #536875;
+    --h-muted: #5d7079;
+    --h-line: #d9e3e7;
+    --h-paper: #f6f9fa;
+    --h-teal: #176a72;
+    --h-copper: #c98768;
+    --h-copper-text: #9b6247;
+    --h-card-shadow: 0 1px 2px rgba(8, 47, 61, .05);
+  }
+
+  /* ---------- 1. Welcome ---------- */
+  #view-home > .v7-welcome {
+    grid-template-columns: minmax(0, 1fr) !important;
+    min-height: 0 !important;
+    color: var(--h-ink) !important;
+    background: #fff !important;
+    border: 1px solid var(--h-line) !important;
+    border-radius: 10px !important;
+    box-shadow: var(--h-card-shadow) !important;
+  }
+  #view-home .nh-hero-main { grid-template-columns: minmax(0, 1fr) !important; gap: 28px !important; align-items: center !important; padding: clamp(22px, 3.2vw, 44px) !important; }
+  #view-home .nh-hero-copy { gap: 12px !important; min-width: 0 !important; }
+  #view-home .nh-hero-meta { gap: 8px 12px !important; }
+  #view-home .nh-hero-meta #home-welcome-role { color: var(--h-copper-text) !important; font-size: 13.5px !important; font-weight: 750 !important; }
+  #view-home .nh-hero-meta #home-welcome-role::before { content: none !important; }
+  #view-home .nh-hero-meta .nh-hero-demo { padding: 2px 10px !important; color: #7c4e39 !important; background: #f7ebe4 !important; border: 0 !important; border-radius: 999px !important; font-size: 11.5px !important; font-weight: 750 !important; }
+  #view-home .nh-hero h1 { margin: 0 !important; color: var(--h-navy) !important; font-size: clamp(28px, 3vw, 42px) !important; font-weight: 850 !important; line-height: 1.35 !important; letter-spacing: 0 !important; }
+  #view-home .nh-hero p#home-welcome-sub { max-width: 58ch !important; margin: 0 !important; color: var(--h-copy) !important; font-size: 15.5px !important; line-height: 1.95 !important; }
+  #view-home .nh-hero .v7-welcome-actions { gap: 10px !important; margin-top: 10px !important; }
+  #view-home .nh-hero .v7-welcome-actions button { align-items: center !important; justify-content: center !important; min-height: 46px !important; padding: 0 22px !important; border-radius: 8px !important; font-size: 14.5px !important; font-weight: 750 !important; transition: background-color .18s ease !important; }
+  #view-home .nh-hero #home-quick-profile-btn { color: #fff !important; background: var(--h-navy) !important; border: 1px solid var(--h-navy) !important; box-shadow: none !important; }
+  #view-home .nh-hero #home-quick-profile-btn:hover { background: #164b5b !important; }
+  #view-home .nh-hero #home-quick-uni-btn { color: var(--h-navy) !important; background: #fff !important; border: 1px solid #9fb1b8 !important; }
+  #view-home .nh-hero #home-quick-uni-btn:hover { background: #f1f5f6 !important; }
+  #view-home .nh-hero #home-quick-er-btn { color: #fff !important; background: var(--h-copper-text) !important; border: 1px solid var(--h-copper-text) !important; }
+  #view-home .nh-hero #home-quick-er-btn:hover { background: #89543d !important; }
+  #view-home .nh-hero .nh-hero-media { position: relative !important; min-height: 0 !important; max-height: none !important; margin: 0 !important; background: transparent !important; }
+  #view-home .nh-hero .nh-hero-media img { width: 100% !important; height: auto !important; aspect-ratio: 16 / 10 !important; object-fit: cover !important; object-position: center 40% !important; border: 1px solid var(--h-line) !important; border-radius: 10px !important; }
+  #view-home .nh-hero .nh-hero-media figcaption { margin-top: 8px !important; color: var(--h-muted) !important; font-size: 12px !important; text-align: start !important; }
+  #view-home .nh-hero-facts { grid-template-columns: repeat(2, minmax(0, 1fr)) !important; margin: 0 !important; background: var(--h-paper) !important; border-top: 1px solid var(--h-line) !important; border-radius: 0 0 10px 10px !important; }
+  #view-home .nh-hero-facts > div { gap: 3px !important; padding: 16px clamp(16px, 2.4vw, 28px) !important; border-bottom: 1px solid var(--h-line) !important; }
+  #view-home .nh-hero-facts dt { color: var(--h-muted) !important; font-size: 12.5px !important; font-weight: 600 !important; }
+  #view-home .nh-hero-facts dd { margin: 0 !important; color: var(--h-navy) !important; font-size: 16px !important; font-weight: 800 !important; line-height: 1.5 !important; }
+  #view-home .nh-hero-facts dd span { color: var(--h-teal) !important; font-weight: 700 !important; }
+  #view-home .nh-hero-facts dd,
+  #view-home #home-path .nb-kpis b,
+  #view-home #home-student-uni-section .nb8-secline b { font-variant-numeric: tabular-nums !important; }
+
+  /* ---------- 2. The ER entry ---------- */
+  #view-home #home-er-card {
+    background: #fff !important;
+    border: 1px solid var(--h-line) !important;
+    border-radius: 10px !important;
+    box-shadow: var(--h-card-shadow) !important;
+  }
+  #view-home #home-er-card > .v7-er-main {
+    gap: 14px !important;
+    margin: 0 !important;
+    padding: clamp(22px, 3.2vw, 44px) !important;
+    color: var(--h-ink) !important;
+    background: #fff !important;
+    border-radius: 0 !important;
+    box-shadow: none !important;
+  }
+  #view-home #home-er-card .v7-er-main .v7-eyebrow { gap: 8px !important; color: var(--h-copper-text) !important; font-size: 13.5px !important; font-weight: 800 !important; }
+  #view-home #home-er-card .v7-er-main .v7-eyebrow span { color: var(--h-muted) !important; font-weight: 650 !important; }
+  #view-home #home-er-card .v7-er-main h2 { color: var(--h-navy) !important; font-size: clamp(24px, 2.4vw, 33px) !important; font-weight: 850 !important; line-height: 1.45 !important; }
+  #view-home #home-er-card .v7-er-main > p { max-width: 62ch !important; color: var(--h-copy) !important; font-size: 15px !important; line-height: 1.95 !important; }
+  #view-home .nh-ic svg { width: 20px !important; height: 20px !important; flex: 0 0 auto !important; }
+  /* one icon set: a single stroke width for every line icon of the home */
+  #view-home .nh-ic svg *,
+  #view-home #nb8-guide .nb8-step-ic svg *,
+  #view-home #home-er-card .v7-eyebrow svg * { stroke-width: 1.75 !important; }
+  #view-home .nh-er-feats { grid-template-columns: repeat(auto-fit, minmax(150px, 1fr)) !important; gap: 10px !important; margin: 4px 0 0 !important; padding: 0 !important; list-style: none !important; }
+  #view-home .nh-er-feats > li { gap: 11px !important; padding: 11px 12px !important; background: var(--h-paper) !important; border: 1px solid var(--h-line) !important; border-radius: 8px !important; }
+  #view-home .nh-er-feats .nh-ic { width: 38px !important; height: 38px !important; flex: 0 0 auto !important; color: var(--h-teal) !important; background: #fff !important; border: 1px solid #cfdfe3 !important; border-radius: 8px !important; }
+  #view-home .nh-er-feats b { color: var(--h-navy) !important; font-size: 14px !important; font-weight: 800 !important; line-height: 1.45 !important; }
+  #view-home .nh-er-feats small { color: var(--h-muted) !important; font-size: 12px !important; font-weight: 600 !important; line-height: 1.5 !important; text-align: start !important; }
+  #view-home .nh-er-actions { gap: 12px 18px !important; margin-top: 10px !important; }
+  #view-home #home-er-card #launch-er-random-btn {
+    align-self: auto !important;
+    min-height: 50px !important;
+    margin: 0 !important;
+    padding: 0 26px !important;
+    color: #fff !important;
+    background: var(--h-copper-text) !important;
+    border: 1px solid #89543d !important;
+    border-radius: 8px !important;
+    box-shadow: 0 1px 2px rgba(8, 47, 61, .12) !important;
+    font-size: 15.5px !important;
+    font-weight: 800 !important;
+    transition: background-color .18s ease !important;
+  }
+  #view-home #home-er-card #launch-er-random-btn:hover { background: #89543d !important; }
+  #view-home .nh-er-note { color: var(--h-muted) !important; font-size: 12.5px !important; }
+  #view-home #home-er-card .v7-er-steps {
+    gap: 12px !important;
+    margin: 12px !important;
+    padding: clamp(20px, 2.6vw, 32px) !important;
+    color: #fff !important;
+    background: linear-gradient(160deg, #0b3a49, #082f3d) !important;
+    border-radius: 10px !important;
+  }
+  #view-home #home-er-card .v7-er-steps > div > span { color: #f0bd9f !important; font-size: 12.5px !important; font-weight: 750 !important; }
+  #view-home #home-er-card .v7-er-steps h3 { margin-top: 4px !important; color: #fff !important; font-size: 19px !important; font-weight: 800 !important; line-height: 1.5 !important; }
+  #view-home #home-er-card .v7-er-steps ol { gap: 0 !important; }
+  #view-home #home-er-card .v7-er-steps li { grid-template-columns: 42px minmax(0, 1fr) !important; gap: 2px 14px !important; padding: 13px 0 !important; border-top: 1px solid rgba(255, 255, 255, .13) !important; }
+  #view-home #home-er-card .v7-er-steps li:first-child { border-top-color: transparent !important; padding-top: 4px !important; }
+  #view-home #home-er-card .v7-er-steps li b { width: 42px !important; height: 42px !important; color: #f0bd9f !important; background: transparent !important; border: 1px solid rgba(255, 255, 255, .2) !important; border-radius: 8px !important; font-family: inherit !important; font-size: 14px !important; font-weight: 800 !important; }
+  #view-home #home-er-card .v7-er-steps li strong { color: #fff !important; font-size: 15px !important; font-weight: 750 !important; }
+  #view-home #home-er-card .v7-er-steps li small { color: rgba(255, 255, 255, .74) !important; font-size: 12.5px !important; line-height: 1.75 !important; }
+  #view-home #home-er-card .v7-er-steps li small span { color: #f6d5c2 !important; }
+
+  /* ---------- 3. Training sections ---------- */
+  #view-home .h9-fields-head { gap: 8px !important; justify-items: center !important; margin: 0 auto 18px !important; text-align: center !important; }
+  #view-home .nh-eyebrow { color: var(--h-copper-text) !important; font-size: 13px !important; font-weight: 800 !important; }
+  #view-home .nh-eyebrow::before,
+  #view-home .nh-eyebrow::after { content: none !important; }
+  #view-home .h9-fields-head h2 { margin: 0 !important; color: var(--h-navy) !important; font-size: clamp(24px, 2.4vw, 33px) !important; font-weight: 850 !important; line-height: 1.4 !important; }
+  #view-home .h9-fields-head p { max-width: 68ch !important; margin: 0 !important; color: var(--h-copy) !important; font-size: 15px !important; line-height: 1.9 !important; }
+  #view-home .nh-fields-bar { gap: 10px !important; margin-bottom: 22px !important; }
+  #view-home .nh-fields-filter { gap: 8px !important; padding: 6px !important; background: #fff !important; border: 1px solid var(--h-line) !important; border-radius: 8px !important; }
+  #view-home .nh-fields-filter button { min-height: 38px !important; padding: 0 15px !important; color: var(--h-ink) !important; background: transparent !important; border: 0 !important; border-radius: 8px !important; font-size: 13.5px !important; font-weight: 650 !important; cursor: pointer !important; transition: background-color .15s ease, color .15s ease !important; }
+  #view-home .nh-fields-filter button:hover { background: #eef3f5 !important; }
+  #view-home .nh-fields-filter button.is-on { color: #fff !important; background: var(--h-navy) !important; }
+  #view-home .nh-fields-count { margin: 0 !important; color: var(--h-muted) !important; font-size: 13px !important; }
+  #view-home .h9-fields { gap: 18px !important; }
+  #view-home .h9-fields li { overflow: hidden !important; background: #fff !important; border: 1px solid var(--h-line) !important; border-radius: 10px !important; box-shadow: var(--h-card-shadow) !important; transition: box-shadow .2s ease, border-color .2s ease, transform .25s ease !important; }
+  #view-home .h9-fields li:hover,
+  #view-home .h9-fields li.is-open:hover { transform: none !important; border-color: #8fa9b2 !important; box-shadow: var(--h-card-shadow) !important; }
+  #view-home .h9-fields li.is-open { border-color: #9fb9c1 !important; box-shadow: var(--h-card-shadow) !important; }
+  #view-home .h9-fields li img { transition: transform .6s cubic-bezier(.2, .7, .2, 1), filter .3s ease !important; }
+  #view-home .h9-fields li:not(.is-open) img { filter: grayscale(.4) !important; opacity: .86 !important; }
+  #view-home .h9-fields li:not(.is-open):hover img { filter: grayscale(.1) !important; }
+  #view-home .h9-fields li > .nh-field-body { flex: 1 1 auto !important; align-content: start !important; gap: 4px !important; padding: 14px 16px 6px !important; }
+  #view-home .h9-fields li .nh-field-body b { color: var(--h-navy) !important; font-size: 16px !important; font-weight: 800 !important; line-height: 1.45 !important; text-align: start !important; }
+  #view-home .h9-fields li .nh-field-body .nh-field-ar { color: var(--h-ink) !important; font-size: 13.5px !important; font-weight: 650 !important; line-height: 1.6 !important; }
+  #view-home .h9-fields li .nh-field-body .nh-field-terms { margin-top: 4px !important; color: var(--h-teal) !important; font-size: 12.5px !important; font-weight: 600 !important; line-height: 1.6 !important; text-align: right !important; }
+  #view-home .h9-fields li .nh-field-body .nh-field-desc { color: var(--h-muted) !important; font-size: 12.5px !important; line-height: 1.75 !important; }
+  #view-home .h9-fields .h9-tag { inset-block-start: 12px !important; inset-inline-start: 12px !important; padding: 3px 10px !important; color: #fff !important; background: rgba(8, 47, 61, .78) !important; border: 0 !important; box-shadow: none !important; font-size: 11.5px !important; font-weight: 700 !important; }
+  
+  #view-home .h9-fields .nh-field-go {
+    margin: 10px 16px 16px !important;
+    min-height: 40px !important;
+    padding: 0 14px !important;
+    color: var(--h-navy) !important;
+    background: #fff !important;
+    border: 1px solid #9fb1b8 !important;
+    border-radius: 6px !important;
+    font-size: 13.5px !important;
+    font-weight: 750 !important;
+    cursor: pointer !important;
+    transition: background-color .15s ease !important;
+  }
+  #view-home .h9-fields .nh-field-go:hover { background: #f1f5f6 !important; }
+  #view-home .h9-fields li.is-open .nh-field-go { color: #fff !important; background: var(--h-copper-text) !important; border-color: #89543d !important; }
+  #view-home .h9-fields li.is-open .nh-field-go:hover { background: #89543d !important; }
+  #view-home .nh-fields-note { margin: 16px auto 0 !important; max-width: 62ch !important; padding: 10px 14px !important; color: var(--h-ink) !important; background: var(--h-paper) !important; border: 1px solid var(--h-line) !important; border-inline-start: 3px solid var(--h-teal) !important; border-radius: 8px !important; font-size: 13.5px !important; line-height: 1.8 !important; text-align: center !important; }
+
+  /* ---------- 4. Assignments and the professor's section: the same card ---------- */
+  #view-home #home-student-uni-section,
+  #view-home #home-professor-section { padding: clamp(20px, 3vw, 36px) !important; border: 1px solid var(--h-line) !important; border-radius: 10px !important; box-shadow: var(--h-card-shadow) !important; }
+  #view-home #home-student-uni-section h2,
+  #view-home #home-professor-section h2 { color: var(--h-navy) !important; font-size: clamp(20px, 1.9vw, 25px) !important; font-weight: 850 !important; line-height: 1.5 !important; }
+  /* the university assignments: the section's line and assignments beside a pale panel with how an assignment
+     works (three linked steps) and the way to the portal */
+  #view-home #home-student-uni-section.nh-uni { overflow: hidden !important; padding: 0 !important; background: #fff !important; }
+  #view-home .nh-uni-grid { grid-template-columns: minmax(0, 1fr) !important; }
+  #view-home .nh-uni-main { gap: 20px !important; min-width: 0 !important; padding: clamp(22px, 3vw, 40px) !important; }
+  #view-home .nh-uni-head { gap: 0 !important; }
+  #view-home .nh-uni-kicker { gap: 6px 10px !important; color: var(--h-copper-text) !important; font-size: 13.5px !important; font-weight: 800 !important; }
+  #view-home .nh-uni-kicker .nh-ic { width: 34px !important; height: 34px !important; color: #f0bd9f !important; background: linear-gradient(145deg, #0e4658, #082f3d) !important; border-radius: 6px !important; }
+  #view-home .nh-uni-kicker .nh-ic svg { width: 19px !important; height: 19px !important; }
+  #view-home .nh-uni-kicker > span[dir] { color: var(--h-muted) !important; font-weight: 650 !important; }
+  #view-home .nh-uni-head h2 { margin: 14px 0 0 !important; color: var(--h-navy) !important; font-size: clamp(23px, 2.3vw, 31px) !important; font-weight: 850 !important; line-height: 1.45 !important; }
+  #view-home .nh-uni-head p { max-width: 62ch !important; margin: 8px 0 0 !important; color: var(--h-copy) !important; font-size: 15px !important; line-height: 1.95 !important; }
+  #view-home .nh-uni-badge { margin-top: 12px !important; padding: 4px 12px !important; color: var(--h-teal) !important; background: #e8f0f1 !important; border-radius: 999px !important; font-size: 12.5px !important; font-weight: 700 !important; }
+  /* the section's line (rendered by the legacy client) as a course card */
+  #view-home #home-student-uni-section .nb8-secline { align-items: center !important; flex-wrap: wrap !important; gap: 4px 14px !important; margin: 0 !important; padding: 16px 18px !important; background: linear-gradient(135deg, #f6f9fa, #edf4f5) !important; border: 1px solid var(--h-line) !important; border-inline-start: 3px solid var(--h-teal) !important; border-radius: 8px !important; font-size: 13.5px !important; }
+  #view-home #home-student-uni-section .nb8-secline > span:first-child { color: var(--h-muted) !important; font-size: 12.5px !important; font-weight: 700 !important; }
+  #view-home #home-student-uni-section .nb8-secline b { color: var(--h-navy) !important; font-size: 17px !important; font-weight: 850 !important; letter-spacing: .02em !important; }
+  #view-home #home-student-uni-section .nb8-secline small { color: var(--h-copy) !important; font-size: 13px !important; }
+  #view-home #home-student-uni-section .nb8-secline .nb8-demo-tag { margin-inline-start: auto !important; }
+  /* no assignment yet: a quiet panel with a drawn check */
+  #view-home #home-student-uni-section .nb8-empty { position: relative !important; margin: 14px 0 0 !important; padding: 62px 20px 20px !important; color: var(--h-copy) !important; background: #fff !important; border: 1px dashed #c4d4da !important; border-radius: 8px !important; font-size: 14px !important; line-height: 1.9 !important; text-align: center !important; }
+  #view-home #home-student-uni-section .nb8-empty::before { content: "" !important; display: block !important; position: absolute !important; top: 16px !important; left: 50% !important; width: 34px !important; height: 34px !important; margin-left: -17px !important; background: #e5f0f1 !important; border-radius: 50% !important; }
+  #view-home #home-student-uni-section .nb8-empty::after { content: "" !important; display: block !important; position: absolute !important; top: 24px !important; left: 50% !important; width: 8px !important; height: 14px !important; margin-left: -4px !important; border: solid var(--h-teal) !important; border-width: 0 2.5px 2.5px 0 !important; transform: rotate(45deg) !important; }
+  #view-home #home-student-uni-section .nb8-as-card { border-radius: 10px !important; }
+  #view-home .nh-uni-aside { justify-content: center !important; gap: 18px !important; padding: clamp(22px, 2.8vw, 34px) !important; background: #f3f7f8 !important; border-top: 1px solid var(--h-line) !important; }
+  #view-home .nh-uni-aside-title { color: var(--h-copper-text) !important; font-size: 13px !important; font-weight: 800 !important; }
+  #view-home .nh-uni-flow { gap: 0 !important; margin: 0 !important; padding: 0 !important; list-style: none !important; }
+  #view-home .nh-uni-flow > li { position: relative !important; grid-template-columns: 40px minmax(0, 1fr) !important; align-items: start !important; gap: 0 14px !important; padding: 0 0 20px !important; }
+  #view-home .nh-uni-flow > li::before { content: "" !important; display: block !important; position: absolute !important; inset-inline-start: 19.5px !important; top: 44px !important; bottom: 4px !important; width: 1px !important; background: #c6d6dc !important; }
+  #view-home .nh-uni-flow > li:last-child { padding-bottom: 0 !important; }
+  #view-home .nh-uni-flow > li:last-child::before { content: none !important; }
+  #view-home .nh-uni-flow .nh-ic { width: 40px !important; height: 40px !important; color: var(--h-teal) !important; background: #fff !important; border: 1px solid #cfdfe3 !important; border-radius: 8px !important; }
+  #view-home .nh-uni-flow b { color: var(--h-navy) !important; font-size: 14.5px !important; font-weight: 800 !important; line-height: 1.55 !important; }
+  #view-home .nh-uni-flow small { color: var(--h-copy) !important; font-size: 12.5px !important; line-height: 1.7 !important; }
+  #view-home #home-student-uni-section #home-student-open-uni-btn { width: 100% !important; min-height: 46px !important; margin-top: 6px !important; padding: 0 18px !important; color: #fff !important; background: var(--h-navy) !important; border: 1px solid var(--h-navy) !important; border-radius: 8px !important; font-size: 14px !important; font-weight: 750 !important; cursor: pointer !important; transition: background-color .18s ease !important; }
+
+  /* ---------- 5. Progress: a navy band, the level beside its figures ---------- */
+
+  #view-home #home-path #path-level { color: #fff !important; font-size: clamp(22px, 2.2vw, 30px) !important; font-weight: 850 !important; line-height: 1.5 !important; }
+
+  /* ---------- 6. «ماذا ستفعل الآن؟»: numbered step cards ---------- */
+  #view-home #nb8-guide { gap: 22px !important; padding: clamp(22px, 3vw, 36px) !important; background: #fff !important; border: 1px solid var(--h-line) !important; border-radius: 10px !important; box-shadow: var(--h-card-shadow) !important; }
+  #view-home #nb8-guide #nb8-guide-track { font-size: 13px !important; font-weight: 800 !important; }
+  #view-home #nb8-guide .nb8-guide-head h2 { color: var(--h-navy) !important; font-size: clamp(22px, 2.2vw, 30px) !important; font-weight: 850 !important; line-height: 1.4 !important; }
+  #view-home #nb8-guide .nb8-guide-steps { gap: 14px !important; }
+  #view-home #nb8-guide .nb8-guide-steps li { grid-template-columns: minmax(0, 1fr) !important; gap: 12px !important; padding: 18px 16px !important; background: #fff !important; border: 1px solid var(--h-line) !important; border-radius: 8px !important; transition: border-color .2s ease, box-shadow .2s ease, transform .25s ease !important; }
+  #view-home #nb8-guide .nb8-guide-steps li:hover { border-color: #8fa9b2 !important; }
+  #view-home #nb8-guide .nb8-guide-steps li:hover .nb8-step-n { color: var(--h-copper) !important; }
+  #view-home #nb8-guide .nb8-step-ic { width: 44px !important; height: 44px !important; border-radius: 8px !important; }
+  #view-home #nb8-guide .nb8-step-ic svg { width: 21px !important; height: 21px !important; }
+  #view-home #nb8-guide .nb8-step-n { top: 14px !important; inset-inline-end: 16px !important; color: #c3d2d8 !important; font-family: inherit !important; font-size: 26px !important; font-weight: 850 !important; line-height: 1 !important; transition: color .2s ease !important; }
+
+  /* ---------- 7. Entrance: cards rise into place once, as they scroll into view ---------- */
+  #view-home .nh-rise { opacity: 0 !important; translate: 0 8px !important; }
+  #view-home .nh-rise.nh-in {
+    opacity: 1 !important;
+    translate: 0 0 !important;
+    transition: opacity .4s ease var(--nh-d, 0ms), translate .45s cubic-bezier(.2, .7, .2, 1) var(--nh-d, 0ms), border-color .2s ease !important;
+  }
+  #view-home #nb8-guide .nb8-guide-steps strong { padding-inline-end: 0 !important; color: var(--h-navy) !important; font-size: 15.5px !important; font-weight: 800 !important; }
+  #view-home #nb8-guide .nb8-guide-steps small { margin-top: 4px !important; color: var(--h-copy) !important; font-size: 13px !important; line-height: 1.8 !important; }
+
+  /* ---------- wide screens ---------- */
+  @media (min-width: 769px) {
+    #view-home .nh-hero-main { grid-template-columns: minmax(0, 1.25fr) minmax(0, .9fr) !important; gap: clamp(28px, 4vw, 56px) !important; }
+    #view-home .nh-hero-facts { grid-template-columns: repeat(4, minmax(0, 1fr)) !important; }
+    #view-home .nh-hero-facts > div { border-bottom: 0 !important; border-inline-start: 1px solid var(--h-line) !important; }
+    #view-home .nh-hero-facts > div:first-child { border-inline-start: 0 !important; }
+    #view-home #home-er-card { grid-template-columns: minmax(0, 1.45fr) minmax(0, 1fr) !important; }
+    
+    #view-home .h9-fields { grid-template-columns: repeat(4, minmax(0, 1fr)) !important; }
+  }
+  @media (min-width: 901px) {
+    #view-home .nh-uni-grid { grid-template-columns: minmax(0, 1.55fr) minmax(280px, 1fr) !important; }
+    #view-home .nh-uni-aside { border-top: 0 !important; border-inline-start: 1px solid var(--h-line) !important; }
+  }
+  @media (min-width: 769px) and (max-width: 1100px) {
+    #view-home .h9-fields { grid-template-columns: repeat(3, minmax(0, 1fr)) !important; }
+  }
+  @media (max-width: 768px) {
+    #view-home .nh-hero .nh-hero-media { order: -1 !important; }
+    #view-home .nh-hero .nh-hero-media img { aspect-ratio: 16 / 9 !important; }
+    #view-home .nh-hero-facts > div:nth-child(odd) { border-inline-end: 1px solid var(--h-line) !important; }
+    #view-home .nh-hero-facts > div:nth-last-child(-n + 2) { border-bottom: 0 !important; }
+    #view-home .nh-fields-filter { flex-wrap: nowrap !important; justify-content: flex-start !important; max-width: 100% !important; overflow-x: auto !important; scrollbar-width: none !important; }
+    #view-home .nh-fields-filter button { flex: 0 0 auto !important; white-space: nowrap !important; }
+    #view-home .h9-fields { gap: 12px !important; }
+    #view-home .h9-fields li > .nh-field-body { padding: 11px 12px 4px !important; }
+    #view-home .h9-fields li .nh-field-body b { font-size: 14.5px !important; }
+    #view-home .h9-fields .nh-field-go { margin: 8px 12px 12px !important; min-height: 38px !important; font-size: 12.5px !important; }
+    #view-home #nb8-guide .nb8-guide-steps li { grid-template-columns: auto minmax(0, 1fr) !important; }
+  }
+  @media (max-width: 560px) {
+    #view-home .nh-er-feats { grid-template-columns: minmax(0, 1fr) !important; gap: 8px !important; }
+    #view-home .nh-er-feats > li { padding: 9px 11px !important; }
+  }
+  @media (prefers-reduced-motion: reduce) {
+    #view-home .nh-hero .v7-welcome-actions button,
+    #view-home #home-er-card #launch-er-random-btn,
+    #view-home .h9-fields li,
+    #view-home .nh-fields-filter button,
+    #view-home .h9-fields .nh-field-go,
+    #view-home #nb8-guide .nb8-guide-steps li,
+    #view-home #home-student-uni-section #home-student-open-uni-btn,
+    #view-home .h9-fields li img { transition: none !important; }
+    #view-home .h9-fields li:hover,
+    #view-home .h9-fields li.is-open:hover,
+    #view-home #nb8-guide .nb8-guide-steps li:hover { transform: none !important; }
+    #view-home .h9-fields li:hover img { transform: none !important; }
+    #view-home .nh-rise { opacity: 1 !important; translate: 0 0 !important; }
+  }
+}
+
+/* V6.7.6: the training fields come in one after another on arrival (admin/010-admin-console.js, homeMotion) */
+#view-home #home-fields9 li.nbh-rv { opacity: 0; transform: translateY(14px); transition: opacity .5s ease, transform .6s cubic-bezier(.2, .7, .2, 1); }
+#view-home #home-fields9 li.nbh-rv.is-in { opacity: 1; transform: none; }
+@media (prefers-reduced-motion: reduce) { #view-home #home-fields9 li.nbh-rv { opacity: 1; transform: none; } }

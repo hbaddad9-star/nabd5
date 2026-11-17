@@ -1,24 +1,17 @@
     <!-- nabd:region home (the signed-in home, design V6.6; see docs/decisions/0014-sign-in-pages-and-signed-in-home-v66.md) -->
     <!-- =======================================================
          VIEW 1: SIGNED-IN HOME PAGE
-         Order (home9.css): welcome, the professor's section, the ER entry, the training sections, assignments,
+         Order (home-base.css): welcome, the professor's section, the ER entry, the training sections, assignments,
          progress, the steps. The ids are the ones the legacy client reads and fills; V6.6 redrew the welcome,
          the ER entry and the training sections (_Welcome, _ErCard, _Fields).
          ======================================================= -->
     <section id="view-home" class="hidden max-w-6xl mx-auto px-4 sm:px-8 py-6 sm:py-8 space-y-9">
 
 @await Html.PartialAsync("~/Views/Home/Dashboard/_Welcome.cshtml")
-@await Html.PartialAsync("~/Views/Home/Dashboard/_LearnPath.cshtml")
-@await Html.PartialAsync("~/Views/Home/Dashboard/_TrainingPath.cshtml")
-@await Html.PartialAsync("~/Views/Home/Dashboard/_NurseEntry.cshtml")
-@await Html.PartialAsync("~/Views/Home/Dashboard/_ProfessorHome.cshtml")
 @await Html.PartialAsync("~/Views/Home/Dashboard/_Guide.cshtml")
 @await Html.PartialAsync("~/Views/Home/Dashboard/_ErCard.cshtml")
 @await Html.PartialAsync("~/Views/Home/Dashboard/_StudentUniversity.cshtml")
 @await Html.PartialAsync("~/Views/Home/Dashboard/_Fields.cshtml")
-@await Html.PartialAsync("~/Views/Home/Dashboard/_LockedRooms.cshtml")
-@await Html.PartialAsync("~/Views/Home/Dashboard/_Cases.cshtml")
-@await Html.PartialAsync("~/Views/Home/Dashboard/_CoachBanner.cshtml")
     </section>
 @await Html.PartialAsync("~/Views/Home/Admin/_AdminView.cshtml")
     <!-- /nabd:region home -->

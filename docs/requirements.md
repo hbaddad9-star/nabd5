@@ -1,123 +1,88 @@
 # Requirements
 
-This document lists what the system must do and what it must keep. The requirements are recovered from two places:
-the behaviour of the legacy site as the audit found it, and the refactoring brief as the project documents record it.
-No product wish is added here.
-
-Where a fact could not be determined from the sources, the text says "not determined".
+What Nabd 7 must do and keep. Each requirement names where it is checked: a test (`dotnet test`), a browser walk
+(`tools/qa`), or a decision (ADRs in `docs/decisions/`, the agent's decision log `docs/agent/er-agent.ar.md`).
 
 ## Purpose and users
 
 Nabd («نَبْض الأردن») is an Arabic clinical-simulation trainer. A trainee manages an emergency patient in a
-chat-driven room. The trainee talks to the patient and the relative, gives orders to a nurse, reads a monitor, orders
-tests, hands the patient over and receives a scored report ([README.md](../README.md)).
+chat-driven room: talks to the patient and the relative, works with the nurse or the doctor, reads a monitor, orders
+tests, hands the patient over and receives a scored report. A university subscribes, organises its students and
+supervisors, and chooses among Nabd's cases; a supervisor reviews and approves his students' sessions.
 
-| User | What the user does | Source |
-|---|---|---|
-| Medical student | Runs ER cases as the doctor, reads the report, sees progress in the profile, opens cases assigned by a professor | [34-feature-reachability](legacy-audit/34-feature-reachability.md) |
-| Nursing student | Runs ER cases as the bedside nurse (the role follows the account's track), hands over to the doctor in SBAR form | [34-feature-reachability](legacy-audit/34-feature-reachability.md), [17](legacy-audit/17-er-nurse-message-escalation-orders.md) |
-| Professor (supervisor) | Assigns ER cases to course sections, reads a demo cohort table, publishes grades, exports CSV | [03](legacy-audit/03-script-cohort-defaults.md), [11](legacy-audit/11-script-academic-a.md) |
-| Maintainer | Builds, tests and extends the .NET solution | [setup.md](setup.md) |
+| User | What the user does |
+|---|---|
+| Independent trainee (medicine or nursing) | Registers with an e-mail, plays the ER room in the role of his track, reads his reports, trains gaps with the clinical coach |
+| University student | Signs in with an e-mail on her university's roster; also sees her section's assignments and her supervisor's reviewed results |
+| Supervisor (university staff) | Assigns cases to his sections, reads his students' sessions, overrides a mark with a written reason, rates and publishes |
+| University administrator | Manages courses, sections, staff, the student roster, which of Nabd's cases are open, pass marks and permissions |
+| Nabd's administration | Institutions, users, subscriptions, the case library and its review, sources, scoring rules, audit log, platform settings |
+| Maintainer | Builds, tests and extends the .NET solution ([setup.md](setup.md)) |
 
-Training-only statement, which every presentation of the system must keep:
+Statements every presentation of the system must keep:
 
-- The clinical content of the cases was written for training and has **not been reviewed by a physician**. The data
-  file says so itself (`reviewed: false`) and a test pins it (`The_clinical_content_is_reported_as_not_reviewed_by_a_physician`).
+- The clinical content of the cases has **not been reviewed by a physician**. The data file says so (`reviewed: false`)
+  and a test pins it (`The_clinical_content_is_reported_as_not_reviewed_by_a_physician`).
 - The system does not diagnose or treat real patients and must not be presented as doing so.
-- The sign-in is not a security boundary. Accounts, grades and reports in the professor portal are demo data held in
-  one browser ([decision 0008](decisions/0008-no-database-and-no-authentication-in-this-phase.md)).
-
-## Sources of these requirements
-
-| Source | What it gives | Where |
-|---|---|---|
-| Legacy behaviour as audited | The functional requirements and the clinical rules. 34 audit parts cover scripts, markup, styles, data, the two external services, the existing tests and feature reachability. A feature is "live", "dormant" or "unreferenced" according to what was verified in the running legacy page | `docs/legacy-audit/NN-*.md`, `.work/docs/audit-structured.json` |
-| Frozen legacy baseline | The definition of "unchanged": the page, six scripts and nine stylesheets from commit `5f431d5` of `main`, plus a manifest of all 85 files | `tests/Nabd.Tests/LegacyBaseline/` ([testing-strategy.md](testing-strategy.md)) |
-| Refactoring brief, as recorded | Exactly five projects on ASP.NET Core MVC with Clean Architecture; frozen user interface; zero regression; data and models not rebuilt; external services behind application contracts; architecture prepared for a multi-agent system without implementing it | [decision 0001](decisions/0001-clean-architecture-in-five-projects.md), [0002](decisions/0002-lossless-strangler-migration.md), [0005](decisions/0005-legacy-data-behind-repositories.md), [0006](decisions/0006-understanding-services-through-a-gateway.md), [0009](decisions/0009-multi-agent-contracts-only.md) |
-| Architecture and testing documents | What is done, what runs where, what is not covered | [architecture.md](architecture.md), [testing-strategy.md](testing-strategy.md) |
-
-The brief itself is not in the repository. Its content here is only what the documents above state.
+- This is a prototype: accounts, sessions and the consoles' records are kept in one browser; the sign-in is not a
+  security boundary ([decision 0008](decisions/0008-no-database-and-no-authentication-in-this-phase.md)).
 
 ## Functional requirements
 
-Status values:
+### Access
 
-- **Preserved**: the legacy client runs unchanged in the browser. The server serves it byte for byte, except for the
-  registered differences.
-- **Preserved and also implemented server-side**: as above, and the rule also exists in `Nabd.Domain` or
-  `Nabd.Application`, tested. The room in the browser does not call the server implementation yet.
-- **Dormant**: the code is in the delivered files, but the legacy UI makes it unreachable (a view in `REMOVED_VIEWS`,
-  a CSS rule that hides it, or an early return). The code is preserved so that it can be re-enabled.
+| ID | Requirement | Checked by |
+|---|---|---|
+| FR-1 | One sign-in for everyone, by e-mail only (no password in this phase). The e-mail decides the account: Nabd's administration, a university's staff or student (by its domain and roster), or an independent trainee | `One_sign_in_for_everyone_and_the_email_decides`; walk `seats` |
+| FR-2 | An e-mail with no account and on no roster goes to registration with the e-mail filled in and a note (D-59) | `The_trainees_application_is_its_own_bundle_and_stylesheet`; walk `rules-of-entry` |
+| FR-3 | A university's domain off its roster is refused with a message naming the university | walk `seats` (B) |
+| FR-4 | Registration is one step: name, e-mail, the track (chosen, never pre-selected) and the year of study (D-57, D-58). An e-mail that has an account signs in to it and overwrites nothing | `Registration_asks_no_section_code_and_no_password`; walk `seats`, `qa4` |
+| FR-5 | Three demo buttons on the sign-in screen open the three consoles: Nabd's administration, a university administrator, a supervisor | `Every_id_the_legacy_client_reads_is_in_the_screen_once` |
+| FR-6 | A visitor who asks for a signed-in page is sent to the sign-in screen; sign-out returns to the landing page; the browser's Back button moves between the application's views and never signs the user out or in | walk `seats` (C), `qa4` |
 
-Audit references such as "34" mean `docs/legacy-audit/34-feature-reachability.md`.
+### The trainee's application
 
-### Landing, sign-in, home
+| ID | Requirement | Checked by |
+|---|---|---|
+| FR-7 | The home: the hero with the trainee's own facts (level, last session, sessions, weakest axis), «ماذا ستفعل الآن؟» by track, the ER card, the training sections (marked «قريباً»), the academic part for a university student, the coach's card | `The_home_keeps_every_id_its_scripts_fill_and_its_sections_are_honest`; walk `seats` |
+| FR-8 | Before the first session, the hero's main action is «ابدأ أول حالة» on every screen (V7) | walk `rules-of-entry` |
+| FR-9 | The header: home, training sections, the academic section (university students only), my reports, the clinical coach | `Everyone_signs_in_directly_and_only_a_universitys_student_sees_the_academic_part` |
+| FR-10 | The sidebar keeps the locked rooms (respiratory room, specialty cases) visible with «قريباً»; they do not open (D-61) | walk `seats` (C) |
+| FR-11 | Reports: every saved session is listed with its mark, verdict, axes, errors by severity, timeline and the supervisor's review when published | `A_real_session_reaches_the_supervisor_and_comes_back_to_the_student`; walk `chain` |
+| FR-12 | The clinical coach: reads the saved reports, names the gaps, offers a guided drill (scripted, «كبار السن مع سكري وضغط») and the real case to try next; a gap closes after the drill and a later case without the same error (D-50 to D-52). Demo data on the coach page follows Nabd's setting «بيانات عرض في صفحة المدرب» (V7) | `The_clinical_coach_reads_the_trainees_reports_and_comes_last`; walk `cp` |
+| FR-13 | The profile: the trainee's card, level (an estimate from the year; the level quiz is for later, D-60), recent sessions, skills by axis, repeated errors, the supervisor's note (university students), a printable record with a serial, and «بياناتي» (name, track, year, photo; read-only for a university student) | walk `qa4` |
+| FR-14 | «تقرير آخر جلسة» opens the room's report of this visit, or the saved reports in the profile | `The_shell_keeps_history_guards_the_consoles_and_opens_the_right_case` |
 
-| ID | Requirement | Status | Evidence |
-|---|---|---|---|
-| FR-1 | A visitor sees a landing page. Any protected view requested while signed out opens the sign-in page with a notice | Preserved | Audit 34 (matrix, "Visitor landing"); `The_page_is_the_legacy_page` |
-| FR-2 | A visitor can register an account on the device: name, e-mail, password of 8 or more characters, a role card (nursing, medicine, supervisor), then year, section code, university. The account is kept in `localStorage` | Preserved | Audit 34 ("Sign-in and registration"), audit 12 |
-| FR-3 | A visitor can sign in with a stored account. A wrong password shows an error and stays on the sign-in page | Preserved | Audit 34 |
-| FR-4 | Three demo accounts sign in with one click: a nursing student (`rana`), a medical student (`med_student`), a professor (`doctor`). The landing button "try an ER case" signs in `med_student` and opens the ER briefing | Preserved | Audit 02 (table rows 1-3), audit 34 |
-| FR-5 | A demo learner gets a stored placement so that no level quiz interrupts. A demo session is not restored after a reload | Preserved | Audit 02 (rows 3 and 5; row 5 from code reading) |
-| FR-6 | Two further demo accounts (`ahmed_y1`, `practitioner`) exist in the script. No control signs in with them | Dormant | Audit 02 (row 13, "unreferenced") |
-| FR-7 | The home page differs by role. A student sees the welcome card, the ER entry card, the training-path card, the guide "what to do now" and the university assignments. A professor sees the professor dashboard | Preserved | Audit 25, audit 34 (matrix rows "Home") |
-| FR-8 | The home page shows seven further specialty cards as locked placeholders with no code behind them | Dormant | Audit 34 (matrix) |
-| FR-9 | Sign-out returns to the landing page | Preserved | Audit 04 (`logoutUser`) |
+### The emergency room
 
-### ER room, doctor role
+| ID | Requirement | Checked by |
+|---|---|---|
+| FR-15 | Six cases: asthma, sepsis, pulmonary embolism, STEMI, DKA, hypertensive emergency; chosen by id (an assignment, the coach) or at random | `The_file_gives_six_cases_and_the_shared_catalog` |
+| FR-16 | The role in the room is the trainee's track: medicine plays the doctor, nursing the nurse. There is no switch at the briefing for a trainee; a console account trying the room keeps it (D-57) | walk `rules-of-entry` |
+| FR-17 | The approved room (conversation, monitor, orders, tests, deterioration, handover, report) is unchanged to the byte | `The_approved_emergency_room_is_unchanged` |
+| FR-18 | The realism layer (interruptions, alarm colour and pulse tone, the intervention window, a short briefing summary; dose hints for years 1 and 2) can be switched off by Nabd's administration, which restores the approved room as it is | `The_er_realism_mode_is_a_switchable_layer_over_the_room` |
+| FR-19 | The assessment layer: the doctor's rubric (safety 35, assessment 15, diagnosis 10, tests 10, team 15, handover 15) and the nurse's; errors by severity, a critical error fails the case; objectives on a timeline; reassessment; help (senior, intensive care); the handover graded by content and checked against the monitor; a reflection; the pass mark of the university for the student's year | `The_er_assessment_layer_rides_on_the_same_switch`; walk `assess` |
+| FR-20 | The nurse calls the doctor in a box over the chat (SBAR); tests not in the case's list get a realistic reply | walk `call` |
+| FR-21 | A case asked for (an assignment, the coach) replaces a case that was never started; a case under way is kept and the trainee is told (D-56) | `The_shell_keeps_history_guards_the_consoles_and_opens_the_right_case` |
 
-| ID | Requirement | Status | Evidence |
-|---|---|---|---|
-| FR-10 | The trainee enters the ER room from the home page, the landing page, the footer, an assignment card or the `?case=` parameter. A case is chosen by id or at random without repeats | Preserved | Audit 21 (`open`, `begin`), audit 34 |
-| FR-11 | A briefing dialog opens first, in a doctor version and a nurse version. The clock is paused while it is open. The help button reopens it | Preserved | Audit 21 (briefing rows) |
-| FR-12 | The role (doctor or nurse) can be switched in the briefing only, before the first turn | Preserved | Audit 18 (`canSwitch`), audit 34 |
-| FR-13 | The room offers six cases: asthma, sepsis, pulmonary embolism, STEMI, DKA, hypertensive emergency | Preserved and also implemented server-side | `The_file_gives_six_cases_and_the_shared_catalog`; audit 30 |
-| FR-14 | The trainee types free text to the patient, the relative, the nurse and the supervisor. Replies appear as chat bubbles with a speaker label. Messages are handled in a queue, one at a time, with typing dots while waiting | Preserved | Audit 14, audit 16 |
-| FR-15 | The patient and the relative answer history questions. The room counts the red-flag facts obtained. Physical-examination findings are shown and logged | Preserved | Audit 16 (`apply`, `examine`) |
-| FR-16 | The relative's anxiety and the trainee's communication (introduction, explanation, empathy, rude or jargon remarks) change with each message and are scored | Preserved and also implemented server-side (the score part) | Audit 16; `CommunicationRecord` in `SessionScorer.Score` |
-| FR-17 | A monitor shows heart rate, oxygen saturation, respiratory rate, blood pressure and temperature. The blood-pressure cuff measures on a cycle and shows the age of the reading. Tiles show warning limits. Optional alarm tones | Preserved and also implemented server-side (values and cuff) | Audit 13; `The_stage_follows_the_risk_up_and_the_cuff_measures_when_the_patient_gets_sick` |
-| FR-18 | The trainee gives treatment orders in free text. The room checks prerequisites, allergy, timing ("too early"), repeats, gaps and maximum doses, and asks "which drug and how much?" when an order lacks a dose | Preserved | Audit 16, audit 18 (`order`) |
-| FR-19 | Dose questions and safety challenges: bundled dose proposals with "yes to all" or dropping one named drug; challenges for allergy, off-case drugs, too-early orders, repeat or maximum dose, cumulative total, and IV-push adrenaline. A second fluid bolus can be deferred | Preserved | Audit 16 (rows "Bundled dose proposals", "Safety challenges", "Deferred second fluid bolus") |
-| FR-20 | An unsafe order the trainee insists on is carried out as a harm and raises the risk a moment later. An allergic drug can cause anaphylaxis | Preserved and also implemented server-side (the effect of a harm; the decision that an order is unsafe stays in the browser) | Audit 18 (`unsafe`, `harm`); `A_harm_raises_the_risk_a_moment_after_the_order_and_is_not_a_step_done`, `Anaphylaxis_stops_short_of_arrest_and_adrenaline_treats_it` |
-| FR-21 | The trainee orders tests from a list of 22 cards (bedside, lab, imaging) with filter and search. Results return after a delay as a result card. An out-of-indication test needs a written justification of at least three words. The supervisor may ask for a reading, at most three times | Preserved and also implemented server-side (ordering and indication; the result values are not mapped on the server) | Audit 21 (investigations rows), audit 18 (`orderTest`), audit 19; `A_test_that_is_safe_at_first_becomes_harmful_once_the_pressure_has_fallen` |
-| FR-22 | The patient deteriorates in four stages (calm, watch, urgent, critical) as the risk rises. Each stage change produces an alarm line and lines from the nurse, patient, relative and companion. An improvement event produces a reading with the better numbers | Preserved and also implemented server-side (stages) | Audit 13; `The_stage_follows_the_risk_up_and_the_cuff_measures_when_the_patient_gets_sick` |
-| FR-23 | A reasonable treatment slows the risk after its onset time. Some cases have a "hold" (sepsis, DKA) in which supportive care holds the patient but only the specific treatment turns the case round | Preserved and also implemented server-side | Audit 13; `A_treatment_slows_the_risk_only_after_its_onset`, `Supportive_care_holds_a_septic_patient_but_only_the_antibiotic_turns_him_round` |
-| FR-24 | The STEMI case can show ventricular tachycardia in the critical stage; the planned collapse of a case needs its rescue treatment | Preserved and also implemented server-side | Audit 13; the three rescue traces in `ErClinicalTraceTests` |
-| FR-25 | At a risk of 100 the patient arrests, the clock stops and the room goes to the report | Preserved and also implemented server-side | Audit 19; `At_a_risk_of_100_the_patient_arrests_and_the_session_ends` |
-| FR-26 | A companion (a classmate-type voice) breaks in on alarms, worsening, improvement and lulls, and comments on orders and tests. A supervisor speaks when called, after a harm and at the urgent or critical stage. Once, the supervisor nudges the trainee towards handover | Preserved | Audit 19, audit 13 |
-| FR-27 | Handover: the trainee ends the case with a sheet holding the diagnosis, the destination and an SBAR text. The draft is kept if the sheet is closed. The grade of the diagnosis and SBAR comes from the understanding service, with a local keyword grade as fallback | Preserved and also implemented server-side (destination verdict; the grade is an input) | Audit 19 (handover rows), audit 31 (grade mode); `A_dangerous_destination_fails_the_session_whatever_the_score` |
-| FR-28 | The report shows the total out of 100, pass or fail with reasons, six score parts, a risk chart, what went well, what must change, a tests table and buttons for home, the same case again and the next case. The run is saved to the account's history. The report can be reopened until the next case starts | Preserved and also implemented server-side (score, parts, verdict, report view) | Audit 19 (`conclude`), audit 34; `A_well_managed_case_is_handed_over_stable_and_passes`, `A_report_is_refused_until_the_session_is_completed` |
+### The consoles
 
-### ER room, nurse role
+| ID | Requirement | Checked by |
+|---|---|---|
+| FR-22 | Nabd's administration: overview, institutions, users and roles, subscriptions, case library and review, sources, scoring rules, audit log, settings (realism switch, coach demo data, demo reset) | `The_console_is_reached_through_a_demo_account_and_starts_hidden`; walk `seats` (G) |
+| FR-23 | A university chooses among Nabd's cases and never writes one; it manages courses, sections, staff, the roster, pass marks per year and its supervisors' permissions | `The_university_manages_its_own_people_and_cannot_write_cases`; walk `seats` (F) |
+| FR-24 | A supervisor works inside his sections and his university's settings: assignments, students, results; an override keeps both numbers and needs a written reason; a critical error is waived only with a reason | `The_supervisor_works_inside_his_sections_and_the_universitys_settings`; walk `chain` |
+| FR-25 | Every delete asks twice, in place | `Deleting_asks_twice_in_place` |
+| FR-26 | A console account sent to a trainee's page returns to its console | walk `seats` (E) |
 
-| ID | Requirement | Status | Evidence |
-|---|---|---|---|
-| FR-29 | A nursing student enters the ER as the bedside nurse. The briefing names the nursing supervisor. The nurse acts on the doctor's orders held in the case data, shown in an orders panel with state chips. A click on an order row carries it out | Preserved | Audit 17, audit 18 (`buildOrders`, `execOrder`), audit 34 |
-| FR-30 | The nurse reports to the doctor by phone in SBAR form. The doctor asks one clarifying question, nags and then comes without an SBAR if none is given, and may hold drug orders with an allergy question. The doctor arrives at the bedside on request or on a monitor alarm | Preserved | Audit 17 (escalation rows) |
-| FR-31 | Actions outside the nurse's scope are refused. The instructor gives once-only nudges | Preserved | Audit 17 (`scopeGap`, instructor rows) |
-| FR-32 | The nurse hands over in a four-box SBAR dialog (every box at least three words). The score is out of 100 in seven sections with seven hard-fail reasons; pass at 70 or more and no fail | Preserved (not ported to the server) | Audit 20; [testing-strategy.md](testing-strategy.md), "What is not covered" |
-| FR-33 | The clinical dynamics of the nurse role (risk, stages, treatments) are the same as in the doctor role | Preserved and also implemented server-side | The `nurse` family of six traces in `ErClinicalTraceTests` |
+### The server
 
-### Offline mode, services, other features
-
-| ID | Requirement | Status | Evidence |
-|---|---|---|---|
-| FR-34 | When the understanding service cannot be reached, the ER room keeps working: it reads the trainee's text with local rules and a small model, answers with fixed lines, and grades the handover by keywords. The room goes offline at once on status 403, 404, 405, 429 or 503, retries after 60 seconds, and shows a note on recovery | Preserved | Audit 14 (offline switch), audit 15, audit 31 (client state machine); the conversation golden master (12 rooms, offline and with a stub service) |
-| FR-35 | With the service reachable, the room sends the message, the room state and the last 14 chat lines to `POST /api/er-chat`. The service reads the message and voices the people in the room. A free `GET ?ping=1` checks it at room entry | Preserved; the call now goes through the application | Audit 14, audit 31; [decision 0006](decisions/0006-understanding-services-through-a-gateway.md); `A_room_request_is_relayed_unchanged_and_the_answer_comes_back_unchanged` |
-| FR-36 | The text the trainee writes is read for the act and the findings (dose parsing, dose limits, history questions, orders, result questions), in Arabic dialect | Preserved (not ported) | Audit 14, audit 15 |
-| FR-37 | The respiratory room: history taking with synthetic patients, an in-browser network of 49 classes, an offline answer table, vitals, test ordering, a diagnosis dialog and scoring. The legacy UI does not reach it | Dormant | Audit 22, audit 34 (`resp` is in `REMOVED_VIEWS`) |
-| FR-38 | The respiratory chat endpoint (`/api/resp-chat`) is relayed by the application. In the legacy function source, a switch `LOCKED = true` answers 410 to every request; the deployed state is not determined | Dormant | Audit 32; `The_respiratory_room_is_relayed_to_its_own_service` |
-| FR-39 | The coach: a keyword-based clinical coach with drills, a mastery store and an optional external-API bridge | Dormant | Audit 10 (coach rows), audit 34 (`coach` in `REMOVED_VIEWS`) |
-| FR-40 | The profile shows the account, the dashboard (students), strengths, history, a printable certificate and settings. The level quiz can be reopened from the student dashboard | Preserved | Audit 10, audit 34 (profile rows) |
-| FR-41 | The academic portal for the professor has five tabs: courses and sections, assign cases, student reports, student progress, academic advisor. The professor assigns one of the six ER cases to a section, publishes a grade, adds a comment, and exports a CSV of the cohort. The cohort is seven demo students | Preserved | Audit 03, audit 11, audit 34 |
-| FR-42 | The academic portal for a student lists the section and the assignments. An assignment card opens the ER on that case. Completion is read from the history. A published result is found by name | Preserved | Audit 11, audit 34 ("Student assignments"), audit 03 |
-| FR-43 | The professor can fill a custom-case form in the assign tab. The result feeds hidden cards. Whether it works end to end was not verified | Dormant result of a live control | Audit 34 (matrix), audit 10 ("not determined") |
-| FR-44 | Specialty case simulation (seven doctor-track cases, department filters, a workup menu, a safety gate), nursing cases, "observe an expert" and the learning path | Dormant | Audit 01, 07, 08, 34 |
-| FR-45 | Landing sections for roles, specialties, universities and the level quiz, the OSCE timer, the text-to-speech setting and the coach API box are hidden by CSS | Dormant | Audit 34, audit 29 (`scope.css`) |
-| FR-46 | The motion layer (hero reveal, scroll reveals, count-up, monitor traces, pulse tone) and the term translation to English clinical terms | Preserved | Audit 23 |
-| FR-47 | The server health check `GET /healthz` answers `ok` without calling a model | New (not in the legacy site) | [setup.md](setup.md); `Program.cs` (`MapGet("/healthz")`). No test requests `/healthz`; `The_health_check_answers_without_calling_a_model` covers the room's `GET /api/er-chat?ping=1` |
-| FR-48 | A server-side session API lets a client start a session, advance it, give an intervention, report a harmful order, order a test, complete it and read the report. It is off by default | New; implemented, tested, not called by any room | [decision 0007](decisions/0007-server-session-api-off-by-default.md); `A_session_runs_from_start_to_report_over_http` |
+| ID | Requirement | Checked by |
+|---|---|---|
+| FR-27 | `GET /`, `/login`, `/register` render the page; `/js/{bundle}.js` joins the client fragments; `/data/{name}.json` serves only the four named data files | `Data_that_the_application_does_not_name_cannot_be_asked_for` |
+| FR-28 | `POST /api/er-chat` relays the room's message to the understanding service through the application layer (same origin, size limit, rate limit); `GET ?ping=1` checks it without calling a model | `UnderstandingEndpointTests` |
+| FR-29 | A server-side session API (start, advance, interventions, harmful orders, tests, completion, report) exists and is tested; it is off by default and not called by the room yet | `SimulationSessionsApiTests` |
+| FR-30 | The site's images are named in `images.json`; views write keys | `ImageCatalogTests` |
 
 ## Clinical simulation rules that must not change
 
@@ -162,75 +127,32 @@ conversation, the respiratory room, the coach, the professor portal.
 
 ## Non-functional requirements
 
-| ID | Requirement | How it is met | Evidence |
-|---|---|---|---|
-| NFR-1 | Zero regression of what the browser receives: the page, scripts, styles, data and images equal the legacy site | Client scripts are the legacy scripts cut into 183 fragments and joined by plain concatenation. Views are the legacy page cut into 43 partial views. The 18 intentional differences are registered with their reasons | `The_page_is_the_legacy_page`, `Each_script_bundle_is_the_legacy_script`, `Each_stylesheet_is_the_legacy_stylesheet`, `Each_data_document_is_the_legacy_file_byte_for_byte`, `Every_legacy_image_is_served_unchanged`, `Every_registered_difference_fits_the_legacy_file_exactly`; [decisions 0002](decisions/0002-lossless-strangler-migration.md), [0003](decisions/0003-razor-views-reproduce-the-legacy-page.md) |
-| NFR-2 | The user interface is frozen | Any change to `ClientScripts/`, `Views/` or `wwwroot/css` fails the baseline tests until it is registered in `seams.json` with its reason | [testing-strategy.md](testing-strategy.md), "Rules for changing things"; the manual browser comparison (22 of 22 DOM comparisons identical; 20 of 22 screenshots identical, the two others differ as often between the legacy site and itself) |
-| NFR-3 | Arabic, right to left | The page is the legacy page, which carries the direction and language; Latin runs inside Arabic text stay left-to-right in the chat (`bidi`). Not checked separately in this phase | Audit 14 (`bidi`), audit 24; `The_page_is_the_legacy_page`. A separate right-to-left test: not determined |
-| NFR-4 | Clean Architecture dependency rule: Domain depends on nothing; Application on Domain only; Infrastructure never on Web; controllers take no infrastructure type | Five projects, references checked on the compiled assemblies | `LayeringTests`: `The_solution_has_exactly_the_five_projects`, `The_domain_depends_on_nothing_but_the_base_class_library`, `The_application_depends_on_the_domain_only`, `Infrastructure_depends_on_application_and_domain_and_not_on_the_web`, `No_inner_layer_knows_the_web`, `Controllers_reach_infrastructure_only_through_application_contracts`; [decision 0001](decisions/0001-clean-architecture-in-five-projects.md) |
-| NFR-5 | Use cases are single-purpose and sealed; domain types carry no framework attributes | One sealed class with one `HandleAsync` each; no mediator library | `Every_use_case_is_a_sealed_class_with_one_handle_method`, `Domain_types_carry_no_serialization_or_framework_attributes` |
-| NFR-6 | No secret in the repository or in the client | The application holds no model key; the key stays in the environment of the external function. Settings hold endpoints, not keys | [architecture.md](architecture.md), "Security posture"; [setup.md](setup.md). A scan of the repository for secrets: not determined |
-| NFR-7 | The paid understanding services are never called by accident | Both are switched off in `Development`; the rooms then run offline. Switching one on is explicit | [setup.md](setup.md), "The understanding services cost money"; `A_service_that_is_switched_off_is_never_called` |
-| NFR-8 | Internal clinical evaluation data is not sent by the new server API | A session response carries the monitor, the cuff, the stage and what was done. The risk, the indication of a test and the scoring rules stay on the server until the report | `A_session_runs_from_start_to_report_over_http`; [decision 0007](decisions/0007-server-session-api-off-by-default.md) |
-| NFR-9 | Data files are reachable only by name | `LegacyDataFiles` opens only known names; `ClientDataController` serves only named documents; source fragments cannot be requested | `Only_the_shipped_data_files_can_be_read`, `Data_that_the_application_does_not_name_cannot_be_asked_for`, `Each_data_document_is_the_legacy_file_byte_for_byte` |
-| NFR-10 | Stated gap: for the legacy rooms the browser still downloads the case file with diagnoses, expected steps and scoring hints. The rule above is **not met** for them | Closing the gap needs each room's engine on the server. Progress is measured by the documents that leave `IClientDataDocumentSource` | [architecture.md](architecture.md), "What is honest to say about data exposure"; [decision 0005](decisions/0005-legacy-data-behind-repositories.md) |
-| NFR-11 | Validation and limits on the understanding endpoints: JSON object only, body at most 64 KB, a known case id for the ER room, same-origin requests only, a per-caller rate limit (40 per minute by default) | `ProcessPatientMessage`, the same-origin filter and rate-limit policies | `A_request_the_application_would_not_send_is_refused_before_it_reaches_the_service`, `A_body_larger_than_the_limit_is_refused`, `A_request_sent_by_a_browser_from_another_site_is_refused`, `A_caller_over_its_limit_is_slowed_down` |
-| NFR-12 | Validation and limits on the session API: a known case, known order ids, no orders after the session ends, no report before completion, at most 500 sessions, dropped after 120 idle minutes, 240 requests per minute per caller | Use cases return a `Result<T>` with an error kind; the store is bounded | `A_session_cannot_start_without_a_known_case`, `Orders_are_refused_for_unknown_ids_and_after_the_session_has_ended`, `A_report_is_refused_until_the_session_is_completed`, `The_store_refuses_new_sessions_when_it_is_full_and_forgets_idle_ones` |
-| NFR-13 | The service's answer reaches the room unchanged, status included, because the room decides by the status whether to work offline. A service that cannot be reached reads as 503; an oversized answer is not passed on | `HttpUnderstandingServiceGateway` | `The_status_of_the_service_reaches_the_room_because_the_room_decides_by_it`, `A_service_that_cannot_be_reached_or_is_too_slow_reads_as_unavailable`, `An_answer_far_larger_than_any_real_one_is_not_passed_on` |
-| NFR-14 | Errors reach the caller as problem documents without stack traces; details go to the log | Controllers map error kinds to status codes; unexpected errors are handled centrally | `Wrong_requests_get_a_problem_document_and_never_a_stack_trace` |
-| NFR-15 | Protective response headers: `X-Content-Type-Options: nosniff`, `X-Frame-Options: SAMEORIGIN`, `Referrer-Policy`. There is no Content-Security-Policy, because the legacy page uses inline handlers and scripts | Middleware in the web project | `Every_response_carries_the_protective_headers`; [architecture.md](architecture.md) |
-| NFR-16 | The build treats warnings as errors; public members of every project except the tests are documented | `Directory.Build.props`: `TreatWarningsAsErrors` and `GenerateDocumentationFile` are true; the test project turns the documentation file off | `dotnet build Nabd.sln`: 0 warnings, 0 errors ([testing-strategy.md](testing-strategy.md), "Results of this phase") |
-| NFR-17 | Determinism of the golden masters: recording twice gives identical files; the replay needs no Node.js, browser or network | A seeded random source and a fake clock in the recorder; the traces are committed | `node tests/legacy-baseline/record-er-clinical.js --check`: 45 of 45 identical; the conversation golden master: 12 of 12 rooms identical |
-| NFR-18 | Test run: `dotnet test` takes about ten seconds and needs no Node.js, browser or network | All tests run in memory | 164 passed, 0 failed, 0 skipped ([testing-strategy.md](testing-strategy.md)) |
-| NFR-19 | The clinical-content flag `reviewed: false` stays visible to every layer | Exposed by the repository and pinned by a test | `The_clinical_content_is_reported_as_not_reviewed_by_a_physician` |
-| NFR-20 | The architecture is prepared for a multi-agent system without implementing it | Contracts in `Nabd.Application/Abstractions/Agents/`; one exit point for room messages (`ProcessPatientMessage`); session events | `The_multi_agent_contracts_exist_and_nothing_implements_them_yet`; [decision 0009](decisions/0009-multi-agent-contracts-only.md) |
+| ID | Requirement | How it is met |
+|---|---|---|
+| NFR-1 | Clean Architecture: Domain depends on nothing; Application on Domain only; Infrastructure never on Web; controllers take no infrastructure type; exactly five projects | `LayeringTests` |
+| NFR-2 | No unused code: no view, script function, stylesheet rule or image that nothing uses (V7) | the clean-up method in [decision 0021](decisions/0021-v7-clean-release.md); `ImageCatalogTests` |
+| NFR-3 | The approved emergency room is protected: its script and stylesheet are fingerprinted | `The_approved_emergency_room_is_unchanged` |
+| NFR-4 | Each part of the client keeps to its own elements: the consoles' and the trainee's stylesheets start from their own views; the room's layer from `#view-er.nbp-on`; `admin.js` and `app.js` never reach the rooms' chat | `AdminConsoleTests` |
+| NFR-5 | One store for the browser's records (`NabdStore`); nothing else in the new client reads the storage | `The_trainees_application_is_its_own_bundle_and_stylesheet` |
+| NFR-6 | The designed regions of the page (headers, landing, home, sign-in, footer) change only through an approved snapshot | `Each_designed_region_is_its_approved_snapshot`; `tools/approve-regions.mjs` |
+| NFR-7 | Arabic, right to left; desktop 1440 and phone 390 without sideways scrolling, broken images or script errors | walk `seats` at both sizes |
+| NFR-8 | No secret in the repository or the client; the paid understanding service is off in Development | [setup.md](setup.md) |
+| NFR-9 | Data files are reachable only by name; source fragments cannot be requested | `Only_the_shipped_data_files_can_be_read`, `Data_that_the_application_does_not_name_cannot_be_asked_for` |
+| NFR-10 | Stated gap: the browser downloads the case file (diagnoses, expected steps, scoring hints), so a trainee could read it. Closing it means moving the room to the server | [architecture.md](architecture.md), "The seams to the server" |
+| NFR-11 | Limits on the server's endpoints: JSON objects only, 64 KB bodies, same-origin, per-caller rate limits; the session API caps sessions and drops idle ones | `UnderstandingEndpointTests`, `SimulationSessionsApiTests`, `ReviewFindingsTests` |
+| NFR-12 | Errors reach the caller as problem documents without stack traces; protective headers on every response | `ReviewFindingsTests` |
+| NFR-13 | The build treats warnings as errors; public members are documented | `Directory.Build.props` |
+| NFR-14 | The golden masters are deterministic and replay without Node.js, a browser or the network | `ErClinicalTraceTests` |
+| NFR-15 | `dotnet test` runs in seconds, in memory | 207 tests |
 
 ## Constraints of this phase
 
-| Constraint | State | Source |
-|---|---|---|
-| No redesign: the user interface and the page structure do not change | Held for the application; the public landing (header, landing view, footer) was redesigned on the owner's instruction (V6.2, 2026-11-12). 20 registered differences | [decision 0003](decisions/0003-razor-views-reproduce-the-legacy-page.md), [decision 0010](decisions/0010-public-landing-v62-with-the-shell-preserved.md), `seams.json` |
-| No dataset rebuild: the eight JSON files are moved byte for byte | Held | [decision 0005](decisions/0005-legacy-data-behind-repositories.md) |
-| No model retraining: the three small models (`er-act.json`, `er-find.json`, `resp-model.json`) are served as they were and are not run on the server | Held | [decision 0005](decisions/0005-legacy-data-behind-repositories.md) |
-| No multi-agent implementation: contracts only | Held; a test fails if anything implements them | [decision 0009](decisions/0009-multi-agent-contracts-only.md) |
-| No push and no history rewrite | Held as far as the documents state. The git history of the branch was not inspected for this document, so this is not determined | The task brief for this document |
-| Exactly five projects | Held and tested | `The_solution_has_exactly_the_five_projects` |
-| No database | Held; sessions are in memory only | [decision 0008](decisions/0008-no-database-and-no-authentication-in-this-phase.md), [0007](decisions/0007-server-session-api-off-by-default.md) |
-| No authentication | Held; accounts remain demo data in the browser | [decision 0008](decisions/0008-no-database-and-no-authentication-in-this-phase.md) |
-| The external functions are not changed | Held; this causes the stop-gap in decision 0006 | [decision 0006](decisions/0006-understanding-services-through-a-gateway.md) |
-| The legacy site on `main` is not touched | Held | [README.md](../README.md), [setup.md](setup.md) |
+No database and no server identity ([0008](decisions/0008-no-database-and-no-authentication-in-this-phase.md));
+the room runs in the browser and the server's session API stays off ([0007](decisions/0007-server-session-api-off-by-default.md));
+the multi-agent system is contracts only ([0009](decisions/0009-multi-agent-contracts-only.md)); the approved room
+changes only by the owner's decision ([docs/prototype-constraints.ar.md](prototype-constraints.ar.md)).
 
-## Out of scope and known gaps
+## Open items
 
-| Item | State | Source |
-|---|---|---|
-| The room in the browser runs the legacy engine. It does not call the server model or the use cases | Next phase | [architecture.md](architecture.md), "Where the logic runs today" |
-| Real understanding services were never called, by tests or by hand; the relay is tested against fakes only | Gap | [decision 0006](decisions/0006-understanding-services-through-a-gateway.md), [testing-strategy.md](testing-strategy.md) |
-| Reading the trainee's text, dose parsing and order safety are not ported | Gap | [decision 0004](decisions/0004-clinical-core-pinned-by-golden-masters.md) |
-| The nurse role's handover grade and score are not ported | Gap | [decision 0004](decisions/0004-clinical-core-pinned-by-golden-masters.md) |
-| The respiratory room, specialty simulation, nursing rooms, professor portal and coach have no behavioural golden master | Gap | [testing-strategy.md](testing-strategy.md) |
-| The ER room after the briefing, in a real browser, is covered by the Node harness with a fake DOM, not by the browser comparison | Gap | [testing-strategy.md](testing-strategy.md) |
-| Browsers other than Chrome, real phones and screen readers were not tested | Gap | [testing-strategy.md](testing-strategy.md) |
-| Load, concurrency and long uptime were not tested | Gap | [testing-strategy.md](testing-strategy.md) |
-| `dotnet publish` and running behind a reverse proxy were not exercised | Gap | [testing-strategy.md](testing-strategy.md), [setup.md](setup.md) |
-| Accounts, roles, progress, professor notes and grades live in the browser; anyone can sign in as the professor. The audit rates this the most serious weakness of the legacy site | Carried over | [decision 0008](decisions/0008-no-database-and-no-authentication-in-this-phase.md) |
-| Other weaknesses carried over: unescaped rendering of stored text, client-side roles, page start depending on a third-party font host, no Content-Security-Policy | Carried over; severities are in the audit parts | [architecture.md](architecture.md), "Security posture" |
-| The server session API takes two transitional inputs (`harmful-orders` and `completion`) because the rules behind them are in the browser | Transitional | [decision 0007](decisions/0007-server-session-api-off-by-default.md) |
-| Sessions do not survive a restart and are not shared between instances; the session id is the only protection of a session | Acceptable now, to be solved before a room uses the API | [decision 0007](decisions/0007-server-session-api-off-by-default.md) |
-| Data integrity notes from the audit (for example, results listed for tests the catalog does not have) are kept, not repaired, because repairing data is a clinical-content change | Kept | [decision 0005](decisions/0005-legacy-data-behind-repositories.md) |
-| The multi-agent contracts are a proposal with no implementation to test them against | Expected to change | [decision 0009](decisions/0009-multi-agent-contracts-only.md) |
-| The legacy tests that exist outside the solution were partly not run (some depend on session temp paths or hard-coded Desktop paths); 54 differences against a stored doctor golden file are noted in the audit | Not determined beyond the audit | [33-existing-tests](legacy-audit/33-existing-tests.md) |
-
-## Open decisions for the owner
-
-Only decisions that the documents and the audit raise.
-
-| # | Decision | Why it is open | Source |
-|---|---|---|---|
-| 1 | Identity: ASP.NET Core Identity or an external provider, and a store. Also who may register, which university data is real, where personal data lives and for how long | Saving results on the server and a real professor portal need it. Nothing server-side may rely on a role until it exists | [decision 0008](decisions/0008-no-database-and-no-authentication-in-this-phase.md) |
-| 2 | The stop-gap of decision 0006: have the external functions recognise the application by a shared secret instead of an origin header, and move the per-address limit to the application or forward the caller address from an authenticated application | The functions see every user as one caller address, so their per-address limit (150 requests per minute, counted per warm instance; audit 31) would apply to all users together. The functions were outside this phase | [decision 0006](decisions/0006-understanding-services-through-a-gateway.md) |
-| 3 | The dormant features: whether to re-enable the respiratory room, the coach, the specialty and nursing cases, "observe an expert" and the learning path, or to remove them. The audit records how each would be re-enabled | They are preserved but unreachable. The comments in the code disagree on the coach's state | Audit 34 ("Dormant features and how they would be re-enabled"), audit 10 |
-| 4 | Physician review of the clinical content of the six cases, and what to do with any correction (a correction changes the golden masters) | The content is unreviewed. The golden masters pin the legacy behaviour, including anything a physician might change | [decision 0004](decisions/0004-clinical-core-pinned-by-golden-masters.md), [decision 0005](decisions/0005-legacy-data-behind-repositories.md) |
-| 5 | Hosting: a host that runs .NET. Static hosting such as GitHub Pages cannot run the application, and merging this branch into `main` would stop the Pages copy from working | The static `index.html` is no longer at the repository root | [setup.md](setup.md), "Deployment notes" |
-| 6 | Which room moves to the server first, and whether the transitional inputs of the session API go away with it | Closes the data-exposure gap (NFR-10) and removes the dependence on the browser for order safety | [architecture.md](architecture.md), [decision 0007](decisions/0007-server-session-api-off-by-default.md) |
-| 7 | Whether the legacy rooms' known weaknesses (unescaped rendering of stored text, client-side roles) are fixed as registered, reviewed changes | A fix changes what the browser receives, so it must be registered as a difference | [decision 0002](decisions/0002-lossless-strangler-migration.md) |
+The product's open items, the owner's decisions and the quality gaps are kept in one place:
+[next-phase-backlog.md](next-phase-backlog.md).

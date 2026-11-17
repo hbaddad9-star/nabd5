@@ -8,7 +8,7 @@ namespace Nabd.Web.Controllers.Api;
 
 /// <summary>
 /// The rooms' way to the understanding services. The paths are the ones the legacy client has always called
-/// (<c>/api/er-chat</c>, <c>/api/resp-chat</c>), so the rooms work unchanged; behind them the request goes through
+/// (<c>/api/er-chat</c>), so the room works unchanged; behind them the request goes through
 /// the application layer, which checks it and relays it.
 /// </summary>
 [SameOriginOnly]
@@ -23,13 +23,6 @@ public sealed class UnderstandingController(ProcessPatientMessage processPatient
     [HttpGet("/api/er-chat")]
     public Task ErPing(CancellationToken cancellationToken) => PingAsync(UnderstandingService.ErRoom, cancellationToken);
 
-    /// <summary>A question to the patient of the respiratory room.</summary>
-    [HttpPost("/api/resp-chat")]
-    public Task RespChat(CancellationToken cancellationToken) => RelayAsync(UnderstandingService.RespiratoryRoom, cancellationToken);
-
-    /// <summary>Health check of the respiratory room's service.</summary>
-    [HttpGet("/api/resp-chat")]
-    public Task RespPing(CancellationToken cancellationToken) => PingAsync(UnderstandingService.RespiratoryRoom, cancellationToken);
 
     private async Task RelayAsync(UnderstandingService service, CancellationToken cancellationToken)
     {

@@ -17,22 +17,17 @@
 
     <!-- Center: the platform's main sections, in the owner's order (V6.9.3): home, the emergency room, the training
          sections, the academic section (university students only, admin.js hides it for an independent trainee),
-         the trainee's reports, and the clinical coach last (V6.9.4: open, it leads to the coach at the end of the home). The ids the legacy client binds are kept;
-         #app-nav-cases stays for it and is hidden by scope.css; #app-nav-fields and #app-nav-reports are bound by
-         admin.js (040-access.js). -->
+         the trainee's reports, and the clinical coach last. #app-nav-fields and #app-nav-reports are bound by
+         app.js (app/050-home.js), the coach by app/070-coach-page.js. -->
     <nav class="hidden md:flex items-center gap-3" aria-label="الأقسام الرئيسية" data-no-terms>
       <button id="app-nav-home" data-app-view="home" class="app-nav-btn nav-link-item active">
         الرئيسية
       </button>
-      <button id="app-nav-er" class="nav-link-item text-sky-800 hover:text-sky-900 flex items-center gap-1.5">
-        <span class="w-2 h-2 rounded-full bg-teal-600"></span>
-        <span>غرفة الطوارئ</span>
-      </button>
+      <!-- V6.10 (owner): the emergency room is entered from its card on the home, not from the header. The button
+           stays in the page, not shown: the supervisor's «تجربة غرفة الطوارئ» presses it. -->
+      <button id="app-nav-er" type="button" class="nav-link-item" style="display:none" tabindex="-1" aria-hidden="true">غرفة الطوارئ</button>
       <button id="app-nav-fields" type="button" class="nav-link-item">
         أقسام التدريب
-      </button>
-      <button id="app-nav-cases" data-app-view="cases-scroll" class="app-nav-btn nav-link-item">
-        الحالات والتدريب
       </button>
       <button id="app-nav-uni" data-app-view="university" class="app-nav-btn nav-link-item text-teal-800">
         القسم الأكاديمي

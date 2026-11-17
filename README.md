@@ -1,58 +1,42 @@
-# نَبْض الأردن — Nabd
+# نَبْض الأردن — Nabd 7
 
-An Arabic clinical-simulation trainer for medical and nursing students. A trainee manages an emergency patient in
-a chat-driven room: talks to the patient and the relative, gives orders to the nurse, reads the monitor, orders
-tests, hands over, and gets a report.
+An Arabic clinical-simulation platform for medical and nursing students. A trainee manages an emergency patient in a
+chat-driven room: talks to the patient and the relative, works with the nurse or the doctor, reads the monitor, orders
+tests, hands over, and gets a detailed report. A university subscribes, organises its students and supervisors and
+chooses among Nabd's cases; a supervisor reviews and approves his students' sessions.
 
-> **Training prototype.** The clinical content of the cases has **not been reviewed by a physician**. The system
-> does not diagnose or treat real patients and must not be presented as doing so.
+> **Training prototype.** The clinical content of the cases has **not been reviewed by a physician**. The system does
+> not diagnose or treat real patients and must not be presented as doing so. Accounts and records are kept in the
+> browser in this phase; there is no server identity yet.
 
-This branch (`refactor/clean-architecture`) re-hosts the site on **ASP.NET Core MVC** with **Clean Architecture**,
-without changing what the user sees or what the simulation computes. The legacy static site on `main` is untouched.
-
-## Where things stand
-
-| | |
-|---|---|
-| The page, styles, scripts, data and images the browser receives | Identical to the legacy site, except 20 registered differences (where assets are served from, where the rooms find the understanding service: the external function that reads what the trainee wrote and voices the people in the room, and the landing's stylesheets and script). Proved by tests |
-| The public landing (branch `ui/landing-v6-integration`) | The owner's V6.2 design: public header, landing view and public footer, as Razor partials with scoped styles; same IDs and same sign-in as before. Compared with the prototype at six widths and pinned by approved snapshots. V6.3 refines four sections (real product screenshots, right-to-left step arrows, a Jordanian university photo) and restyles sign-in with CSS only; awaiting the owner's review. See [docs/ui-integration-map.md](docs/ui-integration-map.md) and [ADR 0011](docs/decisions/0011-landing-v63-refinement-layer.md) |
-| Sign-in pages and signed-in home (V6.6) | The sign-in and registration pages redrawn (form card, field icons, a scene with the hero photo) and the home after sign-in redesigned with one stylesheet scoped to `#view-home`; the rooms and their chat are not touched (tested and measured). Awaiting the owner's review. See [ADR 0014](docs/decisions/0014-sign-in-pages-and-signed-in-home-v66.md) |
-| The clinical core of the ER room (risk, vital signs, stages, treatments, harms, tests, score) | Ported to C# and proved equal to the legacy code, bit for bit, on 45 recorded scenarios |
-| Use cases, repositories, service gateway, session API | Implemented and tested. The session API is off by default |
-| The room in the browser | Still runs the legacy client engine. Moving it onto the server is the next phase |
-| Multi-agent system | Contracts only; nothing implemented |
-| Accounts | Still demo data in the browser. There is no server-side identity |
-| Real understanding services | Never called in this phase; the relay is tested against fakes |
-
-Read [docs/architecture.md](docs/architecture.md) first. It says plainly what is and is not done.
+**Start with [docs/HANDOVER.ar.md](docs/HANDOVER.ar.md)** (the handover guide, in Arabic): what works, how to run it,
+the demo accounts, where to change what. What changed in this release: [CHANGELOG.md](CHANGELOG.md).
 
 ## Quick start
 
 ```
-dotnet restore Nabd.sln
 dotnet build Nabd.sln
 dotnet test Nabd.sln
-dotnet run --project src/Nabd.Web
+dotnet run --project src/Nabd.Web --launch-profile http
 ```
 
-Then open <http://localhost:5054>. Requires the .NET 10 SDK. In Development the paid understanding services are
-switched off and the rooms run in their offline mode; see [docs/setup.md](docs/setup.md).
+Then open <http://localhost:5054>. Requires the .NET 10 SDK. In Development the paid understanding service is
+switched off and the room runs in its offline mode ([docs/setup.md](docs/setup.md)).
 
 ## Layout
 
 ```
 Nabd.sln
 src/
-  Nabd.Domain/           clinical simulation model (no dependencies)
+  Nabd.Domain/           the clinical simulation model (no dependencies)
   Nabd.Application/      use cases and ports
-  Nabd.Infrastructure/   legacy JSON data, session store, external-service gateway
-  Nabd.Web/              MVC controllers, Razor views, client scripts, static assets
+  Nabd.Infrastructure/   case data, session store, the understanding-service gateway
+  Nabd.Web/              MVC: controllers, Razor views, client scripts (nine bundles), images.json, static assets
 tests/
-  Nabd.Tests/            unit, integration, architecture, baseline and golden-master tests
-  legacy-baseline/       Node tools that record golden masters from the legacy code
+  Nabd.Tests/            architecture, domain, golden masters, application, infrastructure, web and client tests (207)
 tools/
-  legacy/                audit and browser-comparison tools
-  migration/             the record of how the legacy files were cut
+  qa/                    browser walks: every seat on every screen, the rules of entry
+  approve-regions.mjs    records the approved snapshots of the designed regions
 docs/
 ```
 
@@ -60,30 +44,28 @@ docs/
 
 | Document | Content |
 |---|---|
-| [docs/final-report.md](docs/final-report.md) ([العربية](docs/final-report.ar.md)) | What was done, proved, not done, and what the owner must decide |
-| [docs/architecture.md](docs/architecture.md) | The layers, the request paths, where logic runs today, security posture |
-| [docs/requirements.md](docs/requirements.md) | What the system must do and keep, with the evidence for each |
+| [docs/HANDOVER.ar.md](docs/HANDOVER.ar.md) | **The handover guide** (Arabic) |
+| [docs/prototype-constraints.ar.md](docs/prototype-constraints.ar.md) | The prototype's design constraints: what is not touched, honesty, identity, where to write what, the gate of every change (Arabic) |
+| [docs/delivery-report.ar.md](docs/delivery-report.ar.md) | The delivery report: what was done, the self-critique, recommendations, the owner's decisions (Arabic) |
+| [docs/architecture.md](docs/architecture.md) | The projects, the client's bundles, what the browser keeps, the seams to the server, security |
+| [docs/requirements.md](docs/requirements.md) | What the system must do and keep, and where each requirement is checked |
 | [docs/workflows.md](docs/workflows.md) | User journeys and system flows |
+| [docs/testing-strategy.md](docs/testing-strategy.md) | The tests, what protects what, the browser walks, how v7 was verified |
 | [docs/setup.md](docs/setup.md) | Tools, commands, configuration, deployment notes |
-| [docs/testing-strategy.md](docs/testing-strategy.md) | The baseline, the golden masters, results, and what is not covered |
-| [docs/migration-map.md](docs/migration-map.md) | Where every legacy file and rule went, and the order of what moves next |
-| [docs/data-catalog.md](docs/data-catalog.md) | Every data file and stored key: content, readers, sensitivity |
-| [docs/legacy-audit.md](docs/legacy-audit.md) | The audit of the legacy site; detailed parts under `docs/legacy-audit/` |
+| [docs/data-catalog.md](docs/data-catalog.md) | Every data file and stored key: content, readers, exposure |
+| [docs/ui-design-system.md](docs/ui-design-system.md) | Tokens, typography, components, stylesheets, design rules |
+| [docs/image-library/README.ar.md](docs/image-library/README.ar.md) | The images: how to change one, what exists, what is still needed (Arabic) |
+| [docs/agent/er-agent.ar.md](docs/agent/er-agent.ar.md) | The ER agent's specification and numbered decision log (Arabic) |
+| [docs/demo-script.ar.md](docs/demo-script.ar.md) | The demo script for the committee (Arabic) |
+| [docs/next-phase-backlog.md](docs/next-phase-backlog.md) | What is open: the product, the owner's decisions, quality |
 | [docs/decisions/](docs/decisions/) | Architecture decision records |
-| [docs/ui-integration-audit.md](docs/ui-integration-audit.md) | The V6.2 landing prototype: conflicts with the application, honesty and accessibility review |
-| [docs/ui-integration-map.md](docs/ui-integration-map.md) | Where every part of the prototype went: partials, IDs, classes, actions, files |
-| [docs/ui-design-system.md](docs/ui-design-system.md) | The landing's tokens, typography, components, breakpoints, and how its stylesheets are built |
-| [docs/next-phase-backlog.md](docs/next-phase-backlog.md) | What the landing integration leaves open, including the owner's decisions |
 
 ## Ground rules
 
-- No secret belongs in this repository, in client code, or in a response.
-- The interface is frozen: a change to what the browser receives must be registered in
-  `tests/Nabd.Tests/LegacyBaseline/seams.json`, with its reason.
-- A change to a clinical rule fails the golden masters on purpose; see
-  [docs/testing-strategy.md](docs/testing-strategy.md) for how to change one deliberately.
-- The public landing's three regions are pinned by approved snapshots (`tests/Nabd.Tests/LandingBaseline/`);
-  change them only after comparing with the design, as [docs/testing-strategy.md](docs/testing-strategy.md) says.
-- Image credits are in `src/Nabd.Web/wwwroot/img/CREDITS.txt` and, for the landing, `src/Nabd.Web/wwwroot/img/landing/CREDITS.md`
-  (six of its photos still need a documented source and licence). The landing font's licence is
-  `src/Nabd.Web/wwwroot/fonts/noto-sans-arabic/LICENSE.md`.
+- No secret in this repository, in client code, or in a response.
+- The approved emergency room (`ClientScripts/er/`, `css/er.css`) changes only by the owner's decision; its additions are
+  layers in `erplus/`. A test fingerprints it.
+- Designed regions (headers, landing, home, sign-in, footer) change through approved snapshots (`tools/approve-regions.mjs`).
+- No unused code: a view, function, rule, image or data file that nothing uses is removed ([decision 0021](docs/decisions/0021-v7-clean-release.md)).
+- Images are named in `src/Nabd.Web/images.json`; credits are in `src/Nabd.Web/wwwroot/img/CREDITS.txt` and
+  `img/landing/CREDITS.md`; the Arabic font's licence is `src/Nabd.Web/wwwroot/fonts/noto-sans-arabic/LICENSE.md`.

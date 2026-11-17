@@ -1,0 +1,9 @@
+/* The trainee's application (V6.11, 2026-11-18): everything a signed-in trainee sees outside the ER room and the
+   consoles. Until V6.10 this lived in the console bundle (admin/040, 050, 060); it is the same code, split by
+   feature. The fragments share one function scope (this wrapper), like the legacy bundles: a helper defined in
+   010-core.js is used by all of them, and a function declared in one fragment can be called from another.
+   The legacy client is not edited: three of its global functions are wrapped (showOnlySection, in 030, 070 and
+   100) and its sign-in is taken over by capture listeners (020). Nothing here reaches the ER room; a case is
+   opened through window.NabdRoom (erplus/040-open-case.js). See docs/architecture.md, "The client". */
+(function () {
+  'use strict';

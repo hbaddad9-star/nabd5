@@ -1,5 +1,5 @@
 using Microsoft.Extensions.Options;
-using Nabd.Infrastructure.LegacyData;
+using Nabd.Infrastructure.CaseData;
 
 namespace Nabd.Tests.Support;
 
@@ -10,12 +10,11 @@ internal static class TestData
 
     public static string GoldenMasters(string area) => Path.Combine(OutputFolder, "GoldenMasters", area);
 
-    public static string LegacyBaseline(params string[] parts) => Path.Combine([OutputFolder, "LegacyBaseline", .. parts]);
 
-    public static LegacyDataFiles LegacyDataFiles { get; } = new(Options.Create(new LegacyDataOptions()));
+    public static CaseDataFiles CaseDataFiles { get; } = new(Options.Create(new CaseDataOptions()));
 
-    public static JsonClinicalCaseRepository CaseRepository { get; } = new(LegacyDataFiles);
+    public static JsonClinicalCaseRepository CaseRepository { get; } = new(CaseDataFiles);
 
-    /// <summary>Text as the baseline keeps it: line endings as line feeds, whatever the checkout did.</summary>
+    /// <summary>Text with line endings as line feeds, whatever the checkout did.</summary>
     public static string ReadNormalized(string path) => File.ReadAllText(path).Replace("\r\n", "\n");
 }

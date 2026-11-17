@@ -111,8 +111,7 @@
   const caseOpen = id => !U().caseOff.includes(id);
   function toStudentHome(recs, x) {
     const u = U(x);
-    let list = [];
-    try { list = JSON.parse(localStorage.getItem('nabd_v2_assignments') || '[]'); if (!Array.isArray(list)) list = []; } catch (e) { list = []; }
+    const list = window.NabdStore.assignments();
     recs.forEach(rec => {
       const sec = u.sections.find(k => k.name === rec.cohort);
       if (!sec || !sec.legacy) return;
@@ -120,7 +119,7 @@
       if (old) Object.assign(old, { due: rec.due, by: rec.by });
       else list.push({ id: 'as_' + rec.id, caseId: rec.caseId, section: sec.legacy, due: rec.due, note: '', by: rec.by, ts });
     });
-    try { localStorage.setItem('nabd_v2_assignments', JSON.stringify(list)); } catch (e) {}
+    window.NabdStore.saveAssignments(list);
   }
   C.setOnAssign((rec, x) => toStudentHome([rec], x));
   const bridge = x => toStudentHome((S().assign || []).filter(a => a.org === x.id), x);

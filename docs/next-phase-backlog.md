@@ -1,70 +1,46 @@
-# Next-phase backlog: the public landing (V6.2, refined in V6.3 and V6.4)
+# Next-phase backlog
 
-What the work on `ui/landing-v6-integration` leaves open, most important first. Updated 2026-11-13 after V6.4
-(the laptop, the cards, the sign-in pages); items V6.3 and V6.4 closed are listed at the end.
+What Nabd 7 leaves open, most important first. Updated 2026-11-18 with v7.0.0.
 
-## Owner decisions
+## The product
 
-| # | Item | Why it matters |
+| # | Item | Detail |
 |---|---|---|
-| B0 | **Review and approve V6.3 and V6.4** (local preview). Until then both are local commits, not pushed, and their region snapshots are candidates | The brief makes the owner's visual review the gate for the next phase |
-| B1 | **«تواصل معنا»** leads to the footer, which has no contact method. Give a real contact (e-mail, form, phone) or remove the link | A link to nothing is not honest; the spec forbids invented contact details |
-| B2 | **Six photos have no documented source or licence** (hero, four specialty cards, final CTA background; `wwwroot/img/landing/CREDITS.md`). Provide the source and licence or replace them | The landing must not be published as cleared until this is done |
-| B3 | Keep or remove the dialog's note «هذه نسخة عرض أولي…» (from the prototype) | It is accurate today; it will not be after launch |
-| B4 | **A larger photo for the partnership section.** The JUST campus photo (CC0) is 640 × 400 as the app ships it; the original on Wikimedia Commons is 8160 × 6120. Fetching it needs the owner's go-ahead. The legacy `img/v9/jordan.jpg` (Jordan University Hospital) should not be reused: its Commons page shows it was copied from the hospital's website, so its CC BY-SA tag is only the uploader's claim | Sharper on high-density screens; a photo whose licence is certain |
-| B21 | **Microsoft and Google sign-in.** The buttons are on the sign-in pages marked «قريباً». Turning them on needs an identity decision (accounts on the server), app registrations in Microsoft Entra ID and Google Cloud made by the owner, the site's final address, and a privacy notice ([auth-external-providers.md](auth-external-providers.md)) | Students mostly have a university Microsoft account; until then they use e-mail or a demo account |
+| P1 | **A server for the records** | Accounts, sessions, institutions and assignments live in one browser, so a session reaches the supervisor only on the same device. Replace `shared/010-store.js` (`NabdStore`) with an API client; nothing else in the client reads the storage ([architecture.md](architecture.md), "The seams to the server") |
+| P2 | **Identity** | Sign-in is by e-mail only and the roster is enforced in the browser. University Microsoft sign-in and the roster on the server ([auth-external-providers.md](auth-external-providers.md)) |
+| P3 | **Medical review** | No case, drill, dose range or life-saving list has a physician's sign-off yet (decision log D-07). Name the reviewer; the console already records the review |
+| P4 | **The agent** | Scoring by the model, free dialogue in the coach's drills, case variants: specified in [agent/er-agent.ar.md](agent/er-agent.ar.md) |
+| P5 | **Clinical images** | The room shows no image. 15 images for the six cases and 28 body photographs are listed in [image-library/README.ar.md](image-library/README.ar.md), with what to make first |
+| P6 | **The level quiz** | Hidden (D-60); rebuild it from Nabd's own cases |
+| P7 | **The respiratory room and the specialty cases** | Shown as «قريباً» (D-61). The old respiratory room was removed in v7; the new rooms are built as layers like `erplus/`, on the server once P1 exists |
+| P8 | **Open owner decisions** | Section 8 of [agent/er-agent.ar.md](agent/er-agent.ar.md): nurse weights, unstable handover, averaging old and new reports, pass marks for four-year programmes, returning after a critical error, the report's layout |
+
+## Owner decisions on the site
+
+| # | Item | Detail |
+|---|---|---|
+| O1 | «تواصل معنا» | Leads to the footer, which has no contact method. Give a real contact or remove the link |
+| O2 | Six landing photos without a documented source | Hero, four specialty cards, the closing band (`wwwroot/img/landing/CREDITS.md`). Provide the source and licence or replace them before any public release |
+| O3 | Larger photos | The hero is 790 × 349 and the closing band 426 × 103: soft on large screens. Sizes wanted: [image-library/README.ar.md](image-library/README.ar.md), section 3 |
+| O4 | Medium and SemiBold font faces | The Arabic font has a regular and a bold face only; two more faces would refine the headings. Needs the go-ahead to add the files |
+| O5 | The landing dialog's note «هذه نسخة عرض أولي…» | Accurate today; not after launch |
 
 ## Quality
 
 | # | Item | Detail |
 |---|---|---|
-| B5 | Higher-resolution photos | The hero and specialty photos are the prototype's embedded sizes (hero 790 × 349 px): soft on high-density screens. Add larger originals and `srcset` |
-| B7 | Product screenshots go out of date | The laptop and step images are screenshots of the ER room; when the room's look changes, rebuild them (`capture-er-session.js`, `build-v63-images.mjs`, `build-v64-images.mjs`) |
-| B8 | Accessibility measurement | Contrast was measured by script in V6.3's review; an automated audit (axe or Lighthouse) and a screen-reader pass (NVDA/VoiceOver) were not done |
-| B9 | Other browsers | Checked in headless Chrome only; Firefox and Safari (iOS) not tested. The `:dir(ltr)` rule (mirroring arrows in a left-to-right page) needs Chrome 120+, Safari 16.4+, Firefox 49+ |
-| B10 | Font size | The two WOFF2 files are complete fonts (83 + 89 KB). Subsetting to Arabic + basic Latin would make them smaller |
-| B11 | One clean stylesheet | `landing-v6.css` keeps the prototype's successive refinement blocks, rules for parts V6.3 replaced (the old laptop, the old step cards, the old audience cards) and the guard: about 136 KB. Once the design is final, fold it with `landing-v63.css` into one hand-maintained stylesheet with the same computed result (the style diff proves it) |
+| Q1 | Accessibility | No automated audit (axe or Lighthouse) and no screen-reader pass yet |
+| Q2 | Other browsers and devices | Checked in Chrome only (desktop and phone emulation); Firefox, Safari (iOS) and real phones not tested |
+| Q3 | One landing stylesheet | `landing.css` still holds the prototype's successive blocks (v7 removed 450 dead rules); fold it with `landing-sections.css` and `landing-cards.css` into one hand-maintained file with the same result |
+| Q4 | Product screenshots | The landing's laptop and step images are screenshots of the room; retake them when the room's look changes |
+| Q5 | The walks in CI | `tools/qa` runs by hand; CI would need a browser and a started site |
+| Q6 | A Content-Security-Policy | Not possible while the room uses inline handlers; follows the room's move to the server |
 
-## Found by the V6.3 review, outside its scope
+## Closed by v7
 
-| # | Item | Detail |
-|---|---|---|
-| B17 | Header overflow between 821 and 962 px | The V6.2 header's buttons stick out to the left and the page scrolls sideways at those widths (inherited from the prototype). A small fix in `landing-v6-shell.css` (hide the outline sign-in button or narrow the nav gap in that range) needs the owner's OK, since the header was to stay unchanged |
-| B20 | `img/CREDITS.txt` lists `v9/aud-uni.jpg` twice | Two different sources for one file (a doctor photo and the JUST photo); the file is the JUST photo. Legacy file, to correct when the legacy credits are revised |
-
-## Legacy clean-up (with the legacy CSS retirement)
-
-| # | Item | Detail |
-|---|---|---|
-| B12 | Old landing CSS | `landing8.css`, `landing9.css` and the `#view-index …` rules of `style.css`/`theme.css` no longer match anything; remove them with the legacy CSS, then most of the guard and of `auth.css`'s `!important` become unnecessary |
-| B13 | 320 px sidebar edge | The closed signed-in sidebar (`#app-sidebar`, `translateX(-281.59px)`) shows one pixel at the left edge at 320 px. Legacy code; fix it when the sidebar is moved |
-| B14 | «المدرب السريري» footer link | Goes to the home view because `coach` is a removed view in the legacy client. Remove the link or reopen the coach |
-
-## Delivery
-
-| # | Item | Detail |
-|---|---|---|
-| B15 | Not deployed | V6.2 is pushed on the branch; V6.3 is a local commit only (the owner asked for no push, merge or deployment before his review). The public links (Vercel, GitHub Pages) still serve `main` |
-| B16 | Merge order | `ui/landing-v6-integration` is based on `refactor/clean-architecture`, which is itself not merged to `main` |
-
-## Closed by V6.5
-
-- The screens after sign-in (header, drawer, home, profile, university, dialogs, and the ER room in every state)
-  take the landing's colours, type and cards, with CSS only (decision 0013); B6 (signed-in shell consistency) is
-  closed by it.
-
-## Closed by V6.4
-
-- The laptop is a realistic drawing (keyboard and trackpad in perspective, hinge, shadow on the table) with a
-  readable screenshot of a respiratory case; the two text boxes over it are gone.
-- One card language across the landing (borders, shadows, navy icon tiles with copper icons).
-- Sign-in and registration are pages (`/login`, `/register`) in the owner's prototype design, organised as MVC
-  views; B18 (focus leaving the sign-in screen) is fixed: Tab stays on the page while it is open; B19 (English
-  terms in the sign-in photo panel) is gone with the panel.
-
-## Closed by V6.3
-
-- The sign-in/registration modal now has the landing's identity (CSS only, behaviour unchanged).
-- The laptop shows a real screenshot of the ER room instead of a drawn mock-up.
-- The institutions heading no longer reads as an existing partnership («نحو شراكة…», and the photo caption says so).
-- The decorative English text is gone from the landing.
+- The dead code of the old client, the respiratory room, the old landing and the migration tooling are removed
+  ([decision 0021](decisions/0021-v7-clean-release.md)).
+- No password field (sign-in is by e-mail in this phase); the track is chosen, never pre-selected.
+- «ابدأ أول حالة» in the hero before the first session; demo data on the coach page follows Nabd's setting.
+- The welcome message stays in plain Arabic (the room's English terms are not applied to it).
+- The footer's «المدرب السريري» opens the coach.

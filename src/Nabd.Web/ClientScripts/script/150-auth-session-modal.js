@@ -6,9 +6,6 @@
       saveAccountToStorage(stored);
       safeStorageSet(STORAGE_KEYS.ACTIVE_USER_ID, stored.id);
 
-      hasCompletedSessionInRun = false;
-      simState.sessionCompleted = false;
-      simState.sbarSubmitted = false;
 
       syncAuthShellUI();
       closeAuthModal();
@@ -23,26 +20,14 @@
     function nbDemoLogin(id) {
       const acc = DEMO_ACCOUNTS[id];
       if (!acc) return;
-      const track = nbTrackOf(acc);
-      if (track) {
-        const key = NB_PLACEMENT_KEY + '_' + acc.id;
-        if (!safeStorageGet(key, null)) {
-          const level = nbDerivedLevel(acc);
-          safeStorageSet(key, { track, level, pct: parseInt(acc.stats?.avgSpec, 10) || 0, weak: [], rooms: nbPickRooms(level, [], level, track), demo: true, ts: Date.now() });
-        }
-      }
       loginWithAccount(JSON.parse(JSON.stringify(acc)), `دخول تجريبي: ${acc.name}`, 'home');
     }
 
     function logoutUser() {
       authState.isAuthenticated = false;
       authState.user = null;
-      hasCompletedSessionInRun = false;
-      simState.sessionCompleted = false;
-      simState.sbarSubmitted = false;
       try {
         safeStorageRemove(STORAGE_KEYS.ACTIVE_USER_ID);
-        safeStorageRemove(STORAGE_KEYS.ACTIVE_SIM);
       } catch (e) {}
       closeAccountDropdown();
       closeSidebar();

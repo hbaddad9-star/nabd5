@@ -1,4 +1,4 @@
-# Text files are normalised to LF in the repository; the working copy follows the platform.
+# Text files are stored with line feeds in the repository; the working copy follows the platform.
 * text=auto
 *.sln text eol=crlf
 *.png binary
@@ -6,8 +6,7 @@
 *.jpeg binary
 *.webp binary
 *.ico binary
-# Frozen legacy baselines are compared byte for byte in tests: never convert their line endings.
-tests/Nabd.Tests/LegacyBaseline/** -text
+*.woff2 binary
 
-# The legacy data files are served to the browser byte for byte: no line-ending conversion.
-src/Nabd.Infrastructure/LegacyData/Files/** -text
+# The case data files are served to the browser as they are: no line-ending conversion.
+src/Nabd.Infrastructure/CaseData/Files/** -text

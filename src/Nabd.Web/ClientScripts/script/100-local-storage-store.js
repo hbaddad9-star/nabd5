@@ -41,22 +41,7 @@
       setFallbackStore(fb);
     }
 
-    function loadPersistedCustomCases() {
-      const savedCases = safeStorageGet(STORAGE_KEYS.CUSTOM_CASES, {});
-      Object.keys(savedCases).forEach(cid => {
-        const c = savedCases[cid];
-        if (!c.image) c.image = CASE_IMAGES.img0;
-        CASES_DB[cid] = c;
-      });
-    }
 
-    function saveCustomCaseToStorage(caseObj) {
-      const savedCases = safeStorageGet(STORAGE_KEYS.CUSTOM_CASES, {});
-      const copy = JSON.parse(JSON.stringify(caseObj));
-      delete copy.image; // Resolve CASE_IMAGES.img0 on load to keep storage compact
-      savedCases[copy.id] = copy;
-      safeStorageSet(STORAGE_KEYS.CUSTOM_CASES, savedCases);
-    }
 
     function getAccountFromStorageOrDefault(accId) {
       const map = safeStorageGet(STORAGE_KEYS.ACCOUNTS_MAP, {});

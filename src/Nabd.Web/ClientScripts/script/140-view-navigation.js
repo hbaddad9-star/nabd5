@@ -1,6 +1,6 @@
     /* Protected Navigation Guard */
-    function navigateTo(viewId, options = {}) {
-      if (REMOVED_VIEWS.has(viewId)) { viewId = 'home'; options = {}; }
+    function navigateTo(viewId) {
+      if (REMOVED_VIEWS.has(viewId)) viewId = 'home';
       const isAuth = Boolean(authState.isAuthenticated && authState.user);
 
       if (PROTECTED_VIEWS.has(viewId) && !isAuth) {
@@ -19,55 +19,28 @@
 
       document.querySelectorAll('.app-nav-btn').forEach(btn => {
         const bView = btn.getAttribute('data-app-view');
-        const isActive = bView === viewId && !options.scrollToCases;
+        const isActive = bView === viewId;
         btn.classList.toggle('active', isActive);
       });
 
-      if (viewId === 'coach') {
-        renderInteractiveCoachView();
-      }
-
-      // Handle Debrief: ONLY show report if SBAR was submitted in the current session!
-      if (viewId === 'debrief') {
-        if (window.nbErReport && window.nbErReport()) return;
-        const emptyEl = document.getElementById('debrief-empty-state');
-        const repEl = document.getElementById('debrief-report-content');
-        if (hasCompletedSessionInRun && simState.sessionCompleted && simState.sbarSubmitted) {
-          emptyEl?.classList.add('hidden');
-          repEl?.classList.remove('hidden');
-        } else {
-          emptyEl?.classList.remove('hidden');
-          repEl?.classList.add('hidden');
-        }
-      }
+      // the last report: the room shows the one of this visit; without one the shell opens the saved reports
+      if (viewId === 'debrief' && window.nbErReport && window.nbErReport()) return;
 
       closeSidebar();
       closeAccountDropdown();
 
-      if (options.scrollToCases && viewId === 'home') {
-        setTimeout(() => {
-          const ca = document.getElementById('home-cases-anchor');
-          const anchor = (ca && ca.classList.contains('hidden')) ? document.getElementById('home-nurse') : ca;
-          if (anchor) anchor.scrollIntoView({ behavior: 'smooth' });
-        }, 60);
-      } else if (viewId === 'sim') {
-        window.scrollTo({ top: 0, behavior: 'auto' });
-        const chatInput = document.getElementById('sim-chat-input');
-        if (chatInput && window.innerWidth >= 1024) chatInput.focus();
-      } else {
-        window.scrollTo({ top: 0, behavior: 'smooth' });
-      }
+      window.scrollTo({ top: 0, behavior: 'smooth' });
 
       return true;
     }
 
     function showOnlySection(viewId) {
-      ['index', 'home', 'sim', 'debrief', 'coach', 'profile', 'university', 'observe', 'nurse', 'resp', 'er'].forEach(v => {
+      ['index', 'home', 'coach', 'profile', 'er'].forEach(v => {
         const sec = document.getElementById('view-' + v);
         if (sec) sec.classList.toggle('hidden', v !== viewId);
       });
       const footer = document.getElementById('site-footer');
-      if (footer) footer.classList.toggle('hidden', viewId === 'sim' || viewId === 'nurse' || viewId === 'observe' || viewId === 'resp' || viewId === 'er');
+      if (footer) footer.classList.toggle('hidden', viewId === 'er');
       if (viewId === 'profile' && authState.user) { try { renderProfileView(); } catch (e) { console.error(e); } }
     }
 

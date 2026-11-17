@@ -8,8 +8,6 @@
     bg: 'السكر — العشوائي الطبيعي تقريباً: 70–140 ملغ/دل.',
     news2: 'NEWS2 — من 0 إلى 4 خطورة منخفضة، 5–6 متوسطة، 7 فأكثر عالية.'
   };
-  const keyOfLabel = t => /HR/.test(t) ? 'hr' : /BP/.test(t) ? 'bp' : /SpO2/i.test(t) ? 'spo2'
-    : /Temp/i.test(t) ? 'temp' : /RR|التنفس/.test(t) ? 'rr' : /BG|السكر/.test(t) ? 'bg' : /NEWS2/.test(t) ? 'news2' : '';
   const firstNum = el => {
     const m = el && el.textContent.match(/\d+(\.\d+)?/);
     return m ? parseFloat(m[0]) : NaN;

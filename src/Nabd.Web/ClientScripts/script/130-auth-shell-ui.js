@@ -49,18 +49,6 @@
         dropDemo.classList.toggle('hidden', !u.isDemo);
       }
 
-      // Update Sidebar Academic Role Badge
-      const uniRolePill = document.getElementById('side-uni-role-pill');
-      const uniDesc = document.getElementById('side-uni-desc');
-      if (uniRolePill && uniDesc) {
-        if (isProf) {
-          uniRolePill.textContent = 'صلاحية أستاذ جامعي';
-          uniDesc.textContent = 'إدارة نتائج طلبة الشعبة وإضافة حالات سريرية جديدة.';
-        } else {
-          uniRolePill.textContent = `صلاحية ${roleAr}`;
-          uniDesc.textContent = 'استعراض الواجبات السريرية المسندة لك في المساقات الجامعية.';
-        }
-      }
 
       // Update Home Welcome Card
       const hwRole = document.getElementById('home-welcome-role');
@@ -81,15 +69,11 @@
 
       // Toggle Role-Specific Home Sections (Professor Dashboard vs Student University Sessions)
       // phase8 2026-11-07: shown by role instead of always hidden.
-      const profHomeSec = document.getElementById('home-professor-section');
-      if (profHomeSec) profHomeSec.classList.toggle('hidden', !isProf);
 
       const stuHomeUniSec = document.getElementById('home-student-uni-section');
       if (stuHomeUniSec) stuHomeUniSec.classList.toggle('hidden', !isStudent);
 
       renderProfileView();
-      renderUniversityPortalByRole();
-      renderProfessorCohortTables();
       renderHomePath(u);
       try { nb8RenderAcademic(u); } catch (e) { console.error(e); } // phase8 2026-11-07
     }

@@ -37,17 +37,6 @@
     requestAnimationFrame(() => { releaseStuck(); observeReveals(); observeCounts(); enhanceMonitors(); });
   }
 
-  /* ---------- nursing room on phones: chat fills the space left on screen ----------
-     The stylesheet gives the chat 80dvh below a title block of varying height,
-     which pushed the message box under the bottom edge. */
-  function fitNurseChat() {
-    const chat = document.querySelector('#view-nurse:not(.hidden) .nr2-chat');
-    if (!chat) return;
-    if (window.innerWidth >= 1024) { chat.style.height = ''; return; }
-    const top = chat.getBoundingClientRect().top + window.scrollY;
-    chat.style.height = Math.max(380, window.innerHeight - top - 12) + 'px';
-  }
-
   /* ---------- 5. hero parallax on pointer move ---------- */
   function heroParallax() {
     const hero = document.querySelector('#view-index .nb-hero');

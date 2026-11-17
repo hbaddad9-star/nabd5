@@ -52,10 +52,7 @@
   const AXIS_OF = { safe: 'safe', dx: 'dx', tests: 'tests', assess: 'hist', team: 'comm', hand: 'hand' };
   const TL = { action: 'إجراء', test: 'فحص', harm: 'خطأ', stage: 'حالة المريض', better: 'تحسّن', comm: 'تواصل', exam: 'فحص سريري', read: 'قراءة نتيجة', dose: 'جرعة', order: 'أمر', check: 'تحقق', scope: 'حدود الدور', int: 'مقاطعة', help: 'طلب مساعدة' };
   const DISPO = { icu: 'العناية الحثيثة', hdu: 'مراقبة عالية في الطوارئ', cath: 'القسطرة', ward: 'طابق عادي', home: 'البيت' };
-  function accounts() {
-    try { if (typeof safeStorageGet === 'function' && typeof STORAGE_KEYS !== 'undefined') return safeStorageGet(STORAGE_KEYS.ACCOUNTS_MAP, {}) || {}; } catch (e) {}
-    try { return JSON.parse(localStorage.getItem('nabd_v2_accounts_map') || '{}') || {}; } catch (e) { return {}; }
-  }
+  const accounts = () => window.NabdStore.accounts();
   function liveOf(s, h, key) {
     const caseId = h.caseId.replace(/^er_/, '').replace(/_n$/, ''), sec = secOf(s.sec), d = h.detail || {};
     const asg = myAssigns().filter(a => a.cohort === sec.name && a.caseId === caseId && (Date.parse(a.at) || 0) <= h.ts).sort((x, y) => (Date.parse(y.at) || 0) - (Date.parse(x.at) || 0))[0];
@@ -358,7 +355,7 @@
         if (!k.assign) break;
         const st = S(), rec = (st.assign || []).find(q => q.id === id); if (!rec) break;
         st.assign = st.assign.filter(q => q !== rec);
-        try { const list = JSON.parse(localStorage.getItem('nabd_v2_assignments') || '[]'); localStorage.setItem('nabd_v2_assignments', JSON.stringify((Array.isArray(list) ? list : []).filter(q => q && q.id !== 'as_' + rec.id))); } catch (err) {}
+        window.NabdStore.saveAssignments(window.NabdStore.assignments().filter(q => q && q.id !== 'as_' + rec.id));
         C.log(`ألغى إسناد «${caseName(rec.caseId)}» عن ${rec.cohort}`, 'content'); C.save(); toast('أُلغي الإسناد.'); C.render(); break;
       }
       case 'stu-sec': sf.sec = id; sf.tab = 'all'; sf.limit = 15; C.go('sstudents'); break;

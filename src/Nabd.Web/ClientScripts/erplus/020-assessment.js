@@ -208,7 +208,7 @@
   function passMark() {
     const u = user();
     try {
-      const s = JSON.parse(localStorage.getItem('nabd_v2_admin') || '{}');
+      const s = (window.NabdStore && window.NabdStore.consoleState()) || {};
       // a university student is known by his e-mail on the university's roster (the consoles' own lookup)
       let org = u && u.org;
       if (!org && u && u.email && window.NabdUni) { const w = window.NabdUni.whois(u.email); if (w && w.org) org = w.org.id; }

@@ -13,7 +13,7 @@
 
   <!-- The legacy JSON data ships next to the binaries, unchanged. Only this project reads it. -->
   <ItemGroup>
-    <Content Include="LegacyData\Files\*.json" CopyToOutputDirectory="PreserveNewest" CopyToPublishDirectory="PreserveNewest" />
+    <Content Include="CaseData\Files\*.json" CopyToOutputDirectory="PreserveNewest" CopyToPublishDirectory="PreserveNewest" />
   </ItemGroup>
 
   <ItemGroup>

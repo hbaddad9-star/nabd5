@@ -103,15 +103,6 @@ public class UnderstandingEndpointTests : IClassFixture<WebApplicationFactory<Pr
     }
 
     [Fact]
-    public async Task The_respiratory_room_is_relayed_to_its_own_service()
-    {
-        var (client, gateway) = Start();
-        var response = await client.PostAsync("/api/resp-chat", Json("{\"text\":\"وين الوجع؟\",\"history\":[]}"));
-        Assert.Equal(HttpStatusCode.OK, response.StatusCode);
-        Assert.Equal(UnderstandingService.RespiratoryRoom, Assert.Single(gateway.Requests).Service);
-    }
-
-    [Fact]
     public async Task The_health_check_answers_without_calling_a_model()
     {
         var (client, gateway) = Start();
