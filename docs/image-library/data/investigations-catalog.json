@@ -1,0 +1,3803 @@
+{
+ "_meta": {
+  "file": "investigations-catalog.json",
+  "version": 1,
+  "date": "2026-11-14",
+  "status": "draft; not wired into the site",
+  "purpose": "The investigations the simulated patient can order or receive: the 22 tests the ER room already plays (copied from er-cases.json) plus 15 new ones needed by the new X-rays and clinical photos. Each carries the Arabic and English names, the group, the turnaround, the trigger phrases and the analytes with their reference ranges.",
+  "schema": {
+   "status": "existing | new",
+   "group": "img | bed | lab",
+   "tat": "minutes until the result is shown",
+   "kw": "normalised trigger phrases (no diacritics; ة becomes ه; أإآ become ا)",
+   "analytes": "name, unit, reference range",
+   "imageIds": "ids in imaging-catalog.json that can be shown for this test",
+   "review": "must be completed by a medical reviewer before use"
+  },
+  "reviewRequired": "Reference ranges depend on the laboratory and the patient. The ranges of existing tests come from the ER cases; the new ones are common adult ranges and must be confirmed by a physician (labDependent: true).",
+  "counts": {
+   "existing": 22,
+   "new": 15,
+   "trainingPairs": 370,
+   "negatives": 8
+  }
+ },
+ "tests": [
+  {
+   "id": "cxr",
+   "status": "existing",
+   "ar": "صورة صدر",
+   "en": "Chest X-ray",
+   "group": "img",
+   "tat": 8,
+   "panel": "imaging",
+   "kw": [
+    "صوره صدر",
+    "صوره للصدر",
+    "اشعه صدر",
+    "اشعه للصدر",
+    "x-ray",
+    "xray",
+    "cxr"
+   ],
+   "analytes": [],
+   "when": null,
+   "imageIds": [
+    "xr-cxr-normal",
+    "xr-cxr-pneumonia",
+    "xr-cxr-pneumothorax",
+    "xr-cxr-effusion",
+    "xr-cxr-edema",
+    "xr-cxr-ribs"
+   ]
+  },
+  {
+   "id": "ctpa",
+   "status": "existing",
+   "ar": "طبقي شرايين الرئة",
+   "en": "CT pulmonary angiogram",
+   "group": "img",
+   "tat": 25,
+   "panel": "imaging",
+   "kw": [
+    "ctpa",
+    "طبقي",
+    "ct",
+    "سي تي"
+   ],
+   "analytes": [],
+   "when": null,
+   "imageIds": []
+  },
+  {
+   "id": "pocus",
+   "status": "existing",
+   "ar": "إيكو بجانب السرير",
+   "en": "Bedside ultrasound (POCUS)",
+   "group": "img",
+   "tat": 4,
+   "panel": "heart",
+   "kw": [
+    "pocus",
+    "ايكو",
+    "التراساوند",
+    "سونار",
+    "ultrasound",
+    "echo"
+   ],
+   "analytes": [],
+   "when": null,
+   "imageIds": []
+  },
+  {
+   "id": "ecg",
+   "status": "existing",
+   "ar": "تخطيط قلب",
+   "en": "12-lead ECG",
+   "group": "bed",
+   "tat": 2,
+   "panel": "heart",
+   "kw": [
+    "تخطيط",
+    "ecg",
+    "ekg",
+    "12 lead",
+    "تخطيط قلب",
+    "رسم قلب"
+   ],
+   "analytes": [],
+   "when": null,
+   "imageIds": []
+  },
+  {
+   "id": "abg",
+   "status": "existing",
+   "ar": "غازات الدم",
+   "en": "Arterial blood gas",
+   "group": "bed",
+   "tat": 3,
+   "panel": "chem",
+   "kw": [
+    "abg",
+    "غازات",
+    "vbg",
+    "gas",
+    "blood gas",
+    "غاز",
+    "غازات دم"
+   ],
+   "analytes": [
+    {
+     "name": "pH",
+     "unit": "",
+     "ref": "7.35-7.45"
+    },
+    {
+     "name": "PaCO2",
+     "unit": "mmHg",
+     "ref": "35-45"
+    },
+    {
+     "name": "PaO2",
+     "unit": "mmHg",
+     "ref": "80-100"
+    },
+    {
+     "name": "HCO3",
+     "unit": "mmol/L",
+     "ref": "22-26"
+    }
+   ],
+   "when": null,
+   "imageIds": []
+  },
+  {
+   "id": "peak_flow",
+   "status": "existing",
+   "ar": "ذروة الجريان",
+   "en": "Peak expiratory flow",
+   "group": "bed",
+   "tat": 1,
+   "panel": "other",
+   "kw": [
+    "peak flow",
+    "بيك فلو",
+    "ذروه الجريان",
+    "pefr",
+    "peak expiratory flow",
+    "pef"
+   ],
+   "analytes": [
+    {
+     "name": "PEF",
+     "unit": "L/min",
+     "ref": "predicted ~ 430"
+    },
+    {
+     "name": "% predicted",
+     "unit": "%",
+     "ref": "> 75"
+    }
+   ],
+   "when": null,
+   "imageIds": []
+  },
+  {
+   "id": "glucose",
+   "status": "existing",
+   "ar": "سكر الدم",
+   "en": "Capillary glucose",
+   "group": "bed",
+   "tat": 1,
+   "panel": "chem",
+   "kw": [
+    "سكر",
+    "glucose",
+    "gcs سكر",
+    "السكر",
+    "سكر الدم",
+    "bgl",
+    "rbs",
+    "sugar",
+    "blood sugar"
+   ],
+   "analytes": [
+    {
+     "name": "Glucose",
+     "unit": "mg/dL",
+     "ref": "70-140"
+    }
+   ],
+   "when": null,
+   "imageIds": []
+  },
+  {
+   "id": "cbc",
+   "status": "existing",
+   "ar": "تعداد دم",
+   "en": "CBC",
+   "group": "lab",
+   "tat": 15,
+   "panel": "blood",
+   "kw": [
+    "cbc",
+    "تعداد دم",
+    "صوره دم"
+   ],
+   "analytes": [
+    {
+     "name": "WBC",
+     "unit": "x10^9/L",
+     "ref": "4.0-11.0"
+    },
+    {
+     "name": "Hb",
+     "unit": "g/dL",
+     "ref": "12.0-15.5"
+    },
+    {
+     "name": "Plt",
+     "unit": "x10^9/L",
+     "ref": "150-400"
+    },
+    {
+     "name": "Eosinophils",
+     "unit": "%",
+     "ref": "1-4"
+    },
+    {
+     "name": "Neutrophils",
+     "unit": "%",
+     "ref": "40-75"
+    }
+   ],
+   "when": null,
+   "imageIds": []
+  },
+  {
+   "id": "crp",
+   "status": "existing",
+   "ar": "مؤشرات الالتهاب",
+   "en": "CRP",
+   "group": "lab",
+   "tat": 20,
+   "panel": "blood",
+   "kw": [
+    "crp",
+    "مؤشرات الالتهاب",
+    "procalcitonin",
+    "pct"
+   ],
+   "analytes": [
+    {
+     "name": "CRP",
+     "unit": "mg/L",
+     "ref": "< 5"
+    }
+   ],
+   "when": null,
+   "imageIds": []
+  },
+  {
+   "id": "kft",
+   "status": "existing",
+   "ar": "وظائف الكلى والأملاح",
+   "en": "Urea, creatinine, electrolytes",
+   "group": "lab",
+   "tat": 20,
+   "panel": "chem",
+   "kw": [
+    "kft",
+    "rft",
+    "وظائف كلى",
+    "كرياتينين",
+    "املاح",
+    "electrolytes",
+    "بوتاسيوم الدم",
+    "صوديوم",
+    "lytes",
+    "u&e",
+    "potassium level",
+    "k level",
+    "كريتينين",
+    "creatinine",
+    "urea",
+    "يوريا",
+    "وظائف الكلى",
+    "فحص كلى",
+    "فحص الكلى",
+    "فحص كليه",
+    "كهارب",
+    "الكهارب",
+    "املاح الدم"
+   ],
+   "analytes": [
+    {
+     "name": "Urea",
+     "unit": "mg/dL",
+     "ref": "15-45"
+    },
+    {
+     "name": "Na",
+     "unit": "mmol/L",
+     "ref": "135-145"
+    },
+    {
+     "name": "K",
+     "unit": "mmol/L",
+     "ref": "3.5-5.0"
+    },
+    {
+     "name": "Creatinine",
+     "unit": "mg/dL",
+     "ref": "0.5-1.1"
+    },
+    {
+     "name": "Cl",
+     "unit": "mmol/L",
+     "ref": "98-107"
+    },
+    {
+     "name": "HCO3",
+     "unit": "mmol/L",
+     "ref": "22-26"
+    },
+    {
+     "name": "Anion gap",
+     "unit": "mmol/L",
+     "ref": "8-12"
+    }
+   ],
+   "when": null,
+   "imageIds": []
+  },
+  {
+   "id": "lactate",
+   "status": "existing",
+   "ar": "اللاكتات",
+   "en": "Lactate",
+   "group": "bed",
+   "tat": 3,
+   "panel": "chem",
+   "kw": [
+    "لاكتات",
+    "lactate",
+    "لاكتيت",
+    "لاكتيك",
+    "lactic",
+    "اللاكتيت"
+   ],
+   "analytes": [
+    {
+     "name": "Lactate",
+     "unit": "mmol/L",
+     "ref": "< 2"
+    }
+   ],
+   "when": null,
+   "imageIds": []
+  },
+  {
+   "id": "troponin",
+   "status": "existing",
+   "ar": "تروبونين",
+   "en": "High-sensitivity troponin",
+   "group": "lab",
+   "tat": 25,
+   "panel": "heart",
+   "kw": [
+    "تروبونين",
+    "troponin",
+    "انزيمات القلب",
+    "cardiac enzymes",
+    "trop",
+    "trops",
+    "تروب"
+   ],
+   "analytes": [
+    {
+     "name": "hs-Troponin I",
+     "unit": "ng/L",
+     "ref": "< 16"
+    }
+   ],
+   "when": null,
+   "imageIds": []
+  },
+  {
+   "id": "ddimer",
+   "status": "existing",
+   "ar": "دي دايمر",
+   "en": "D-dimer",
+   "group": "lab",
+   "tat": 25,
+   "panel": "blood",
+   "kw": [
+    "دايمر",
+    "d-dimer",
+    "ddimer"
+   ],
+   "analytes": [
+    {
+     "name": "D-dimer",
+     "unit": "mg/L FEU",
+     "ref": "< 0.50"
+    }
+   ],
+   "when": null,
+   "imageIds": []
+  },
+  {
+   "id": "coag",
+   "status": "existing",
+   "ar": "تخثر الدم",
+   "en": "PT / aPTT / INR",
+   "group": "lab",
+   "tat": 25,
+   "panel": "blood",
+   "kw": [
+    "inr",
+    "تخثر",
+    "coag",
+    "pt inr",
+    "ptt",
+    "aptt"
+   ],
+   "analytes": [
+    {
+     "name": "PT",
+     "unit": "s",
+     "ref": "11-13.5"
+    },
+    {
+     "name": "INR",
+     "unit": "",
+     "ref": "0.8-1.2"
+    },
+    {
+     "name": "aPTT",
+     "unit": "s",
+     "ref": "25-35"
+    }
+   ],
+   "when": null,
+   "imageIds": []
+  },
+  {
+   "id": "blood_culture",
+   "status": "existing",
+   "ar": "زراعة دم",
+   "en": "Blood cultures",
+   "group": "lab",
+   "tat": 2,
+   "panel": "blood",
+   "kw": [
+    "زراعه دم",
+    "blood culture",
+    "كلتشر"
+   ],
+   "analytes": [],
+   "when": null,
+   "imageIds": []
+  },
+  {
+   "id": "viral_pcr",
+   "status": "existing",
+   "ar": "مسحة فيروسات",
+   "en": "Respiratory viral PCR",
+   "group": "lab",
+   "tat": 40,
+   "panel": "other",
+   "kw": [
+    "pcr",
+    "مسحه",
+    "انفلونزا",
+    "كورونا"
+   ],
+   "analytes": [],
+   "when": null,
+   "imageIds": []
+  },
+  {
+   "id": "urine",
+   "status": "existing",
+   "ar": "فحص بول",
+   "en": "Urinalysis",
+   "group": "lab",
+   "tat": 5,
+   "panel": "other",
+   "kw": [
+    "فحص بول",
+    "تحليل بول",
+    "عينه بول",
+    "urinalysis",
+    "urine",
+    "ua dipstick",
+    "dipstick"
+   ],
+   "analytes": [
+    {
+     "name": "Specific gravity",
+     "unit": "",
+     "ref": "1.005-1.030"
+    },
+    {
+     "name": "Glucose",
+     "unit": "",
+     "ref": "Negative"
+    },
+    {
+     "name": "Ketones",
+     "unit": "",
+     "ref": "Negative"
+    },
+    {
+     "name": "Protein",
+     "unit": "",
+     "ref": "Negative"
+    },
+    {
+     "name": "Leukocytes",
+     "unit": "",
+     "ref": "Negative"
+    },
+    {
+     "name": "Nitrite",
+     "unit": "",
+     "ref": "Negative"
+    },
+    {
+     "name": "Blood",
+     "unit": "",
+     "ref": "Negative"
+    }
+   ],
+   "when": null,
+   "imageIds": []
+  },
+  {
+   "id": "ketones",
+   "status": "existing",
+   "ar": "كيتونات الدم",
+   "en": "Serum ketones (BHB)",
+   "group": "lab",
+   "tat": 20,
+   "panel": "chem",
+   "kw": [
+    "كيتون",
+    "ketones",
+    "bhb",
+    "كيتونات"
+   ],
+   "analytes": [
+    {
+     "name": "BHB",
+     "unit": "mmol/L",
+     "ref": "< 0.6"
+    },
+    {
+     "name": "Beta-hydroxybutyrate",
+     "unit": "mmol/L",
+     "ref": "< 0.6"
+    }
+   ],
+   "when": null,
+   "imageIds": []
+  },
+  {
+   "id": "lft",
+   "status": "existing",
+   "ar": "وظائف الكبد",
+   "en": "Liver function tests",
+   "group": "lab",
+   "tat": 25,
+   "panel": "chem",
+   "kw": [
+    "lft",
+    "وظائف كبد",
+    "وظايف كبد",
+    "انزيمات الكبد",
+    "liver function"
+   ],
+   "analytes": [
+    {
+     "name": "ALT",
+     "unit": "U/L",
+     "ref": "7-56"
+    },
+    {
+     "name": "AST",
+     "unit": "U/L",
+     "ref": "10-40"
+    },
+    {
+     "name": "ALP",
+     "unit": "U/L",
+     "ref": "44-147"
+    },
+    {
+     "name": "Total bilirubin",
+     "unit": "mg/dL",
+     "ref": "0.1-1.2"
+    },
+    {
+     "name": "Albumin",
+     "unit": "g/dL",
+     "ref": "3.5-5.0"
+    },
+    {
+     "name": "Bilirubin",
+     "unit": "mg/dL",
+     "ref": "0.1-1.2"
+    }
+   ],
+   "when": null,
+   "imageIds": []
+  },
+  {
+   "id": "bnp",
+   "status": "existing",
+   "ar": "BNP",
+   "en": "BNP / NT-proBNP",
+   "group": "lab",
+   "tat": 25,
+   "panel": "heart",
+   "kw": [
+    "bnp",
+    "بي ان بي",
+    "nt-probnp",
+    "probnp"
+   ],
+   "analytes": [
+    {
+     "name": "NT-proBNP",
+     "unit": "pg/mL",
+     "ref": "< 125"
+    }
+   ],
+   "when": null,
+   "imageIds": []
+  },
+  {
+   "id": "ct_head",
+   "status": "existing",
+   "ar": "طبقي دماغ",
+   "en": "CT head",
+   "group": "img",
+   "tat": 15,
+   "panel": "imaging",
+   "kw": [
+    "ct head",
+    "ct brain",
+    "طبقي دماغ",
+    "طبقي للراس",
+    "طبقي راس",
+    "سي تي دماغ"
+   ],
+   "analytes": [],
+   "when": null,
+   "imageIds": []
+  },
+  {
+   "id": "ct_abdomen",
+   "status": "existing",
+   "ar": "طبقي بطن",
+   "en": "CT abdomen and pelvis",
+   "group": "img",
+   "tat": 25,
+   "panel": "imaging",
+   "kw": [
+    "ct abdomen",
+    "طبقي بطن",
+    "طبقي للبطن",
+    "سي تي بطن",
+    "ct للبطن",
+    "appendix ct",
+    "ct بطن",
+    "سي تي للبطن"
+   ],
+   "analytes": [],
+   "when": null,
+   "imageIds": []
+  },
+  {
+   "id": "xr_ankle",
+   "status": "new",
+   "ar": "أشعة كاحل",
+   "en": "Ankle X-ray",
+   "group": "img",
+   "tat": 10,
+   "panel": "imaging",
+   "kw": [
+    "ankle x-ray",
+    "ankle xray",
+    "اشعه كاحل",
+    "صوره كاحل"
+   ],
+   "analytes": [],
+   "when": "تورم أو ألم بالكاحل مع عدم القدرة على تحميل الوزن (قواعد Ottawa).",
+   "imageIds": [
+    "xr-ankle-fx"
+   ],
+   "labDependent": false,
+   "review": {
+    "status": "pending",
+    "by": null,
+    "at": null
+   }
+  },
+  {
+   "id": "xr_wrist",
+   "status": "new",
+   "ar": "أشعة معصم",
+   "en": "Wrist X-ray",
+   "group": "img",
+   "tat": 10,
+   "panel": "imaging",
+   "kw": [
+    "wrist x-ray",
+    "اشعه رسغ",
+    "اشعه معصم"
+   ],
+   "analytes": [],
+   "when": "سقوط على اليد الممدودة مع ألم وتشوه بالرسغ.",
+   "imageIds": [
+    "xr-wrist-colles"
+   ],
+   "labDependent": false,
+   "review": {
+    "status": "pending",
+    "by": null,
+    "at": null
+   }
+  },
+  {
+   "id": "xr_forearm",
+   "status": "new",
+   "ar": "أشعة ساعد",
+   "en": "Forearm X-ray",
+   "group": "img",
+   "tat": 10,
+   "panel": "imaging",
+   "kw": [
+    "forearm x-ray",
+    "اشعه زند",
+    "اشعه ساعد"
+   ],
+   "analytes": [],
+   "when": "تشوه أو ألم بالساعد بعد إصابة.",
+   "imageIds": [
+    "xr-forearm-both"
+   ],
+   "labDependent": false,
+   "review": {
+    "status": "pending",
+    "by": null,
+    "at": null
+   }
+  },
+  {
+   "id": "xr_pelvis",
+   "status": "new",
+   "ar": "أشعة حوض",
+   "en": "Pelvis X-ray",
+   "group": "img",
+   "tat": 10,
+   "panel": "imaging",
+   "kw": [
+    "hip x-ray",
+    "pelvis x-ray",
+    "اشعه حوض",
+    "اشعه ورك"
+   ],
+   "analytes": [],
+   "when": "سقوط عند مسن مع ألم بالورك وعدم القدرة على المشي.",
+   "imageIds": [
+    "xr-hip-neck-fx"
+   ],
+   "labDependent": false,
+   "review": {
+    "status": "pending",
+    "by": null,
+    "at": null
+   }
+  },
+  {
+   "id": "xr_tibia",
+   "status": "new",
+   "ar": "أشعة ساق",
+   "en": "Tibia and fibula X-ray",
+   "group": "img",
+   "tat": 10,
+   "panel": "imaging",
+   "kw": [
+    "leg x-ray",
+    "tibia x-ray",
+    "اشعه ساق",
+    "اشعه قصبه"
+   ],
+   "analytes": [],
+   "when": "ألم وتورم بالساق بعد صدمة.",
+   "imageIds": [
+    "xr-tibia-fibula"
+   ],
+   "labDependent": false,
+   "review": {
+    "status": "pending",
+    "by": null,
+    "at": null
+   }
+  },
+  {
+   "id": "xr_shoulder",
+   "status": "new",
+   "ar": "أشعة كتف",
+   "en": "Shoulder X-ray",
+   "group": "img",
+   "tat": 10,
+   "panel": "imaging",
+   "kw": [
+    "shoulder x-ray",
+    "اشعه كتف"
+   ],
+   "analytes": [],
+   "when": "ألم بالكتف بعد سقوط، أو شك بخلع.",
+   "imageIds": [
+    "xr-shoulder-dislocation"
+   ],
+   "labDependent": false,
+   "review": {
+    "status": "pending",
+    "by": null,
+    "at": null
+   }
+  },
+  {
+   "id": "xr_abdo",
+   "status": "new",
+   "ar": "أشعة بطن واقفاً",
+   "en": "Erect abdominal / chest X-ray",
+   "group": "img",
+   "tat": 10,
+   "panel": "imaging",
+   "kw": [
+    "abdominal x-ray",
+    "erect x-ray",
+    "اشعه بطن",
+    "اشعه بطن واقف",
+    "اشعه بطن واقفا"
+   ],
+   "analytes": [],
+   "when": "بطن حاد مع شك بثقب بالجهاز الهضمي.",
+   "imageIds": [
+    "xr-abdo-free-air"
+   ],
+   "labDependent": false,
+   "review": {
+    "status": "pending",
+    "by": null,
+    "at": null
+   }
+  },
+  {
+   "id": "doppler_leg",
+   "status": "new",
+   "ar": "دوبلر وريدي للساق",
+   "en": "Leg venous duplex ultrasound",
+   "group": "img",
+   "tat": 25,
+   "panel": "imaging",
+   "kw": [
+    "doppler",
+    "duplex",
+    "دوبلر",
+    "دوبلر الساق",
+    "دوبلر وريدي للساق",
+    "سونار الساق"
+   ],
+   "analytes": [],
+   "when": "ساق واحدة متورمة وتؤلم عند الضغط على السمانة، لاستبعاد جلطة الوريد العميق.",
+   "imageIds": [],
+   "labDependent": false,
+   "review": {
+    "status": "pending",
+    "by": null,
+    "at": null
+   }
+  },
+  {
+   "id": "esr",
+   "status": "new",
+   "ar": "سرعة الترسيب",
+   "en": "ESR",
+   "group": "lab",
+   "tat": 20,
+   "panel": "blood",
+   "kw": [
+    "esr",
+    "ترسيب",
+    "سرعه الترسيب"
+   ],
+   "analytes": [
+    {
+     "name": "ESR",
+     "unit": "mm/hr",
+     "ref": "men < 15, women < 20"
+    }
+   ],
+   "when": "التهاب مزمن أو مفاصل أو ألم كتف مع حرارة. غير نوعي.",
+   "imageIds": [],
+   "labDependent": true,
+   "review": {
+    "status": "pending",
+    "by": null,
+    "at": null
+   }
+  },
+  {
+   "id": "ck",
+   "status": "new",
+   "ar": "إنزيم CK",
+   "en": "Creatine kinase",
+   "group": "lab",
+   "tat": 25,
+   "panel": "chem",
+   "kw": [
+    "ck",
+    "cpk",
+    "انزيم ck",
+    "انزيم العضلات"
+   ],
+   "analytes": [
+    {
+     "name": "CK",
+     "unit": "U/L",
+     "ref": "men 39-308, women 26-192"
+    }
+   ],
+   "when": "رض عضلي شديد أو انحلال عضلات بعد صدمة طويلة.",
+   "imageIds": [],
+   "labDependent": true,
+   "review": {
+    "status": "pending",
+    "by": null,
+    "at": null
+   }
+  },
+  {
+   "id": "uric",
+   "status": "new",
+   "ar": "حمض اليوريك",
+   "en": "Serum uric acid",
+   "group": "lab",
+   "tat": 20,
+   "panel": "chem",
+   "kw": [
+    "gout",
+    "uric acid",
+    "حمض اليوريك",
+    "يوريك"
+   ],
+   "analytes": [
+    {
+     "name": "Uric acid",
+     "unit": "mg/dL",
+     "ref": "men 3.4-7.0, women 2.4-6.0"
+    }
+   ],
+   "when": "التهاب مفصل حاد بشك نقرس. طبيعي لا ينفي النقرس أثناء النوبة.",
+   "imageIds": [],
+   "labDependent": true,
+   "review": {
+    "status": "pending",
+    "by": null,
+    "at": null
+   }
+  },
+  {
+   "id": "ferritin",
+   "status": "new",
+   "ar": "الحديد والفيريتين",
+   "en": "Iron studies and ferritin",
+   "group": "lab",
+   "tat": 30,
+   "panel": "blood",
+   "kw": [
+    "ferritin",
+    "iron",
+    "الحديد والفيريتين",
+    "حديد",
+    "فيريتين"
+   ],
+   "analytes": [
+    {
+     "name": "Ferritin",
+     "unit": "ng/mL",
+     "ref": "women 15-150, men 30-400"
+    },
+    {
+     "name": "Iron",
+     "unit": "ug/dL",
+     "ref": "60-170"
+    },
+    {
+     "name": "TIBC",
+     "unit": "ug/dL",
+     "ref": "240-450"
+    }
+   ],
+   "when": "شحوب أو تعب مع Hb منخفض لتحديد السبب.",
+   "imageIds": [],
+   "labDependent": true,
+   "review": {
+    "status": "pending",
+    "by": null,
+    "at": null
+   }
+  },
+  {
+   "id": "strep_rapid",
+   "status": "new",
+   "ar": "مسحة حلق سريعة",
+   "en": "Rapid strep antigen (throat swab)",
+   "group": "lab",
+   "tat": 15,
+   "panel": "other",
+   "kw": [
+    "rapid strep",
+    "strep",
+    "ستربتوكوك",
+    "فحص حلق",
+    "مسحه حلق",
+    "مسحه حلق سريعه"
+   ],
+   "analytes": [
+    {
+     "name": "Group A Streptococcus antigen",
+     "unit": "",
+     "ref": "Negative"
+    }
+   ],
+   "when": "التهاب حلق بحرارة وبدون سعال (معايير Centor).",
+   "imageIds": [],
+   "labDependent": true,
+   "review": {
+    "status": "pending",
+    "by": null,
+    "at": null
+   }
+  },
+  {
+   "id": "wound_swab",
+   "status": "new",
+   "ar": "مسحة جرح",
+   "en": "Wound swab culture",
+   "group": "lab",
+   "tat": 45,
+   "panel": "other",
+   "kw": [
+    "wound culture",
+    "wound swab",
+    "زراعه جرح",
+    "مسحه جرح"
+   ],
+   "analytes": [
+    {
+     "name": "Gram stain",
+     "unit": "",
+     "ref": "No organisms"
+    },
+    {
+     "name": "Culture",
+     "unit": "",
+     "ref": "No growth"
+    }
+   ],
+   "when": "جرح محمر ومتقيح أو قدم السكري المصابة.",
+   "imageIds": [],
+   "labDependent": true,
+   "review": {
+    "status": "pending",
+    "by": null,
+    "at": null
+   }
+  },
+  {
+   "id": "joint_fluid",
+   "status": "new",
+   "ar": "بزل المفصل",
+   "en": "Joint aspiration (synovial fluid)",
+   "group": "lab",
+   "tat": 40,
+   "panel": "other",
+   "kw": [
+    "arthrocentesis",
+    "joint aspiration",
+    "synovial fluid",
+    "بزل المفصل",
+    "بزل مفصل",
+    "سائل المفصل"
+   ],
+   "analytes": [
+    {
+     "name": "WBC (synovial)",
+     "unit": "cells/uL",
+     "ref": "< 200"
+    },
+    {
+     "name": "Crystals",
+     "unit": "",
+     "ref": "None"
+    },
+    {
+     "name": "Gram stain",
+     "unit": "",
+     "ref": "No organisms"
+    },
+    {
+     "name": "Culture",
+     "unit": "",
+     "ref": "No growth"
+    }
+   ],
+   "when": "مفصل ساخن ومنفوخ: استبعاد التهاب المفصل الجرثومي قبل أي تشخيص آخر.",
+   "imageIds": [],
+   "labDependent": true,
+   "review": {
+    "status": "pending",
+    "by": null,
+    "at": null
+   }
+  }
+ ],
+ "trainingPairs": [
+  {
+   "text": "بدي صورة صدر",
+   "lang": "ar",
+   "intent": "order_test",
+   "testId": "cxr",
+   "norm": "بدي صوره صدر"
+  },
+  {
+   "text": "اطلب صورة صدر",
+   "lang": "ar",
+   "intent": "order_test",
+   "testId": "cxr",
+   "norm": "اطلب صوره صدر"
+  },
+  {
+   "text": "خلي المريض يعمل صورة صدر",
+   "lang": "ar",
+   "intent": "order_test",
+   "testId": "cxr",
+   "norm": "خلي المريض يعمل صوره صدر"
+  },
+  {
+   "text": "لازم نعمل صورة صدر",
+   "lang": "ar",
+   "intent": "order_test",
+   "testId": "cxr",
+   "norm": "لازم نعمل صوره صدر"
+  },
+  {
+   "text": "نعمل صورة صدر لو سمحت",
+   "lang": "ar",
+   "intent": "order_test",
+   "testId": "cxr",
+   "norm": "نعمل صوره صدر لو سمحت"
+  },
+  {
+   "text": "ابعتوا صورة صدر",
+   "lang": "ar",
+   "intent": "order_test",
+   "testId": "cxr",
+   "norm": "ابعتوا صوره صدر"
+  },
+  {
+   "text": "order a Chest X-ray",
+   "lang": "en",
+   "intent": "order_test",
+   "testId": "cxr",
+   "norm": "order a chest x-ray"
+  },
+  {
+   "text": "I want a Chest X-ray",
+   "lang": "en",
+   "intent": "order_test",
+   "testId": "cxr",
+   "norm": "i want a chest x-ray"
+  },
+  {
+   "text": "get a Chest X-ray",
+   "lang": "en",
+   "intent": "order_test",
+   "testId": "cxr",
+   "norm": "get a chest x-ray"
+  },
+  {
+   "text": "let's do a Chest X-ray",
+   "lang": "en",
+   "intent": "order_test",
+   "testId": "cxr",
+   "norm": "let's do a chest x-ray"
+  },
+  {
+   "text": "بدي طبقي شرايين الرئة",
+   "lang": "ar",
+   "intent": "order_test",
+   "testId": "ctpa",
+   "norm": "بدي طبقي شرايين الرئه"
+  },
+  {
+   "text": "اطلب طبقي شرايين الرئة",
+   "lang": "ar",
+   "intent": "order_test",
+   "testId": "ctpa",
+   "norm": "اطلب طبقي شرايين الرئه"
+  },
+  {
+   "text": "خلي المريض يعمل طبقي شرايين الرئة",
+   "lang": "ar",
+   "intent": "order_test",
+   "testId": "ctpa",
+   "norm": "خلي المريض يعمل طبقي شرايين الرئه"
+  },
+  {
+   "text": "لازم نعمل طبقي شرايين الرئة",
+   "lang": "ar",
+   "intent": "order_test",
+   "testId": "ctpa",
+   "norm": "لازم نعمل طبقي شرايين الرئه"
+  },
+  {
+   "text": "نعمل طبقي شرايين الرئة لو سمحت",
+   "lang": "ar",
+   "intent": "order_test",
+   "testId": "ctpa",
+   "norm": "نعمل طبقي شرايين الرئه لو سمحت"
+  },
+  {
+   "text": "ابعتوا طبقي شرايين الرئة",
+   "lang": "ar",
+   "intent": "order_test",
+   "testId": "ctpa",
+   "norm": "ابعتوا طبقي شرايين الرئه"
+  },
+  {
+   "text": "order a CT pulmonary angiogram",
+   "lang": "en",
+   "intent": "order_test",
+   "testId": "ctpa",
+   "norm": "order a ct pulmonary angiogram"
+  },
+  {
+   "text": "I want a CT pulmonary angiogram",
+   "lang": "en",
+   "intent": "order_test",
+   "testId": "ctpa",
+   "norm": "i want a ct pulmonary angiogram"
+  },
+  {
+   "text": "get a CT pulmonary angiogram",
+   "lang": "en",
+   "intent": "order_test",
+   "testId": "ctpa",
+   "norm": "get a ct pulmonary angiogram"
+  },
+  {
+   "text": "let's do a CT pulmonary angiogram",
+   "lang": "en",
+   "intent": "order_test",
+   "testId": "ctpa",
+   "norm": "let's do a ct pulmonary angiogram"
+  },
+  {
+   "text": "بدي إيكو بجانب السرير",
+   "lang": "ar",
+   "intent": "order_test",
+   "testId": "pocus",
+   "norm": "بدي ايكو بجانب السرير"
+  },
+  {
+   "text": "اطلب إيكو بجانب السرير",
+   "lang": "ar",
+   "intent": "order_test",
+   "testId": "pocus",
+   "norm": "اطلب ايكو بجانب السرير"
+  },
+  {
+   "text": "خلي المريض يعمل إيكو بجانب السرير",
+   "lang": "ar",
+   "intent": "order_test",
+   "testId": "pocus",
+   "norm": "خلي المريض يعمل ايكو بجانب السرير"
+  },
+  {
+   "text": "لازم نعمل إيكو بجانب السرير",
+   "lang": "ar",
+   "intent": "order_test",
+   "testId": "pocus",
+   "norm": "لازم نعمل ايكو بجانب السرير"
+  },
+  {
+   "text": "نعمل إيكو بجانب السرير لو سمحت",
+   "lang": "ar",
+   "intent": "order_test",
+   "testId": "pocus",
+   "norm": "نعمل ايكو بجانب السرير لو سمحت"
+  },
+  {
+   "text": "ابعتوا إيكو بجانب السرير",
+   "lang": "ar",
+   "intent": "order_test",
+   "testId": "pocus",
+   "norm": "ابعتوا ايكو بجانب السرير"
+  },
+  {
+   "text": "order a Bedside ultrasound (POCUS)",
+   "lang": "en",
+   "intent": "order_test",
+   "testId": "pocus",
+   "norm": "order a bedside ultrasound (pocus)"
+  },
+  {
+   "text": "I want a Bedside ultrasound (POCUS)",
+   "lang": "en",
+   "intent": "order_test",
+   "testId": "pocus",
+   "norm": "i want a bedside ultrasound (pocus)"
+  },
+  {
+   "text": "get a Bedside ultrasound (POCUS)",
+   "lang": "en",
+   "intent": "order_test",
+   "testId": "pocus",
+   "norm": "get a bedside ultrasound (pocus)"
+  },
+  {
+   "text": "let's do a Bedside ultrasound (POCUS)",
+   "lang": "en",
+   "intent": "order_test",
+   "testId": "pocus",
+   "norm": "let's do a bedside ultrasound (pocus)"
+  },
+  {
+   "text": "بدي تخطيط قلب",
+   "lang": "ar",
+   "intent": "order_test",
+   "testId": "ecg",
+   "norm": "بدي تخطيط قلب"
+  },
+  {
+   "text": "اطلب تخطيط قلب",
+   "lang": "ar",
+   "intent": "order_test",
+   "testId": "ecg",
+   "norm": "اطلب تخطيط قلب"
+  },
+  {
+   "text": "خلي المريض يعمل تخطيط قلب",
+   "lang": "ar",
+   "intent": "order_test",
+   "testId": "ecg",
+   "norm": "خلي المريض يعمل تخطيط قلب"
+  },
+  {
+   "text": "لازم نعمل تخطيط قلب",
+   "lang": "ar",
+   "intent": "order_test",
+   "testId": "ecg",
+   "norm": "لازم نعمل تخطيط قلب"
+  },
+  {
+   "text": "نعمل تخطيط قلب لو سمحت",
+   "lang": "ar",
+   "intent": "order_test",
+   "testId": "ecg",
+   "norm": "نعمل تخطيط قلب لو سمحت"
+  },
+  {
+   "text": "ابعتوا تخطيط قلب",
+   "lang": "ar",
+   "intent": "order_test",
+   "testId": "ecg",
+   "norm": "ابعتوا تخطيط قلب"
+  },
+  {
+   "text": "order a 12-lead ECG",
+   "lang": "en",
+   "intent": "order_test",
+   "testId": "ecg",
+   "norm": "order a 12-lead ecg"
+  },
+  {
+   "text": "I want a 12-lead ECG",
+   "lang": "en",
+   "intent": "order_test",
+   "testId": "ecg",
+   "norm": "i want a 12-lead ecg"
+  },
+  {
+   "text": "get a 12-lead ECG",
+   "lang": "en",
+   "intent": "order_test",
+   "testId": "ecg",
+   "norm": "get a 12-lead ecg"
+  },
+  {
+   "text": "let's do a 12-lead ECG",
+   "lang": "en",
+   "intent": "order_test",
+   "testId": "ecg",
+   "norm": "let's do a 12-lead ecg"
+  },
+  {
+   "text": "بدي غازات الدم",
+   "lang": "ar",
+   "intent": "order_test",
+   "testId": "abg",
+   "norm": "بدي غازات الدم"
+  },
+  {
+   "text": "اطلب غازات الدم",
+   "lang": "ar",
+   "intent": "order_test",
+   "testId": "abg",
+   "norm": "اطلب غازات الدم"
+  },
+  {
+   "text": "خلي المريض يعمل غازات الدم",
+   "lang": "ar",
+   "intent": "order_test",
+   "testId": "abg",
+   "norm": "خلي المريض يعمل غازات الدم"
+  },
+  {
+   "text": "لازم نعمل غازات الدم",
+   "lang": "ar",
+   "intent": "order_test",
+   "testId": "abg",
+   "norm": "لازم نعمل غازات الدم"
+  },
+  {
+   "text": "نعمل غازات الدم لو سمحت",
+   "lang": "ar",
+   "intent": "order_test",
+   "testId": "abg",
+   "norm": "نعمل غازات الدم لو سمحت"
+  },
+  {
+   "text": "ابعتوا غازات الدم",
+   "lang": "ar",
+   "intent": "order_test",
+   "testId": "abg",
+   "norm": "ابعتوا غازات الدم"
+  },
+  {
+   "text": "order a Arterial blood gas",
+   "lang": "en",
+   "intent": "order_test",
+   "testId": "abg",
+   "norm": "order a arterial blood gas"
+  },
+  {
+   "text": "I want a Arterial blood gas",
+   "lang": "en",
+   "intent": "order_test",
+   "testId": "abg",
+   "norm": "i want a arterial blood gas"
+  },
+  {
+   "text": "get a Arterial blood gas",
+   "lang": "en",
+   "intent": "order_test",
+   "testId": "abg",
+   "norm": "get a arterial blood gas"
+  },
+  {
+   "text": "let's do a Arterial blood gas",
+   "lang": "en",
+   "intent": "order_test",
+   "testId": "abg",
+   "norm": "let's do a arterial blood gas"
+  },
+  {
+   "text": "بدي ذروة الجريان",
+   "lang": "ar",
+   "intent": "order_test",
+   "testId": "peak_flow",
+   "norm": "بدي ذروه الجريان"
+  },
+  {
+   "text": "اطلب ذروة الجريان",
+   "lang": "ar",
+   "intent": "order_test",
+   "testId": "peak_flow",
+   "norm": "اطلب ذروه الجريان"
+  },
+  {
+   "text": "خلي المريض يعمل ذروة الجريان",
+   "lang": "ar",
+   "intent": "order_test",
+   "testId": "peak_flow",
+   "norm": "خلي المريض يعمل ذروه الجريان"
+  },
+  {
+   "text": "لازم نعمل ذروة الجريان",
+   "lang": "ar",
+   "intent": "order_test",
+   "testId": "peak_flow",
+   "norm": "لازم نعمل ذروه الجريان"
+  },
+  {
+   "text": "نعمل ذروة الجريان لو سمحت",
+   "lang": "ar",
+   "intent": "order_test",
+   "testId": "peak_flow",
+   "norm": "نعمل ذروه الجريان لو سمحت"
+  },
+  {
+   "text": "ابعتوا ذروة الجريان",
+   "lang": "ar",
+   "intent": "order_test",
+   "testId": "peak_flow",
+   "norm": "ابعتوا ذروه الجريان"
+  },
+  {
+   "text": "order a Peak expiratory flow",
+   "lang": "en",
+   "intent": "order_test",
+   "testId": "peak_flow",
+   "norm": "order a peak expiratory flow"
+  },
+  {
+   "text": "I want a Peak expiratory flow",
+   "lang": "en",
+   "intent": "order_test",
+   "testId": "peak_flow",
+   "norm": "i want a peak expiratory flow"
+  },
+  {
+   "text": "get a Peak expiratory flow",
+   "lang": "en",
+   "intent": "order_test",
+   "testId": "peak_flow",
+   "norm": "get a peak expiratory flow"
+  },
+  {
+   "text": "let's do a Peak expiratory flow",
+   "lang": "en",
+   "intent": "order_test",
+   "testId": "peak_flow",
+   "norm": "let's do a peak expiratory flow"
+  },
+  {
+   "text": "بدي سكر الدم",
+   "lang": "ar",
+   "intent": "order_test",
+   "testId": "glucose",
+   "norm": "بدي سكر الدم"
+  },
+  {
+   "text": "اطلب سكر الدم",
+   "lang": "ar",
+   "intent": "order_test",
+   "testId": "glucose",
+   "norm": "اطلب سكر الدم"
+  },
+  {
+   "text": "خلي المريض يعمل سكر الدم",
+   "lang": "ar",
+   "intent": "order_test",
+   "testId": "glucose",
+   "norm": "خلي المريض يعمل سكر الدم"
+  },
+  {
+   "text": "لازم نعمل سكر الدم",
+   "lang": "ar",
+   "intent": "order_test",
+   "testId": "glucose",
+   "norm": "لازم نعمل سكر الدم"
+  },
+  {
+   "text": "نعمل سكر الدم لو سمحت",
+   "lang": "ar",
+   "intent": "order_test",
+   "testId": "glucose",
+   "norm": "نعمل سكر الدم لو سمحت"
+  },
+  {
+   "text": "ابعتوا سكر الدم",
+   "lang": "ar",
+   "intent": "order_test",
+   "testId": "glucose",
+   "norm": "ابعتوا سكر الدم"
+  },
+  {
+   "text": "order a Capillary glucose",
+   "lang": "en",
+   "intent": "order_test",
+   "testId": "glucose",
+   "norm": "order a capillary glucose"
+  },
+  {
+   "text": "I want a Capillary glucose",
+   "lang": "en",
+   "intent": "order_test",
+   "testId": "glucose",
+   "norm": "i want a capillary glucose"
+  },
+  {
+   "text": "get a Capillary glucose",
+   "lang": "en",
+   "intent": "order_test",
+   "testId": "glucose",
+   "norm": "get a capillary glucose"
+  },
+  {
+   "text": "let's do a Capillary glucose",
+   "lang": "en",
+   "intent": "order_test",
+   "testId": "glucose",
+   "norm": "let's do a capillary glucose"
+  },
+  {
+   "text": "بدي تعداد دم",
+   "lang": "ar",
+   "intent": "order_test",
+   "testId": "cbc",
+   "norm": "بدي تعداد دم"
+  },
+  {
+   "text": "اطلب تعداد دم",
+   "lang": "ar",
+   "intent": "order_test",
+   "testId": "cbc",
+   "norm": "اطلب تعداد دم"
+  },
+  {
+   "text": "خلي المريض يعمل تعداد دم",
+   "lang": "ar",
+   "intent": "order_test",
+   "testId": "cbc",
+   "norm": "خلي المريض يعمل تعداد دم"
+  },
+  {
+   "text": "لازم نعمل تعداد دم",
+   "lang": "ar",
+   "intent": "order_test",
+   "testId": "cbc",
+   "norm": "لازم نعمل تعداد دم"
+  },
+  {
+   "text": "نعمل تعداد دم لو سمحت",
+   "lang": "ar",
+   "intent": "order_test",
+   "testId": "cbc",
+   "norm": "نعمل تعداد دم لو سمحت"
+  },
+  {
+   "text": "ابعتوا تعداد دم",
+   "lang": "ar",
+   "intent": "order_test",
+   "testId": "cbc",
+   "norm": "ابعتوا تعداد دم"
+  },
+  {
+   "text": "order a CBC",
+   "lang": "en",
+   "intent": "order_test",
+   "testId": "cbc",
+   "norm": "order a cbc"
+  },
+  {
+   "text": "I want a CBC",
+   "lang": "en",
+   "intent": "order_test",
+   "testId": "cbc",
+   "norm": "i want a cbc"
+  },
+  {
+   "text": "get a CBC",
+   "lang": "en",
+   "intent": "order_test",
+   "testId": "cbc",
+   "norm": "get a cbc"
+  },
+  {
+   "text": "let's do a CBC",
+   "lang": "en",
+   "intent": "order_test",
+   "testId": "cbc",
+   "norm": "let's do a cbc"
+  },
+  {
+   "text": "بدي مؤشرات الالتهاب",
+   "lang": "ar",
+   "intent": "order_test",
+   "testId": "crp",
+   "norm": "بدي مؤشرات الالتهاب"
+  },
+  {
+   "text": "اطلب مؤشرات الالتهاب",
+   "lang": "ar",
+   "intent": "order_test",
+   "testId": "crp",
+   "norm": "اطلب مؤشرات الالتهاب"
+  },
+  {
+   "text": "خلي المريض يعمل مؤشرات الالتهاب",
+   "lang": "ar",
+   "intent": "order_test",
+   "testId": "crp",
+   "norm": "خلي المريض يعمل مؤشرات الالتهاب"
+  },
+  {
+   "text": "لازم نعمل مؤشرات الالتهاب",
+   "lang": "ar",
+   "intent": "order_test",
+   "testId": "crp",
+   "norm": "لازم نعمل مؤشرات الالتهاب"
+  },
+  {
+   "text": "نعمل مؤشرات الالتهاب لو سمحت",
+   "lang": "ar",
+   "intent": "order_test",
+   "testId": "crp",
+   "norm": "نعمل مؤشرات الالتهاب لو سمحت"
+  },
+  {
+   "text": "ابعتوا مؤشرات الالتهاب",
+   "lang": "ar",
+   "intent": "order_test",
+   "testId": "crp",
+   "norm": "ابعتوا مؤشرات الالتهاب"
+  },
+  {
+   "text": "order a CRP",
+   "lang": "en",
+   "intent": "order_test",
+   "testId": "crp",
+   "norm": "order a crp"
+  },
+  {
+   "text": "I want a CRP",
+   "lang": "en",
+   "intent": "order_test",
+   "testId": "crp",
+   "norm": "i want a crp"
+  },
+  {
+   "text": "get a CRP",
+   "lang": "en",
+   "intent": "order_test",
+   "testId": "crp",
+   "norm": "get a crp"
+  },
+  {
+   "text": "let's do a CRP",
+   "lang": "en",
+   "intent": "order_test",
+   "testId": "crp",
+   "norm": "let's do a crp"
+  },
+  {
+   "text": "بدي وظائف الكلى والأملاح",
+   "lang": "ar",
+   "intent": "order_test",
+   "testId": "kft",
+   "norm": "بدي وظائف الكلي والاملاح"
+  },
+  {
+   "text": "اطلب وظائف الكلى والأملاح",
+   "lang": "ar",
+   "intent": "order_test",
+   "testId": "kft",
+   "norm": "اطلب وظائف الكلي والاملاح"
+  },
+  {
+   "text": "خلي المريض يعمل وظائف الكلى والأملاح",
+   "lang": "ar",
+   "intent": "order_test",
+   "testId": "kft",
+   "norm": "خلي المريض يعمل وظائف الكلي والاملاح"
+  },
+  {
+   "text": "لازم نعمل وظائف الكلى والأملاح",
+   "lang": "ar",
+   "intent": "order_test",
+   "testId": "kft",
+   "norm": "لازم نعمل وظائف الكلي والاملاح"
+  },
+  {
+   "text": "نعمل وظائف الكلى والأملاح لو سمحت",
+   "lang": "ar",
+   "intent": "order_test",
+   "testId": "kft",
+   "norm": "نعمل وظائف الكلي والاملاح لو سمحت"
+  },
+  {
+   "text": "ابعتوا وظائف الكلى والأملاح",
+   "lang": "ar",
+   "intent": "order_test",
+   "testId": "kft",
+   "norm": "ابعتوا وظائف الكلي والاملاح"
+  },
+  {
+   "text": "order a Urea, creatinine, electrolytes",
+   "lang": "en",
+   "intent": "order_test",
+   "testId": "kft",
+   "norm": "order a urea, creatinine, electrolytes"
+  },
+  {
+   "text": "I want a Urea, creatinine, electrolytes",
+   "lang": "en",
+   "intent": "order_test",
+   "testId": "kft",
+   "norm": "i want a urea, creatinine, electrolytes"
+  },
+  {
+   "text": "get a Urea, creatinine, electrolytes",
+   "lang": "en",
+   "intent": "order_test",
+   "testId": "kft",
+   "norm": "get a urea, creatinine, electrolytes"
+  },
+  {
+   "text": "let's do a Urea, creatinine, electrolytes",
+   "lang": "en",
+   "intent": "order_test",
+   "testId": "kft",
+   "norm": "let's do a urea, creatinine, electrolytes"
+  },
+  {
+   "text": "بدي اللاكتات",
+   "lang": "ar",
+   "intent": "order_test",
+   "testId": "lactate",
+   "norm": "بدي اللاكتات"
+  },
+  {
+   "text": "اطلب اللاكتات",
+   "lang": "ar",
+   "intent": "order_test",
+   "testId": "lactate",
+   "norm": "اطلب اللاكتات"
+  },
+  {
+   "text": "خلي المريض يعمل اللاكتات",
+   "lang": "ar",
+   "intent": "order_test",
+   "testId": "lactate",
+   "norm": "خلي المريض يعمل اللاكتات"
+  },
+  {
+   "text": "لازم نعمل اللاكتات",
+   "lang": "ar",
+   "intent": "order_test",
+   "testId": "lactate",
+   "norm": "لازم نعمل اللاكتات"
+  },
+  {
+   "text": "نعمل اللاكتات لو سمحت",
+   "lang": "ar",
+   "intent": "order_test",
+   "testId": "lactate",
+   "norm": "نعمل اللاكتات لو سمحت"
+  },
+  {
+   "text": "ابعتوا اللاكتات",
+   "lang": "ar",
+   "intent": "order_test",
+   "testId": "lactate",
+   "norm": "ابعتوا اللاكتات"
+  },
+  {
+   "text": "order a Lactate",
+   "lang": "en",
+   "intent": "order_test",
+   "testId": "lactate",
+   "norm": "order a lactate"
+  },
+  {
+   "text": "I want a Lactate",
+   "lang": "en",
+   "intent": "order_test",
+   "testId": "lactate",
+   "norm": "i want a lactate"
+  },
+  {
+   "text": "get a Lactate",
+   "lang": "en",
+   "intent": "order_test",
+   "testId": "lactate",
+   "norm": "get a lactate"
+  },
+  {
+   "text": "let's do a Lactate",
+   "lang": "en",
+   "intent": "order_test",
+   "testId": "lactate",
+   "norm": "let's do a lactate"
+  },
+  {
+   "text": "بدي تروبونين",
+   "lang": "ar",
+   "intent": "order_test",
+   "testId": "troponin",
+   "norm": "بدي تروبونين"
+  },
+  {
+   "text": "اطلب تروبونين",
+   "lang": "ar",
+   "intent": "order_test",
+   "testId": "troponin",
+   "norm": "اطلب تروبونين"
+  },
+  {
+   "text": "خلي المريض يعمل تروبونين",
+   "lang": "ar",
+   "intent": "order_test",
+   "testId": "troponin",
+   "norm": "خلي المريض يعمل تروبونين"
+  },
+  {
+   "text": "لازم نعمل تروبونين",
+   "lang": "ar",
+   "intent": "order_test",
+   "testId": "troponin",
+   "norm": "لازم نعمل تروبونين"
+  },
+  {
+   "text": "نعمل تروبونين لو سمحت",
+   "lang": "ar",
+   "intent": "order_test",
+   "testId": "troponin",
+   "norm": "نعمل تروبونين لو سمحت"
+  },
+  {
+   "text": "ابعتوا تروبونين",
+   "lang": "ar",
+   "intent": "order_test",
+   "testId": "troponin",
+   "norm": "ابعتوا تروبونين"
+  },
+  {
+   "text": "order a High-sensitivity troponin",
+   "lang": "en",
+   "intent": "order_test",
+   "testId": "troponin",
+   "norm": "order a high-sensitivity troponin"
+  },
+  {
+   "text": "I want a High-sensitivity troponin",
+   "lang": "en",
+   "intent": "order_test",
+   "testId": "troponin",
+   "norm": "i want a high-sensitivity troponin"
+  },
+  {
+   "text": "get a High-sensitivity troponin",
+   "lang": "en",
+   "intent": "order_test",
+   "testId": "troponin",
+   "norm": "get a high-sensitivity troponin"
+  },
+  {
+   "text": "let's do a High-sensitivity troponin",
+   "lang": "en",
+   "intent": "order_test",
+   "testId": "troponin",
+   "norm": "let's do a high-sensitivity troponin"
+  },
+  {
+   "text": "بدي دي دايمر",
+   "lang": "ar",
+   "intent": "order_test",
+   "testId": "ddimer",
+   "norm": "بدي دي دايمر"
+  },
+  {
+   "text": "اطلب دي دايمر",
+   "lang": "ar",
+   "intent": "order_test",
+   "testId": "ddimer",
+   "norm": "اطلب دي دايمر"
+  },
+  {
+   "text": "خلي المريض يعمل دي دايمر",
+   "lang": "ar",
+   "intent": "order_test",
+   "testId": "ddimer",
+   "norm": "خلي المريض يعمل دي دايمر"
+  },
+  {
+   "text": "لازم نعمل دي دايمر",
+   "lang": "ar",
+   "intent": "order_test",
+   "testId": "ddimer",
+   "norm": "لازم نعمل دي دايمر"
+  },
+  {
+   "text": "نعمل دي دايمر لو سمحت",
+   "lang": "ar",
+   "intent": "order_test",
+   "testId": "ddimer",
+   "norm": "نعمل دي دايمر لو سمحت"
+  },
+  {
+   "text": "ابعتوا دي دايمر",
+   "lang": "ar",
+   "intent": "order_test",
+   "testId": "ddimer",
+   "norm": "ابعتوا دي دايمر"
+  },
+  {
+   "text": "order a D-dimer",
+   "lang": "en",
+   "intent": "order_test",
+   "testId": "ddimer",
+   "norm": "order a d-dimer"
+  },
+  {
+   "text": "I want a D-dimer",
+   "lang": "en",
+   "intent": "order_test",
+   "testId": "ddimer",
+   "norm": "i want a d-dimer"
+  },
+  {
+   "text": "get a D-dimer",
+   "lang": "en",
+   "intent": "order_test",
+   "testId": "ddimer",
+   "norm": "get a d-dimer"
+  },
+  {
+   "text": "let's do a D-dimer",
+   "lang": "en",
+   "intent": "order_test",
+   "testId": "ddimer",
+   "norm": "let's do a d-dimer"
+  },
+  {
+   "text": "بدي تخثر الدم",
+   "lang": "ar",
+   "intent": "order_test",
+   "testId": "coag",
+   "norm": "بدي تخثر الدم"
+  },
+  {
+   "text": "اطلب تخثر الدم",
+   "lang": "ar",
+   "intent": "order_test",
+   "testId": "coag",
+   "norm": "اطلب تخثر الدم"
+  },
+  {
+   "text": "خلي المريض يعمل تخثر الدم",
+   "lang": "ar",
+   "intent": "order_test",
+   "testId": "coag",
+   "norm": "خلي المريض يعمل تخثر الدم"
+  },
+  {
+   "text": "لازم نعمل تخثر الدم",
+   "lang": "ar",
+   "intent": "order_test",
+   "testId": "coag",
+   "norm": "لازم نعمل تخثر الدم"
+  },
+  {
+   "text": "نعمل تخثر الدم لو سمحت",
+   "lang": "ar",
+   "intent": "order_test",
+   "testId": "coag",
+   "norm": "نعمل تخثر الدم لو سمحت"
+  },
+  {
+   "text": "ابعتوا تخثر الدم",
+   "lang": "ar",
+   "intent": "order_test",
+   "testId": "coag",
+   "norm": "ابعتوا تخثر الدم"
+  },
+  {
+   "text": "order a PT / aPTT / INR",
+   "lang": "en",
+   "intent": "order_test",
+   "testId": "coag",
+   "norm": "order a pt / aptt / inr"
+  },
+  {
+   "text": "I want a PT / aPTT / INR",
+   "lang": "en",
+   "intent": "order_test",
+   "testId": "coag",
+   "norm": "i want a pt / aptt / inr"
+  },
+  {
+   "text": "get a PT / aPTT / INR",
+   "lang": "en",
+   "intent": "order_test",
+   "testId": "coag",
+   "norm": "get a pt / aptt / inr"
+  },
+  {
+   "text": "let's do a PT / aPTT / INR",
+   "lang": "en",
+   "intent": "order_test",
+   "testId": "coag",
+   "norm": "let's do a pt / aptt / inr"
+  },
+  {
+   "text": "بدي زراعة دم",
+   "lang": "ar",
+   "intent": "order_test",
+   "testId": "blood_culture",
+   "norm": "بدي زراعه دم"
+  },
+  {
+   "text": "اطلب زراعة دم",
+   "lang": "ar",
+   "intent": "order_test",
+   "testId": "blood_culture",
+   "norm": "اطلب زراعه دم"
+  },
+  {
+   "text": "خلي المريض يعمل زراعة دم",
+   "lang": "ar",
+   "intent": "order_test",
+   "testId": "blood_culture",
+   "norm": "خلي المريض يعمل زراعه دم"
+  },
+  {
+   "text": "لازم نعمل زراعة دم",
+   "lang": "ar",
+   "intent": "order_test",
+   "testId": "blood_culture",
+   "norm": "لازم نعمل زراعه دم"
+  },
+  {
+   "text": "نعمل زراعة دم لو سمحت",
+   "lang": "ar",
+   "intent": "order_test",
+   "testId": "blood_culture",
+   "norm": "نعمل زراعه دم لو سمحت"
+  },
+  {
+   "text": "ابعتوا زراعة دم",
+   "lang": "ar",
+   "intent": "order_test",
+   "testId": "blood_culture",
+   "norm": "ابعتوا زراعه دم"
+  },
+  {
+   "text": "order a Blood cultures",
+   "lang": "en",
+   "intent": "order_test",
+   "testId": "blood_culture",
+   "norm": "order a blood cultures"
+  },
+  {
+   "text": "I want a Blood cultures",
+   "lang": "en",
+   "intent": "order_test",
+   "testId": "blood_culture",
+   "norm": "i want a blood cultures"
+  },
+  {
+   "text": "get a Blood cultures",
+   "lang": "en",
+   "intent": "order_test",
+   "testId": "blood_culture",
+   "norm": "get a blood cultures"
+  },
+  {
+   "text": "let's do a Blood cultures",
+   "lang": "en",
+   "intent": "order_test",
+   "testId": "blood_culture",
+   "norm": "let's do a blood cultures"
+  },
+  {
+   "text": "بدي مسحة فيروسات",
+   "lang": "ar",
+   "intent": "order_test",
+   "testId": "viral_pcr",
+   "norm": "بدي مسحه فيروسات"
+  },
+  {
+   "text": "اطلب مسحة فيروسات",
+   "lang": "ar",
+   "intent": "order_test",
+   "testId": "viral_pcr",
+   "norm": "اطلب مسحه فيروسات"
+  },
+  {
+   "text": "خلي المريض يعمل مسحة فيروسات",
+   "lang": "ar",
+   "intent": "order_test",
+   "testId": "viral_pcr",
+   "norm": "خلي المريض يعمل مسحه فيروسات"
+  },
+  {
+   "text": "لازم نعمل مسحة فيروسات",
+   "lang": "ar",
+   "intent": "order_test",
+   "testId": "viral_pcr",
+   "norm": "لازم نعمل مسحه فيروسات"
+  },
+  {
+   "text": "نعمل مسحة فيروسات لو سمحت",
+   "lang": "ar",
+   "intent": "order_test",
+   "testId": "viral_pcr",
+   "norm": "نعمل مسحه فيروسات لو سمحت"
+  },
+  {
+   "text": "ابعتوا مسحة فيروسات",
+   "lang": "ar",
+   "intent": "order_test",
+   "testId": "viral_pcr",
+   "norm": "ابعتوا مسحه فيروسات"
+  },
+  {
+   "text": "order a Respiratory viral PCR",
+   "lang": "en",
+   "intent": "order_test",
+   "testId": "viral_pcr",
+   "norm": "order a respiratory viral pcr"
+  },
+  {
+   "text": "I want a Respiratory viral PCR",
+   "lang": "en",
+   "intent": "order_test",
+   "testId": "viral_pcr",
+   "norm": "i want a respiratory viral pcr"
+  },
+  {
+   "text": "get a Respiratory viral PCR",
+   "lang": "en",
+   "intent": "order_test",
+   "testId": "viral_pcr",
+   "norm": "get a respiratory viral pcr"
+  },
+  {
+   "text": "let's do a Respiratory viral PCR",
+   "lang": "en",
+   "intent": "order_test",
+   "testId": "viral_pcr",
+   "norm": "let's do a respiratory viral pcr"
+  },
+  {
+   "text": "بدي فحص بول",
+   "lang": "ar",
+   "intent": "order_test",
+   "testId": "urine",
+   "norm": "بدي فحص بول"
+  },
+  {
+   "text": "اطلب فحص بول",
+   "lang": "ar",
+   "intent": "order_test",
+   "testId": "urine",
+   "norm": "اطلب فحص بول"
+  },
+  {
+   "text": "خلي المريض يعمل فحص بول",
+   "lang": "ar",
+   "intent": "order_test",
+   "testId": "urine",
+   "norm": "خلي المريض يعمل فحص بول"
+  },
+  {
+   "text": "لازم نعمل فحص بول",
+   "lang": "ar",
+   "intent": "order_test",
+   "testId": "urine",
+   "norm": "لازم نعمل فحص بول"
+  },
+  {
+   "text": "نعمل فحص بول لو سمحت",
+   "lang": "ar",
+   "intent": "order_test",
+   "testId": "urine",
+   "norm": "نعمل فحص بول لو سمحت"
+  },
+  {
+   "text": "ابعتوا فحص بول",
+   "lang": "ar",
+   "intent": "order_test",
+   "testId": "urine",
+   "norm": "ابعتوا فحص بول"
+  },
+  {
+   "text": "order a Urinalysis",
+   "lang": "en",
+   "intent": "order_test",
+   "testId": "urine",
+   "norm": "order a urinalysis"
+  },
+  {
+   "text": "I want a Urinalysis",
+   "lang": "en",
+   "intent": "order_test",
+   "testId": "urine",
+   "norm": "i want a urinalysis"
+  },
+  {
+   "text": "get a Urinalysis",
+   "lang": "en",
+   "intent": "order_test",
+   "testId": "urine",
+   "norm": "get a urinalysis"
+  },
+  {
+   "text": "let's do a Urinalysis",
+   "lang": "en",
+   "intent": "order_test",
+   "testId": "urine",
+   "norm": "let's do a urinalysis"
+  },
+  {
+   "text": "بدي كيتونات الدم",
+   "lang": "ar",
+   "intent": "order_test",
+   "testId": "ketones",
+   "norm": "بدي كيتونات الدم"
+  },
+  {
+   "text": "اطلب كيتونات الدم",
+   "lang": "ar",
+   "intent": "order_test",
+   "testId": "ketones",
+   "norm": "اطلب كيتونات الدم"
+  },
+  {
+   "text": "خلي المريض يعمل كيتونات الدم",
+   "lang": "ar",
+   "intent": "order_test",
+   "testId": "ketones",
+   "norm": "خلي المريض يعمل كيتونات الدم"
+  },
+  {
+   "text": "لازم نعمل كيتونات الدم",
+   "lang": "ar",
+   "intent": "order_test",
+   "testId": "ketones",
+   "norm": "لازم نعمل كيتونات الدم"
+  },
+  {
+   "text": "نعمل كيتونات الدم لو سمحت",
+   "lang": "ar",
+   "intent": "order_test",
+   "testId": "ketones",
+   "norm": "نعمل كيتونات الدم لو سمحت"
+  },
+  {
+   "text": "ابعتوا كيتونات الدم",
+   "lang": "ar",
+   "intent": "order_test",
+   "testId": "ketones",
+   "norm": "ابعتوا كيتونات الدم"
+  },
+  {
+   "text": "order a Serum ketones (BHB)",
+   "lang": "en",
+   "intent": "order_test",
+   "testId": "ketones",
+   "norm": "order a serum ketones (bhb)"
+  },
+  {
+   "text": "I want a Serum ketones (BHB)",
+   "lang": "en",
+   "intent": "order_test",
+   "testId": "ketones",
+   "norm": "i want a serum ketones (bhb)"
+  },
+  {
+   "text": "get a Serum ketones (BHB)",
+   "lang": "en",
+   "intent": "order_test",
+   "testId": "ketones",
+   "norm": "get a serum ketones (bhb)"
+  },
+  {
+   "text": "let's do a Serum ketones (BHB)",
+   "lang": "en",
+   "intent": "order_test",
+   "testId": "ketones",
+   "norm": "let's do a serum ketones (bhb)"
+  },
+  {
+   "text": "بدي وظائف الكبد",
+   "lang": "ar",
+   "intent": "order_test",
+   "testId": "lft",
+   "norm": "بدي وظائف الكبد"
+  },
+  {
+   "text": "اطلب وظائف الكبد",
+   "lang": "ar",
+   "intent": "order_test",
+   "testId": "lft",
+   "norm": "اطلب وظائف الكبد"
+  },
+  {
+   "text": "خلي المريض يعمل وظائف الكبد",
+   "lang": "ar",
+   "intent": "order_test",
+   "testId": "lft",
+   "norm": "خلي المريض يعمل وظائف الكبد"
+  },
+  {
+   "text": "لازم نعمل وظائف الكبد",
+   "lang": "ar",
+   "intent": "order_test",
+   "testId": "lft",
+   "norm": "لازم نعمل وظائف الكبد"
+  },
+  {
+   "text": "نعمل وظائف الكبد لو سمحت",
+   "lang": "ar",
+   "intent": "order_test",
+   "testId": "lft",
+   "norm": "نعمل وظائف الكبد لو سمحت"
+  },
+  {
+   "text": "ابعتوا وظائف الكبد",
+   "lang": "ar",
+   "intent": "order_test",
+   "testId": "lft",
+   "norm": "ابعتوا وظائف الكبد"
+  },
+  {
+   "text": "order a Liver function tests",
+   "lang": "en",
+   "intent": "order_test",
+   "testId": "lft",
+   "norm": "order a liver function tests"
+  },
+  {
+   "text": "I want a Liver function tests",
+   "lang": "en",
+   "intent": "order_test",
+   "testId": "lft",
+   "norm": "i want a liver function tests"
+  },
+  {
+   "text": "get a Liver function tests",
+   "lang": "en",
+   "intent": "order_test",
+   "testId": "lft",
+   "norm": "get a liver function tests"
+  },
+  {
+   "text": "let's do a Liver function tests",
+   "lang": "en",
+   "intent": "order_test",
+   "testId": "lft",
+   "norm": "let's do a liver function tests"
+  },
+  {
+   "text": "بدي BNP",
+   "lang": "ar",
+   "intent": "order_test",
+   "testId": "bnp",
+   "norm": "بدي bnp"
+  },
+  {
+   "text": "اطلب BNP",
+   "lang": "ar",
+   "intent": "order_test",
+   "testId": "bnp",
+   "norm": "اطلب bnp"
+  },
+  {
+   "text": "خلي المريض يعمل BNP",
+   "lang": "ar",
+   "intent": "order_test",
+   "testId": "bnp",
+   "norm": "خلي المريض يعمل bnp"
+  },
+  {
+   "text": "لازم نعمل BNP",
+   "lang": "ar",
+   "intent": "order_test",
+   "testId": "bnp",
+   "norm": "لازم نعمل bnp"
+  },
+  {
+   "text": "نعمل BNP لو سمحت",
+   "lang": "ar",
+   "intent": "order_test",
+   "testId": "bnp",
+   "norm": "نعمل bnp لو سمحت"
+  },
+  {
+   "text": "ابعتوا BNP",
+   "lang": "ar",
+   "intent": "order_test",
+   "testId": "bnp",
+   "norm": "ابعتوا bnp"
+  },
+  {
+   "text": "order a BNP / NT-proBNP",
+   "lang": "en",
+   "intent": "order_test",
+   "testId": "bnp",
+   "norm": "order a bnp / nt-probnp"
+  },
+  {
+   "text": "I want a BNP / NT-proBNP",
+   "lang": "en",
+   "intent": "order_test",
+   "testId": "bnp",
+   "norm": "i want a bnp / nt-probnp"
+  },
+  {
+   "text": "get a BNP / NT-proBNP",
+   "lang": "en",
+   "intent": "order_test",
+   "testId": "bnp",
+   "norm": "get a bnp / nt-probnp"
+  },
+  {
+   "text": "let's do a BNP / NT-proBNP",
+   "lang": "en",
+   "intent": "order_test",
+   "testId": "bnp",
+   "norm": "let's do a bnp / nt-probnp"
+  },
+  {
+   "text": "بدي طبقي دماغ",
+   "lang": "ar",
+   "intent": "order_test",
+   "testId": "ct_head",
+   "norm": "بدي طبقي دماغ"
+  },
+  {
+   "text": "اطلب طبقي دماغ",
+   "lang": "ar",
+   "intent": "order_test",
+   "testId": "ct_head",
+   "norm": "اطلب طبقي دماغ"
+  },
+  {
+   "text": "خلي المريض يعمل طبقي دماغ",
+   "lang": "ar",
+   "intent": "order_test",
+   "testId": "ct_head",
+   "norm": "خلي المريض يعمل طبقي دماغ"
+  },
+  {
+   "text": "لازم نعمل طبقي دماغ",
+   "lang": "ar",
+   "intent": "order_test",
+   "testId": "ct_head",
+   "norm": "لازم نعمل طبقي دماغ"
+  },
+  {
+   "text": "نعمل طبقي دماغ لو سمحت",
+   "lang": "ar",
+   "intent": "order_test",
+   "testId": "ct_head",
+   "norm": "نعمل طبقي دماغ لو سمحت"
+  },
+  {
+   "text": "ابعتوا طبقي دماغ",
+   "lang": "ar",
+   "intent": "order_test",
+   "testId": "ct_head",
+   "norm": "ابعتوا طبقي دماغ"
+  },
+  {
+   "text": "order a CT head",
+   "lang": "en",
+   "intent": "order_test",
+   "testId": "ct_head",
+   "norm": "order a ct head"
+  },
+  {
+   "text": "I want a CT head",
+   "lang": "en",
+   "intent": "order_test",
+   "testId": "ct_head",
+   "norm": "i want a ct head"
+  },
+  {
+   "text": "get a CT head",
+   "lang": "en",
+   "intent": "order_test",
+   "testId": "ct_head",
+   "norm": "get a ct head"
+  },
+  {
+   "text": "let's do a CT head",
+   "lang": "en",
+   "intent": "order_test",
+   "testId": "ct_head",
+   "norm": "let's do a ct head"
+  },
+  {
+   "text": "بدي طبقي بطن",
+   "lang": "ar",
+   "intent": "order_test",
+   "testId": "ct_abdomen",
+   "norm": "بدي طبقي بطن"
+  },
+  {
+   "text": "اطلب طبقي بطن",
+   "lang": "ar",
+   "intent": "order_test",
+   "testId": "ct_abdomen",
+   "norm": "اطلب طبقي بطن"
+  },
+  {
+   "text": "خلي المريض يعمل طبقي بطن",
+   "lang": "ar",
+   "intent": "order_test",
+   "testId": "ct_abdomen",
+   "norm": "خلي المريض يعمل طبقي بطن"
+  },
+  {
+   "text": "لازم نعمل طبقي بطن",
+   "lang": "ar",
+   "intent": "order_test",
+   "testId": "ct_abdomen",
+   "norm": "لازم نعمل طبقي بطن"
+  },
+  {
+   "text": "نعمل طبقي بطن لو سمحت",
+   "lang": "ar",
+   "intent": "order_test",
+   "testId": "ct_abdomen",
+   "norm": "نعمل طبقي بطن لو سمحت"
+  },
+  {
+   "text": "ابعتوا طبقي بطن",
+   "lang": "ar",
+   "intent": "order_test",
+   "testId": "ct_abdomen",
+   "norm": "ابعتوا طبقي بطن"
+  },
+  {
+   "text": "order a CT abdomen and pelvis",
+   "lang": "en",
+   "intent": "order_test",
+   "testId": "ct_abdomen",
+   "norm": "order a ct abdomen and pelvis"
+  },
+  {
+   "text": "I want a CT abdomen and pelvis",
+   "lang": "en",
+   "intent": "order_test",
+   "testId": "ct_abdomen",
+   "norm": "i want a ct abdomen and pelvis"
+  },
+  {
+   "text": "get a CT abdomen and pelvis",
+   "lang": "en",
+   "intent": "order_test",
+   "testId": "ct_abdomen",
+   "norm": "get a ct abdomen and pelvis"
+  },
+  {
+   "text": "let's do a CT abdomen and pelvis",
+   "lang": "en",
+   "intent": "order_test",
+   "testId": "ct_abdomen",
+   "norm": "let's do a ct abdomen and pelvis"
+  },
+  {
+   "text": "بدي أشعة كاحل",
+   "lang": "ar",
+   "intent": "order_test",
+   "testId": "xr_ankle",
+   "norm": "بدي اشعه كاحل"
+  },
+  {
+   "text": "اطلب أشعة كاحل",
+   "lang": "ar",
+   "intent": "order_test",
+   "testId": "xr_ankle",
+   "norm": "اطلب اشعه كاحل"
+  },
+  {
+   "text": "خلي المريض يعمل أشعة كاحل",
+   "lang": "ar",
+   "intent": "order_test",
+   "testId": "xr_ankle",
+   "norm": "خلي المريض يعمل اشعه كاحل"
+  },
+  {
+   "text": "لازم نعمل أشعة كاحل",
+   "lang": "ar",
+   "intent": "order_test",
+   "testId": "xr_ankle",
+   "norm": "لازم نعمل اشعه كاحل"
+  },
+  {
+   "text": "نعمل أشعة كاحل لو سمحت",
+   "lang": "ar",
+   "intent": "order_test",
+   "testId": "xr_ankle",
+   "norm": "نعمل اشعه كاحل لو سمحت"
+  },
+  {
+   "text": "ابعتوا أشعة كاحل",
+   "lang": "ar",
+   "intent": "order_test",
+   "testId": "xr_ankle",
+   "norm": "ابعتوا اشعه كاحل"
+  },
+  {
+   "text": "order a Ankle X-ray",
+   "lang": "en",
+   "intent": "order_test",
+   "testId": "xr_ankle",
+   "norm": "order a ankle x-ray"
+  },
+  {
+   "text": "I want a Ankle X-ray",
+   "lang": "en",
+   "intent": "order_test",
+   "testId": "xr_ankle",
+   "norm": "i want a ankle x-ray"
+  },
+  {
+   "text": "get a Ankle X-ray",
+   "lang": "en",
+   "intent": "order_test",
+   "testId": "xr_ankle",
+   "norm": "get a ankle x-ray"
+  },
+  {
+   "text": "let's do a Ankle X-ray",
+   "lang": "en",
+   "intent": "order_test",
+   "testId": "xr_ankle",
+   "norm": "let's do a ankle x-ray"
+  },
+  {
+   "text": "بدي أشعة معصم",
+   "lang": "ar",
+   "intent": "order_test",
+   "testId": "xr_wrist",
+   "norm": "بدي اشعه معصم"
+  },
+  {
+   "text": "اطلب أشعة معصم",
+   "lang": "ar",
+   "intent": "order_test",
+   "testId": "xr_wrist",
+   "norm": "اطلب اشعه معصم"
+  },
+  {
+   "text": "خلي المريض يعمل أشعة معصم",
+   "lang": "ar",
+   "intent": "order_test",
+   "testId": "xr_wrist",
+   "norm": "خلي المريض يعمل اشعه معصم"
+  },
+  {
+   "text": "لازم نعمل أشعة معصم",
+   "lang": "ar",
+   "intent": "order_test",
+   "testId": "xr_wrist",
+   "norm": "لازم نعمل اشعه معصم"
+  },
+  {
+   "text": "نعمل أشعة معصم لو سمحت",
+   "lang": "ar",
+   "intent": "order_test",
+   "testId": "xr_wrist",
+   "norm": "نعمل اشعه معصم لو سمحت"
+  },
+  {
+   "text": "ابعتوا أشعة معصم",
+   "lang": "ar",
+   "intent": "order_test",
+   "testId": "xr_wrist",
+   "norm": "ابعتوا اشعه معصم"
+  },
+  {
+   "text": "order a Wrist X-ray",
+   "lang": "en",
+   "intent": "order_test",
+   "testId": "xr_wrist",
+   "norm": "order a wrist x-ray"
+  },
+  {
+   "text": "I want a Wrist X-ray",
+   "lang": "en",
+   "intent": "order_test",
+   "testId": "xr_wrist",
+   "norm": "i want a wrist x-ray"
+  },
+  {
+   "text": "get a Wrist X-ray",
+   "lang": "en",
+   "intent": "order_test",
+   "testId": "xr_wrist",
+   "norm": "get a wrist x-ray"
+  },
+  {
+   "text": "let's do a Wrist X-ray",
+   "lang": "en",
+   "intent": "order_test",
+   "testId": "xr_wrist",
+   "norm": "let's do a wrist x-ray"
+  },
+  {
+   "text": "بدي أشعة ساعد",
+   "lang": "ar",
+   "intent": "order_test",
+   "testId": "xr_forearm",
+   "norm": "بدي اشعه ساعد"
+  },
+  {
+   "text": "اطلب أشعة ساعد",
+   "lang": "ar",
+   "intent": "order_test",
+   "testId": "xr_forearm",
+   "norm": "اطلب اشعه ساعد"
+  },
+  {
+   "text": "خلي المريض يعمل أشعة ساعد",
+   "lang": "ar",
+   "intent": "order_test",
+   "testId": "xr_forearm",
+   "norm": "خلي المريض يعمل اشعه ساعد"
+  },
+  {
+   "text": "لازم نعمل أشعة ساعد",
+   "lang": "ar",
+   "intent": "order_test",
+   "testId": "xr_forearm",
+   "norm": "لازم نعمل اشعه ساعد"
+  },
+  {
+   "text": "نعمل أشعة ساعد لو سمحت",
+   "lang": "ar",
+   "intent": "order_test",
+   "testId": "xr_forearm",
+   "norm": "نعمل اشعه ساعد لو سمحت"
+  },
+  {
+   "text": "ابعتوا أشعة ساعد",
+   "lang": "ar",
+   "intent": "order_test",
+   "testId": "xr_forearm",
+   "norm": "ابعتوا اشعه ساعد"
+  },
+  {
+   "text": "order a Forearm X-ray",
+   "lang": "en",
+   "intent": "order_test",
+   "testId": "xr_forearm",
+   "norm": "order a forearm x-ray"
+  },
+  {
+   "text": "I want a Forearm X-ray",
+   "lang": "en",
+   "intent": "order_test",
+   "testId": "xr_forearm",
+   "norm": "i want a forearm x-ray"
+  },
+  {
+   "text": "get a Forearm X-ray",
+   "lang": "en",
+   "intent": "order_test",
+   "testId": "xr_forearm",
+   "norm": "get a forearm x-ray"
+  },
+  {
+   "text": "let's do a Forearm X-ray",
+   "lang": "en",
+   "intent": "order_test",
+   "testId": "xr_forearm",
+   "norm": "let's do a forearm x-ray"
+  },
+  {
+   "text": "بدي أشعة حوض",
+   "lang": "ar",
+   "intent": "order_test",
+   "testId": "xr_pelvis",
+   "norm": "بدي اشعه حوض"
+  },
+  {
+   "text": "اطلب أشعة حوض",
+   "lang": "ar",
+   "intent": "order_test",
+   "testId": "xr_pelvis",
+   "norm": "اطلب اشعه حوض"
+  },
+  {
+   "text": "خلي المريض يعمل أشعة حوض",
+   "lang": "ar",
+   "intent": "order_test",
+   "testId": "xr_pelvis",
+   "norm": "خلي المريض يعمل اشعه حوض"
+  },
+  {
+   "text": "لازم نعمل أشعة حوض",
+   "lang": "ar",
+   "intent": "order_test",
+   "testId": "xr_pelvis",
+   "norm": "لازم نعمل اشعه حوض"
+  },
+  {
+   "text": "نعمل أشعة حوض لو سمحت",
+   "lang": "ar",
+   "intent": "order_test",
+   "testId": "xr_pelvis",
+   "norm": "نعمل اشعه حوض لو سمحت"
+  },
+  {
+   "text": "ابعتوا أشعة حوض",
+   "lang": "ar",
+   "intent": "order_test",
+   "testId": "xr_pelvis",
+   "norm": "ابعتوا اشعه حوض"
+  },
+  {
+   "text": "order a Pelvis X-ray",
+   "lang": "en",
+   "intent": "order_test",
+   "testId": "xr_pelvis",
+   "norm": "order a pelvis x-ray"
+  },
+  {
+   "text": "I want a Pelvis X-ray",
+   "lang": "en",
+   "intent": "order_test",
+   "testId": "xr_pelvis",
+   "norm": "i want a pelvis x-ray"
+  },
+  {
+   "text": "get a Pelvis X-ray",
+   "lang": "en",
+   "intent": "order_test",
+   "testId": "xr_pelvis",
+   "norm": "get a pelvis x-ray"
+  },
+  {
+   "text": "let's do a Pelvis X-ray",
+   "lang": "en",
+   "intent": "order_test",
+   "testId": "xr_pelvis",
+   "norm": "let's do a pelvis x-ray"
+  },
+  {
+   "text": "بدي أشعة ساق",
+   "lang": "ar",
+   "intent": "order_test",
+   "testId": "xr_tibia",
+   "norm": "بدي اشعه ساق"
+  },
+  {
+   "text": "اطلب أشعة ساق",
+   "lang": "ar",
+   "intent": "order_test",
+   "testId": "xr_tibia",
+   "norm": "اطلب اشعه ساق"
+  },
+  {
+   "text": "خلي المريض يعمل أشعة ساق",
+   "lang": "ar",
+   "intent": "order_test",
+   "testId": "xr_tibia",
+   "norm": "خلي المريض يعمل اشعه ساق"
+  },
+  {
+   "text": "لازم نعمل أشعة ساق",
+   "lang": "ar",
+   "intent": "order_test",
+   "testId": "xr_tibia",
+   "norm": "لازم نعمل اشعه ساق"
+  },
+  {
+   "text": "نعمل أشعة ساق لو سمحت",
+   "lang": "ar",
+   "intent": "order_test",
+   "testId": "xr_tibia",
+   "norm": "نعمل اشعه ساق لو سمحت"
+  },
+  {
+   "text": "ابعتوا أشعة ساق",
+   "lang": "ar",
+   "intent": "order_test",
+   "testId": "xr_tibia",
+   "norm": "ابعتوا اشعه ساق"
+  },
+  {
+   "text": "order a Tibia and fibula X-ray",
+   "lang": "en",
+   "intent": "order_test",
+   "testId": "xr_tibia",
+   "norm": "order a tibia and fibula x-ray"
+  },
+  {
+   "text": "I want a Tibia and fibula X-ray",
+   "lang": "en",
+   "intent": "order_test",
+   "testId": "xr_tibia",
+   "norm": "i want a tibia and fibula x-ray"
+  },
+  {
+   "text": "get a Tibia and fibula X-ray",
+   "lang": "en",
+   "intent": "order_test",
+   "testId": "xr_tibia",
+   "norm": "get a tibia and fibula x-ray"
+  },
+  {
+   "text": "let's do a Tibia and fibula X-ray",
+   "lang": "en",
+   "intent": "order_test",
+   "testId": "xr_tibia",
+   "norm": "let's do a tibia and fibula x-ray"
+  },
+  {
+   "text": "بدي أشعة كتف",
+   "lang": "ar",
+   "intent": "order_test",
+   "testId": "xr_shoulder",
+   "norm": "بدي اشعه كتف"
+  },
+  {
+   "text": "اطلب أشعة كتف",
+   "lang": "ar",
+   "intent": "order_test",
+   "testId": "xr_shoulder",
+   "norm": "اطلب اشعه كتف"
+  },
+  {
+   "text": "خلي المريض يعمل أشعة كتف",
+   "lang": "ar",
+   "intent": "order_test",
+   "testId": "xr_shoulder",
+   "norm": "خلي المريض يعمل اشعه كتف"
+  },
+  {
+   "text": "لازم نعمل أشعة كتف",
+   "lang": "ar",
+   "intent": "order_test",
+   "testId": "xr_shoulder",
+   "norm": "لازم نعمل اشعه كتف"
+  },
+  {
+   "text": "نعمل أشعة كتف لو سمحت",
+   "lang": "ar",
+   "intent": "order_test",
+   "testId": "xr_shoulder",
+   "norm": "نعمل اشعه كتف لو سمحت"
+  },
+  {
+   "text": "ابعتوا أشعة كتف",
+   "lang": "ar",
+   "intent": "order_test",
+   "testId": "xr_shoulder",
+   "norm": "ابعتوا اشعه كتف"
+  },
+  {
+   "text": "order a Shoulder X-ray",
+   "lang": "en",
+   "intent": "order_test",
+   "testId": "xr_shoulder",
+   "norm": "order a shoulder x-ray"
+  },
+  {
+   "text": "I want a Shoulder X-ray",
+   "lang": "en",
+   "intent": "order_test",
+   "testId": "xr_shoulder",
+   "norm": "i want a shoulder x-ray"
+  },
+  {
+   "text": "get a Shoulder X-ray",
+   "lang": "en",
+   "intent": "order_test",
+   "testId": "xr_shoulder",
+   "norm": "get a shoulder x-ray"
+  },
+  {
+   "text": "let's do a Shoulder X-ray",
+   "lang": "en",
+   "intent": "order_test",
+   "testId": "xr_shoulder",
+   "norm": "let's do a shoulder x-ray"
+  },
+  {
+   "text": "بدي أشعة بطن واقفاً",
+   "lang": "ar",
+   "intent": "order_test",
+   "testId": "xr_abdo",
+   "norm": "بدي اشعه بطن واقفا"
+  },
+  {
+   "text": "اطلب أشعة بطن واقفاً",
+   "lang": "ar",
+   "intent": "order_test",
+   "testId": "xr_abdo",
+   "norm": "اطلب اشعه بطن واقفا"
+  },
+  {
+   "text": "خلي المريض يعمل أشعة بطن واقفاً",
+   "lang": "ar",
+   "intent": "order_test",
+   "testId": "xr_abdo",
+   "norm": "خلي المريض يعمل اشعه بطن واقفا"
+  },
+  {
+   "text": "لازم نعمل أشعة بطن واقفاً",
+   "lang": "ar",
+   "intent": "order_test",
+   "testId": "xr_abdo",
+   "norm": "لازم نعمل اشعه بطن واقفا"
+  },
+  {
+   "text": "نعمل أشعة بطن واقفاً لو سمحت",
+   "lang": "ar",
+   "intent": "order_test",
+   "testId": "xr_abdo",
+   "norm": "نعمل اشعه بطن واقفا لو سمحت"
+  },
+  {
+   "text": "ابعتوا أشعة بطن واقفاً",
+   "lang": "ar",
+   "intent": "order_test",
+   "testId": "xr_abdo",
+   "norm": "ابعتوا اشعه بطن واقفا"
+  },
+  {
+   "text": "order a Erect abdominal / chest X-ray",
+   "lang": "en",
+   "intent": "order_test",
+   "testId": "xr_abdo",
+   "norm": "order a erect abdominal / chest x-ray"
+  },
+  {
+   "text": "I want a Erect abdominal / chest X-ray",
+   "lang": "en",
+   "intent": "order_test",
+   "testId": "xr_abdo",
+   "norm": "i want a erect abdominal / chest x-ray"
+  },
+  {
+   "text": "get a Erect abdominal / chest X-ray",
+   "lang": "en",
+   "intent": "order_test",
+   "testId": "xr_abdo",
+   "norm": "get a erect abdominal / chest x-ray"
+  },
+  {
+   "text": "let's do a Erect abdominal / chest X-ray",
+   "lang": "en",
+   "intent": "order_test",
+   "testId": "xr_abdo",
+   "norm": "let's do a erect abdominal / chest x-ray"
+  },
+  {
+   "text": "بدي دوبلر وريدي للساق",
+   "lang": "ar",
+   "intent": "order_test",
+   "testId": "doppler_leg",
+   "norm": "بدي دوبلر وريدي للساق"
+  },
+  {
+   "text": "اطلب دوبلر وريدي للساق",
+   "lang": "ar",
+   "intent": "order_test",
+   "testId": "doppler_leg",
+   "norm": "اطلب دوبلر وريدي للساق"
+  },
+  {
+   "text": "خلي المريض يعمل دوبلر وريدي للساق",
+   "lang": "ar",
+   "intent": "order_test",
+   "testId": "doppler_leg",
+   "norm": "خلي المريض يعمل دوبلر وريدي للساق"
+  },
+  {
+   "text": "لازم نعمل دوبلر وريدي للساق",
+   "lang": "ar",
+   "intent": "order_test",
+   "testId": "doppler_leg",
+   "norm": "لازم نعمل دوبلر وريدي للساق"
+  },
+  {
+   "text": "نعمل دوبلر وريدي للساق لو سمحت",
+   "lang": "ar",
+   "intent": "order_test",
+   "testId": "doppler_leg",
+   "norm": "نعمل دوبلر وريدي للساق لو سمحت"
+  },
+  {
+   "text": "ابعتوا دوبلر وريدي للساق",
+   "lang": "ar",
+   "intent": "order_test",
+   "testId": "doppler_leg",
+   "norm": "ابعتوا دوبلر وريدي للساق"
+  },
+  {
+   "text": "order a Leg venous duplex ultrasound",
+   "lang": "en",
+   "intent": "order_test",
+   "testId": "doppler_leg",
+   "norm": "order a leg venous duplex ultrasound"
+  },
+  {
+   "text": "I want a Leg venous duplex ultrasound",
+   "lang": "en",
+   "intent": "order_test",
+   "testId": "doppler_leg",
+   "norm": "i want a leg venous duplex ultrasound"
+  },
+  {
+   "text": "get a Leg venous duplex ultrasound",
+   "lang": "en",
+   "intent": "order_test",
+   "testId": "doppler_leg",
+   "norm": "get a leg venous duplex ultrasound"
+  },
+  {
+   "text": "let's do a Leg venous duplex ultrasound",
+   "lang": "en",
+   "intent": "order_test",
+   "testId": "doppler_leg",
+   "norm": "let's do a leg venous duplex ultrasound"
+  },
+  {
+   "text": "بدي سرعة الترسيب",
+   "lang": "ar",
+   "intent": "order_test",
+   "testId": "esr",
+   "norm": "بدي سرعه الترسيب"
+  },
+  {
+   "text": "اطلب سرعة الترسيب",
+   "lang": "ar",
+   "intent": "order_test",
+   "testId": "esr",
+   "norm": "اطلب سرعه الترسيب"
+  },
+  {
+   "text": "خلي المريض يعمل سرعة الترسيب",
+   "lang": "ar",
+   "intent": "order_test",
+   "testId": "esr",
+   "norm": "خلي المريض يعمل سرعه الترسيب"
+  },
+  {
+   "text": "لازم نعمل سرعة الترسيب",
+   "lang": "ar",
+   "intent": "order_test",
+   "testId": "esr",
+   "norm": "لازم نعمل سرعه الترسيب"
+  },
+  {
+   "text": "نعمل سرعة الترسيب لو سمحت",
+   "lang": "ar",
+   "intent": "order_test",
+   "testId": "esr",
+   "norm": "نعمل سرعه الترسيب لو سمحت"
+  },
+  {
+   "text": "ابعتوا سرعة الترسيب",
+   "lang": "ar",
+   "intent": "order_test",
+   "testId": "esr",
+   "norm": "ابعتوا سرعه الترسيب"
+  },
+  {
+   "text": "order a ESR",
+   "lang": "en",
+   "intent": "order_test",
+   "testId": "esr",
+   "norm": "order a esr"
+  },
+  {
+   "text": "I want a ESR",
+   "lang": "en",
+   "intent": "order_test",
+   "testId": "esr",
+   "norm": "i want a esr"
+  },
+  {
+   "text": "get a ESR",
+   "lang": "en",
+   "intent": "order_test",
+   "testId": "esr",
+   "norm": "get a esr"
+  },
+  {
+   "text": "let's do a ESR",
+   "lang": "en",
+   "intent": "order_test",
+   "testId": "esr",
+   "norm": "let's do a esr"
+  },
+  {
+   "text": "بدي إنزيم CK",
+   "lang": "ar",
+   "intent": "order_test",
+   "testId": "ck",
+   "norm": "بدي انزيم ck"
+  },
+  {
+   "text": "اطلب إنزيم CK",
+   "lang": "ar",
+   "intent": "order_test",
+   "testId": "ck",
+   "norm": "اطلب انزيم ck"
+  },
+  {
+   "text": "خلي المريض يعمل إنزيم CK",
+   "lang": "ar",
+   "intent": "order_test",
+   "testId": "ck",
+   "norm": "خلي المريض يعمل انزيم ck"
+  },
+  {
+   "text": "لازم نعمل إنزيم CK",
+   "lang": "ar",
+   "intent": "order_test",
+   "testId": "ck",
+   "norm": "لازم نعمل انزيم ck"
+  },
+  {
+   "text": "نعمل إنزيم CK لو سمحت",
+   "lang": "ar",
+   "intent": "order_test",
+   "testId": "ck",
+   "norm": "نعمل انزيم ck لو سمحت"
+  },
+  {
+   "text": "ابعتوا إنزيم CK",
+   "lang": "ar",
+   "intent": "order_test",
+   "testId": "ck",
+   "norm": "ابعتوا انزيم ck"
+  },
+  {
+   "text": "order a Creatine kinase",
+   "lang": "en",
+   "intent": "order_test",
+   "testId": "ck",
+   "norm": "order a creatine kinase"
+  },
+  {
+   "text": "I want a Creatine kinase",
+   "lang": "en",
+   "intent": "order_test",
+   "testId": "ck",
+   "norm": "i want a creatine kinase"
+  },
+  {
+   "text": "get a Creatine kinase",
+   "lang": "en",
+   "intent": "order_test",
+   "testId": "ck",
+   "norm": "get a creatine kinase"
+  },
+  {
+   "text": "let's do a Creatine kinase",
+   "lang": "en",
+   "intent": "order_test",
+   "testId": "ck",
+   "norm": "let's do a creatine kinase"
+  },
+  {
+   "text": "بدي حمض اليوريك",
+   "lang": "ar",
+   "intent": "order_test",
+   "testId": "uric",
+   "norm": "بدي حمض اليوريك"
+  },
+  {
+   "text": "اطلب حمض اليوريك",
+   "lang": "ar",
+   "intent": "order_test",
+   "testId": "uric",
+   "norm": "اطلب حمض اليوريك"
+  },
+  {
+   "text": "خلي المريض يعمل حمض اليوريك",
+   "lang": "ar",
+   "intent": "order_test",
+   "testId": "uric",
+   "norm": "خلي المريض يعمل حمض اليوريك"
+  },
+  {
+   "text": "لازم نعمل حمض اليوريك",
+   "lang": "ar",
+   "intent": "order_test",
+   "testId": "uric",
+   "norm": "لازم نعمل حمض اليوريك"
+  },
+  {
+   "text": "نعمل حمض اليوريك لو سمحت",
+   "lang": "ar",
+   "intent": "order_test",
+   "testId": "uric",
+   "norm": "نعمل حمض اليوريك لو سمحت"
+  },
+  {
+   "text": "ابعتوا حمض اليوريك",
+   "lang": "ar",
+   "intent": "order_test",
+   "testId": "uric",
+   "norm": "ابعتوا حمض اليوريك"
+  },
+  {
+   "text": "order a Serum uric acid",
+   "lang": "en",
+   "intent": "order_test",
+   "testId": "uric",
+   "norm": "order a serum uric acid"
+  },
+  {
+   "text": "I want a Serum uric acid",
+   "lang": "en",
+   "intent": "order_test",
+   "testId": "uric",
+   "norm": "i want a serum uric acid"
+  },
+  {
+   "text": "get a Serum uric acid",
+   "lang": "en",
+   "intent": "order_test",
+   "testId": "uric",
+   "norm": "get a serum uric acid"
+  },
+  {
+   "text": "let's do a Serum uric acid",
+   "lang": "en",
+   "intent": "order_test",
+   "testId": "uric",
+   "norm": "let's do a serum uric acid"
+  },
+  {
+   "text": "بدي الحديد والفيريتين",
+   "lang": "ar",
+   "intent": "order_test",
+   "testId": "ferritin",
+   "norm": "بدي الحديد والفيريتين"
+  },
+  {
+   "text": "اطلب الحديد والفيريتين",
+   "lang": "ar",
+   "intent": "order_test",
+   "testId": "ferritin",
+   "norm": "اطلب الحديد والفيريتين"
+  },
+  {
+   "text": "خلي المريض يعمل الحديد والفيريتين",
+   "lang": "ar",
+   "intent": "order_test",
+   "testId": "ferritin",
+   "norm": "خلي المريض يعمل الحديد والفيريتين"
+  },
+  {
+   "text": "لازم نعمل الحديد والفيريتين",
+   "lang": "ar",
+   "intent": "order_test",
+   "testId": "ferritin",
+   "norm": "لازم نعمل الحديد والفيريتين"
+  },
+  {
+   "text": "نعمل الحديد والفيريتين لو سمحت",
+   "lang": "ar",
+   "intent": "order_test",
+   "testId": "ferritin",
+   "norm": "نعمل الحديد والفيريتين لو سمحت"
+  },
+  {
+   "text": "ابعتوا الحديد والفيريتين",
+   "lang": "ar",
+   "intent": "order_test",
+   "testId": "ferritin",
+   "norm": "ابعتوا الحديد والفيريتين"
+  },
+  {
+   "text": "order a Iron studies and ferritin",
+   "lang": "en",
+   "intent": "order_test",
+   "testId": "ferritin",
+   "norm": "order a iron studies and ferritin"
+  },
+  {
+   "text": "I want a Iron studies and ferritin",
+   "lang": "en",
+   "intent": "order_test",
+   "testId": "ferritin",
+   "norm": "i want a iron studies and ferritin"
+  },
+  {
+   "text": "get a Iron studies and ferritin",
+   "lang": "en",
+   "intent": "order_test",
+   "testId": "ferritin",
+   "norm": "get a iron studies and ferritin"
+  },
+  {
+   "text": "let's do a Iron studies and ferritin",
+   "lang": "en",
+   "intent": "order_test",
+   "testId": "ferritin",
+   "norm": "let's do a iron studies and ferritin"
+  },
+  {
+   "text": "بدي مسحة حلق سريعة",
+   "lang": "ar",
+   "intent": "order_test",
+   "testId": "strep_rapid",
+   "norm": "بدي مسحه حلق سريعه"
+  },
+  {
+   "text": "اطلب مسحة حلق سريعة",
+   "lang": "ar",
+   "intent": "order_test",
+   "testId": "strep_rapid",
+   "norm": "اطلب مسحه حلق سريعه"
+  },
+  {
+   "text": "خلي المريض يعمل مسحة حلق سريعة",
+   "lang": "ar",
+   "intent": "order_test",
+   "testId": "strep_rapid",
+   "norm": "خلي المريض يعمل مسحه حلق سريعه"
+  },
+  {
+   "text": "لازم نعمل مسحة حلق سريعة",
+   "lang": "ar",
+   "intent": "order_test",
+   "testId": "strep_rapid",
+   "norm": "لازم نعمل مسحه حلق سريعه"
+  },
+  {
+   "text": "نعمل مسحة حلق سريعة لو سمحت",
+   "lang": "ar",
+   "intent": "order_test",
+   "testId": "strep_rapid",
+   "norm": "نعمل مسحه حلق سريعه لو سمحت"
+  },
+  {
+   "text": "ابعتوا مسحة حلق سريعة",
+   "lang": "ar",
+   "intent": "order_test",
+   "testId": "strep_rapid",
+   "norm": "ابعتوا مسحه حلق سريعه"
+  },
+  {
+   "text": "order a Rapid strep antigen (throat swab)",
+   "lang": "en",
+   "intent": "order_test",
+   "testId": "strep_rapid",
+   "norm": "order a rapid strep antigen (throat swab)"
+  },
+  {
+   "text": "I want a Rapid strep antigen (throat swab)",
+   "lang": "en",
+   "intent": "order_test",
+   "testId": "strep_rapid",
+   "norm": "i want a rapid strep antigen (throat swab)"
+  },
+  {
+   "text": "get a Rapid strep antigen (throat swab)",
+   "lang": "en",
+   "intent": "order_test",
+   "testId": "strep_rapid",
+   "norm": "get a rapid strep antigen (throat swab)"
+  },
+  {
+   "text": "let's do a Rapid strep antigen (throat swab)",
+   "lang": "en",
+   "intent": "order_test",
+   "testId": "strep_rapid",
+   "norm": "let's do a rapid strep antigen (throat swab)"
+  },
+  {
+   "text": "بدي مسحة جرح",
+   "lang": "ar",
+   "intent": "order_test",
+   "testId": "wound_swab",
+   "norm": "بدي مسحه جرح"
+  },
+  {
+   "text": "اطلب مسحة جرح",
+   "lang": "ar",
+   "intent": "order_test",
+   "testId": "wound_swab",
+   "norm": "اطلب مسحه جرح"
+  },
+  {
+   "text": "خلي المريض يعمل مسحة جرح",
+   "lang": "ar",
+   "intent": "order_test",
+   "testId": "wound_swab",
+   "norm": "خلي المريض يعمل مسحه جرح"
+  },
+  {
+   "text": "لازم نعمل مسحة جرح",
+   "lang": "ar",
+   "intent": "order_test",
+   "testId": "wound_swab",
+   "norm": "لازم نعمل مسحه جرح"
+  },
+  {
+   "text": "نعمل مسحة جرح لو سمحت",
+   "lang": "ar",
+   "intent": "order_test",
+   "testId": "wound_swab",
+   "norm": "نعمل مسحه جرح لو سمحت"
+  },
+  {
+   "text": "ابعتوا مسحة جرح",
+   "lang": "ar",
+   "intent": "order_test",
+   "testId": "wound_swab",
+   "norm": "ابعتوا مسحه جرح"
+  },
+  {
+   "text": "order a Wound swab culture",
+   "lang": "en",
+   "intent": "order_test",
+   "testId": "wound_swab",
+   "norm": "order a wound swab culture"
+  },
+  {
+   "text": "I want a Wound swab culture",
+   "lang": "en",
+   "intent": "order_test",
+   "testId": "wound_swab",
+   "norm": "i want a wound swab culture"
+  },
+  {
+   "text": "get a Wound swab culture",
+   "lang": "en",
+   "intent": "order_test",
+   "testId": "wound_swab",
+   "norm": "get a wound swab culture"
+  },
+  {
+   "text": "let's do a Wound swab culture",
+   "lang": "en",
+   "intent": "order_test",
+   "testId": "wound_swab",
+   "norm": "let's do a wound swab culture"
+  },
+  {
+   "text": "بدي بزل المفصل",
+   "lang": "ar",
+   "intent": "order_test",
+   "testId": "joint_fluid",
+   "norm": "بدي بزل المفصل"
+  },
+  {
+   "text": "اطلب بزل المفصل",
+   "lang": "ar",
+   "intent": "order_test",
+   "testId": "joint_fluid",
+   "norm": "اطلب بزل المفصل"
+  },
+  {
+   "text": "خلي المريض يعمل بزل المفصل",
+   "lang": "ar",
+   "intent": "order_test",
+   "testId": "joint_fluid",
+   "norm": "خلي المريض يعمل بزل المفصل"
+  },
+  {
+   "text": "لازم نعمل بزل المفصل",
+   "lang": "ar",
+   "intent": "order_test",
+   "testId": "joint_fluid",
+   "norm": "لازم نعمل بزل المفصل"
+  },
+  {
+   "text": "نعمل بزل المفصل لو سمحت",
+   "lang": "ar",
+   "intent": "order_test",
+   "testId": "joint_fluid",
+   "norm": "نعمل بزل المفصل لو سمحت"
+  },
+  {
+   "text": "ابعتوا بزل المفصل",
+   "lang": "ar",
+   "intent": "order_test",
+   "testId": "joint_fluid",
+   "norm": "ابعتوا بزل المفصل"
+  },
+  {
+   "text": "order a Joint aspiration (synovial fluid)",
+   "lang": "en",
+   "intent": "order_test",
+   "testId": "joint_fluid",
+   "norm": "order a joint aspiration (synovial fluid)"
+  },
+  {
+   "text": "I want a Joint aspiration (synovial fluid)",
+   "lang": "en",
+   "intent": "order_test",
+   "testId": "joint_fluid",
+   "norm": "i want a joint aspiration (synovial fluid)"
+  },
+  {
+   "text": "get a Joint aspiration (synovial fluid)",
+   "lang": "en",
+   "intent": "order_test",
+   "testId": "joint_fluid",
+   "norm": "get a joint aspiration (synovial fluid)"
+  },
+  {
+   "text": "let's do a Joint aspiration (synovial fluid)",
+   "lang": "en",
+   "intent": "order_test",
+   "testId": "joint_fluid",
+   "norm": "let's do a joint aspiration (synovial fluid)"
+  }
+ ],
+ "negatives": [
+  {
+   "text": "عملت اشعه صدر قبل سنه",
+   "norm": "عملت اشعه صدر قبل سنه",
+   "intent": "history_mention",
+   "testId": "cxr",
+   "reason": "المريض يخبر عن فحص سابق، لا يطلب فحصاً جديداً"
+  },
+  {
+   "text": "شو نتيجه الاشعه؟",
+   "norm": "شو نتيجه الاشعه",
+   "intent": "ask_result",
+   "testId": null,
+   "reason": "سؤال عن نتيجة موجودة، لا طلب فحص"
+  },
+  {
+   "text": "هل عمل الدكتور تحاليل دم من قبل؟",
+   "norm": "هل عمل الدكتور تحاليل دم من قبل",
+   "intent": "history_mention",
+   "testId": "cbc",
+   "reason": "سؤال عن تاريخ فحوصات"
+  },
+  {
+   "text": "ما بدي اشعه صدر هلأ",
+   "norm": "ما بدي اشعه صدر هلا",
+   "intent": "cancel_test",
+   "testId": "cxr",
+   "reason": "رفض طلب وليس طلباً"
+  },
+  {
+   "text": "كيف بتقرأ اشعه الصدر؟",
+   "norm": "كيف بتقرا اشعه الصدر",
+   "intent": "teaching_question",
+   "testId": "cxr",
+   "reason": "سؤال تعليمي عن الأشعة لا طلب لها"
+  },
+  {
+   "text": "الاشعه مش ضروريه هون",
+   "norm": "الاشعه مش ضروريه هون",
+   "intent": "opinion",
+   "testId": null,
+   "reason": "رأي، لا طلب"
+  },
+  {
+   "text": "وين اقرب مركز اشعه؟",
+   "norm": "وين اقرب مركز اشعه",
+   "intent": "out_of_scope",
+   "testId": null,
+   "reason": "سؤال خارج المحاكاة"
+  },
+  {
+   "text": "احكيلي عن نتيجه السكر",
+   "norm": "احكيلي عن نتيجه السكر",
+   "intent": "ask_result",
+   "testId": "glucose",
+   "reason": "يطلب شرح نتيجة وليس طلبها"
+  }
+ ]
+}

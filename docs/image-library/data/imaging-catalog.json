@@ -1,0 +1,458 @@
+{
+ "_meta": {
+  "file": "imaging-catalog.json",
+  "version": 1,
+  "date": "2026-11-14",
+  "status": "draft; not wired into the site",
+  "purpose": "The radiographs the simulated patient can show when an X-ray is ordered. Three exist already (img/nb); the rest are planned and described by the prompts in 03-prompts-clinical-simulation.md.",
+  "schema": {
+   "status": "existing | planned",
+   "existingKey": "key in NB_IMG (ClientScripts/script/360-nursing-image-catalogue.js)",
+   "file": "path under wwwroot",
+   "testId": "test in investigations-catalog.json that shows it",
+   "report": "the radiology report in the same style as er-cases.json",
+   "keyAr": "one-line teaching point in the room's Arabic",
+   "suggestedForCases": "ER cases whose own CXR report matches this image",
+   "review": "medical reviewer sign-off, required before use"
+  },
+  "reviewRequired": "Every generated radiograph must be checked by a physician for anatomical correctness before it is shown to a student; the report and the image must agree.",
+  "counts": {
+   "existing": 3,
+   "planned": 10
+  }
+ },
+ "items": [
+  {
+   "id": "xr-cxr-normal",
+   "status": "existing",
+   "existingKey": "cxr_normal",
+   "file": "img/nb/cxr_normal.png",
+   "modality": "xray",
+   "view": "PA chest",
+   "region": "chest",
+   "titleAr": "أشعة صدر طبيعية",
+   "titleEn": "Normal chest radiograph",
+   "testId": "cxr",
+   "report": "PA chest radiograph. Clear lung fields. Normal cardiac silhouette. Sharp costophrenic angles. No pneumothorax, no effusion.",
+   "keyAr": "صدر طبيعي: الرئتان صافيتان وشكل القلب طبيعي.",
+   "suggestedForCases": [
+    "stemi",
+    "dka",
+    "pe"
+   ],
+   "differential": [],
+   "kw": [
+    "اشعه صدر طبيعيه"
+   ],
+   "source": {
+    "type": "wikimedia-existing",
+    "tool": null,
+    "licence": null
+   },
+   "review": {
+    "status": "pending",
+    "by": null,
+    "at": null
+   }
+  },
+  {
+   "id": "xr-cxr-pneumonia",
+   "status": "existing",
+   "existingKey": "cxr_pneu",
+   "file": "img/nb/cxr_pneu.jpg",
+   "modality": "xray",
+   "view": "AP chest",
+   "region": "chest",
+   "titleAr": "أشعة صدر: التهاب رئوي",
+   "titleEn": "Chest radiograph: lobar pneumonia",
+   "testId": "cxr",
+   "report": "Dense right lower lobe consolidation with air bronchograms. Small right parapneumonic effusion. Left lung clear. Heart size normal. No pneumothorax.",
+   "keyAr": "عتامة كثيفة بالفص السفلي الأيمن مع air bronchograms: التهاب رئوي فصي.",
+   "suggestedForCases": [
+    "sepsis"
+   ],
+   "differential": [
+    "lobar pneumonia",
+    "collapse",
+    "effusion"
+   ],
+   "kw": [
+    "اشعه التهاب رئوي"
+   ],
+   "source": {
+    "type": "wikimedia-existing",
+    "tool": null,
+    "licence": null
+   },
+   "review": {
+    "status": "pending",
+    "by": null,
+    "at": null
+   }
+  },
+  {
+   "id": "xr-cxr-pneumothorax",
+   "status": "planned",
+   "existingKey": null,
+   "file": "img/library/clinical/xr-cxr-pneumothorax.webp",
+   "modality": "xray",
+   "view": "PA chest",
+   "region": "chest",
+   "titleAr": "أشعة صدر: استرواح صدري",
+   "titleEn": "Chest radiograph: right pneumothorax",
+   "testId": "cxr",
+   "report": "Visible visceral pleural line on the right with absent lung markings peripheral to it. No mediastinal shift. No effusion.",
+   "keyAr": "خط الجنب الحشوي ظاهر ولا توجد علامات رئوية خارجه: استرواح صدر. لو ازاحة الوسط يصير tension وبيحتاج علاج فوري بدون انتظار الأشعة.",
+   "suggestedForCases": [],
+   "differential": [
+    "pneumothorax",
+    "bulla"
+   ],
+   "kw": [
+    "استرواح"
+   ],
+   "source": {
+    "type": "ai-generated",
+    "tool": null,
+    "licence": null
+   },
+   "review": {
+    "status": "pending",
+    "by": null,
+    "at": null
+   }
+  },
+  {
+   "id": "xr-cxr-effusion",
+   "status": "planned",
+   "existingKey": null,
+   "file": "img/library/clinical/xr-cxr-effusion.webp",
+   "modality": "xray",
+   "view": "PA chest",
+   "region": "chest",
+   "titleAr": "أشعة صدر: انصباب جنبي",
+   "titleEn": "Chest radiograph: left pleural effusion",
+   "testId": "cxr",
+   "report": "Blunting of the left costophrenic angle with a meniscus sign; the lower zone is opacified with no air bronchograms. Trachea central.",
+   "keyAr": "ضياع الزاوية الضلعية الحجابية مع meniscus: انصباب جنبي.",
+   "suggestedForCases": [],
+   "differential": [
+    "pleural effusion",
+    "collapse",
+    "empyema"
+   ],
+   "kw": [
+    "انصباب"
+   ],
+   "source": {
+    "type": "ai-generated",
+    "tool": null,
+    "licence": null
+   },
+   "review": {
+    "status": "pending",
+    "by": null,
+    "at": null
+   }
+  },
+  {
+   "id": "xr-cxr-edema",
+   "status": "planned",
+   "existingKey": null,
+   "file": "img/library/clinical/xr-cxr-edema.webp",
+   "modality": "xray",
+   "view": "AP sitting chest",
+   "region": "chest",
+   "titleAr": "أشعة صدر: وذمة رئوية",
+   "titleEn": "Chest radiograph: pulmonary oedema",
+   "testId": "cxr",
+   "report": "Cardiomegaly. Upper-lobe diversion, bilateral perihilar alveolar opacities and small bilateral pleural effusions. No pneumothorax.",
+   "keyAr": "تضخم قلب وتحويل للفصوص العلوية وعتامات حول السرة الرئوية بالجهتين: وذمة رئوية قلبية المنشأ.",
+   "suggestedForCases": [
+    "htn"
+   ],
+   "differential": [
+    "cardiogenic oedema",
+    "ARDS",
+    "pneumonia"
+   ],
+   "kw": [
+    "وذمه رئويه"
+   ],
+   "source": {
+    "type": "ai-generated",
+    "tool": null,
+    "licence": null
+   },
+   "review": {
+    "status": "pending",
+    "by": null,
+    "at": null
+   }
+  },
+  {
+   "id": "xr-cxr-ribs",
+   "status": "planned",
+   "existingKey": null,
+   "file": "img/library/clinical/xr-cxr-ribs.webp",
+   "modality": "xray",
+   "view": "PA chest",
+   "region": "chest",
+   "titleAr": "أشعة صدر: كسور أضلاع",
+   "titleEn": "Chest radiograph: multiple left rib fractures",
+   "testId": "cxr",
+   "report": "Displaced fractures of the left lateral 5th to 8th ribs. No pneumothorax or haemothorax seen. Check the lung bases.",
+   "keyAr": "كسور أضلاع متعددة: لازم نستبعد استرواح ونزف جنب، والألم يمنع التنفس العميق.",
+   "suggestedForCases": [],
+   "differential": [
+    "rib fractures",
+    "flail chest",
+    "pneumothorax"
+   ],
+   "kw": [
+    "كسر ضلع",
+    "كسور اضلاع"
+   ],
+   "source": {
+    "type": "ai-generated",
+    "tool": null,
+    "licence": null
+   },
+   "review": {
+    "status": "pending",
+    "by": null,
+    "at": null
+   }
+  },
+  {
+   "id": "xr-ankle-fx",
+   "status": "existing",
+   "existingKey": "ankle_fx",
+   "file": "img/nb/ankle_fx.jpg",
+   "modality": "xray",
+   "view": "AP/lateral ankle",
+   "region": "ankle",
+   "titleAr": "أشعة كاحل: كسر",
+   "titleEn": "Ankle radiograph: trimalleolar fracture",
+   "testId": "xr_ankle",
+   "report": "Trimalleolar ankle fracture: fractures of the lateral, medial and posterior malleoli with talar displacement.",
+   "keyAr": "كسر ثلاثي الكعب: مفصل الكاحل غير ثابت ويحتاج تثبيت وغالباً عملية.",
+   "suggestedForCases": [],
+   "differential": [
+    "ankle fracture",
+    "dislocation",
+    "sprain"
+   ],
+   "kw": [
+    "اشعه كاحل"
+   ],
+   "source": {
+    "type": "wikimedia-existing",
+    "tool": null,
+    "licence": null
+   },
+   "review": {
+    "status": "pending",
+    "by": null,
+    "at": null
+   }
+  },
+  {
+   "id": "xr-wrist-colles",
+   "status": "planned",
+   "existingKey": null,
+   "file": "img/library/clinical/xr-wrist-colles.webp",
+   "modality": "xray",
+   "view": "Lateral wrist",
+   "region": "wrist",
+   "titleAr": "أشعة معصم: كسر الرسغ الشعاعي",
+   "titleEn": "Wrist radiograph: distal radial (Colles) fracture",
+   "testId": "xr_wrist",
+   "report": "Distal radial fracture with dorsal angulation (dinner-fork deformity). Ulnar styloid may be involved.",
+   "keyAr": "كسر الرسغ الكلاسيكي بعد السقوط على اليد الممدودة: انحراف للخلف بشكل شوكة العشاء.",
+   "suggestedForCases": [],
+   "differential": [
+    "Colles fracture",
+    "scaphoid fracture"
+   ],
+   "kw": [
+    "اشعه رسغ",
+    "اشعه معصم"
+   ],
+   "source": {
+    "type": "ai-generated",
+    "tool": null,
+    "licence": null
+   },
+   "review": {
+    "status": "pending",
+    "by": null,
+    "at": null
+   }
+  },
+  {
+   "id": "xr-forearm-both",
+   "status": "planned",
+   "existingKey": null,
+   "file": "img/library/clinical/xr-forearm-both.webp",
+   "modality": "xray",
+   "view": "AP/lateral forearm",
+   "region": "forearm",
+   "titleAr": "أشعة ساعد: كسر العظمتين",
+   "titleEn": "Forearm radiograph: both-bone fracture",
+   "testId": "xr_forearm",
+   "report": "Fractures of the radial and ulnar shafts with angulation. Include the wrist and elbow on the film.",
+   "keyAr": "كسر عظمتي الساعد: لازم أصور المفصلين، وأتأكد من الدورة الدموية والإحساس قبل الجبيرة.",
+   "suggestedForCases": [],
+   "differential": [
+    "both-bone forearm fracture",
+    "Monteggia",
+    "Galeazzi"
+   ],
+   "kw": [
+    "اشعه زند",
+    "اشعه ساعد"
+   ],
+   "source": {
+    "type": "ai-generated",
+    "tool": null,
+    "licence": null
+   },
+   "review": {
+    "status": "pending",
+    "by": null,
+    "at": null
+   }
+  },
+  {
+   "id": "xr-hip-neck-fx",
+   "status": "planned",
+   "existingKey": null,
+   "file": "img/library/clinical/xr-hip-neck-fx.webp",
+   "modality": "xray",
+   "view": "AP pelvis",
+   "region": "hip",
+   "titleAr": "أشعة حوض: كسر عنق الفخذ",
+   "titleEn": "Pelvis radiograph: left femoral neck fracture",
+   "testId": "xr_pelvis",
+   "report": "Subcapital fracture of the left femoral neck with shortening and external rotation of the limb.",
+   "keyAr": "كسر عنق الفخذ عند المسن: الرجل أقصر وتميل لبرّا، ويحتاج تسكين وجراحة بسرعة.",
+   "suggestedForCases": [],
+   "differential": [
+    "neck-of-femur fracture",
+    "pubic ramus fracture"
+   ],
+   "kw": [
+    "اشعه حوض",
+    "اشعه ورك"
+   ],
+   "source": {
+    "type": "ai-generated",
+    "tool": null,
+    "licence": null
+   },
+   "review": {
+    "status": "pending",
+    "by": null,
+    "at": null
+   }
+  },
+  {
+   "id": "xr-tibia-fibula",
+   "status": "planned",
+   "existingKey": null,
+   "file": "img/library/clinical/xr-tibia-fibula.webp",
+   "modality": "xray",
+   "view": "AP/lateral tibia and fibula",
+   "region": "leg",
+   "titleAr": "أشعة ساق: كسر الظنبوب والشظية",
+   "titleEn": "Leg radiograph: tibia and fibula fracture",
+   "testId": "xr_tibia",
+   "report": "Oblique fracture of the tibial shaft with a fibular fracture at a different level. Check alignment and both joints.",
+   "keyAr": "كسر الساق: نراقب متلازمة الحيز (ألم شديد مع الحركة السلبية) بعد التثبيت.",
+   "suggestedForCases": [],
+   "differential": [
+    "tibial shaft fracture",
+    "stress fracture"
+   ],
+   "kw": [
+    "اشعه ساق"
+   ],
+   "source": {
+    "type": "ai-generated",
+    "tool": null,
+    "licence": null
+   },
+   "review": {
+    "status": "pending",
+    "by": null,
+    "at": null
+   }
+  },
+  {
+   "id": "xr-shoulder-dislocation",
+   "status": "planned",
+   "existingKey": null,
+   "file": "img/library/clinical/xr-shoulder-dislocation.webp",
+   "modality": "xray",
+   "view": "AP shoulder",
+   "region": "shoulder",
+   "titleAr": "أشعة كتف: خلع أمامي",
+   "titleEn": "Shoulder radiograph: anterior dislocation",
+   "testId": "xr_shoulder",
+   "report": "Anterior dislocation of the glenohumeral joint: the humeral head lies inferior and medial to the glenoid.",
+   "keyAr": "خلع الكتف الأمامي: رأس العضد تحت وقدام الحفرة. نفحص العصب الإبطي قبل الرد وبعده.",
+   "suggestedForCases": [],
+   "differential": [
+    "anterior shoulder dislocation",
+    "proximal humerus fracture"
+   ],
+   "kw": [
+    "اشعه كتف"
+   ],
+   "source": {
+    "type": "ai-generated",
+    "tool": null,
+    "licence": null
+   },
+   "review": {
+    "status": "pending",
+    "by": null,
+    "at": null
+   }
+  },
+  {
+   "id": "xr-abdo-free-air",
+   "status": "planned",
+   "existingKey": null,
+   "file": "img/library/clinical/xr-abdo-free-air.webp",
+   "modality": "xray",
+   "view": "Erect chest / abdomen",
+   "region": "abdomen",
+   "titleAr": "أشعة واقف: هواء حر تحت الحجاب",
+   "titleEn": "Erect radiograph: free air under the diaphragm",
+   "testId": "xr_abdo",
+   "report": "Crescent of free gas beneath the right hemidiaphragm on the erect film, suggesting a perforated viscus.",
+   "keyAr": "هلال هوائي تحت الحجاب الأيمن: ثقب بالجهاز الهضمي حتى يثبت العكس، والجراحة تُستشار فوراً.",
+   "suggestedForCases": [],
+   "differential": [
+    "perforated viscus",
+    "Chilaiditi sign"
+   ],
+   "kw": [
+    "اشعه بطن",
+    "هواء حر"
+   ],
+   "source": {
+    "type": "ai-generated",
+    "tool": null,
+    "licence": null
+   },
+   "review": {
+    "status": "pending",
+    "by": null,
+    "at": null
+   }
+  }
+ ]
+}

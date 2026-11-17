@@ -1,0 +1,64 @@
+@* The Nabd admin console (V6.7 prototype, 2026-11-14; docs/decisions/0015-admin-console-prototype.md). Reached by
+   the "admin" demo account on the sign-in screen; and the "uniadmin" demo account
+   (V6.7.2, the university's own console, admin/020-university-console.js), and by the "doctor" demo account
+   (V6.7.4, the supervisor's console, admin/030-supervisor-console.js); the browser-side client (admin/010-admin-console.js) shows this
+   view instead of the home and draws each page into #nbx-main. Front-end only, demo data kept in the browser and
+   labelled as a demo environment; it never reaches the rooms or their chat. Styles: css/admin-v67.css. *@
+<section id="view-admin" class="hidden" aria-label="لوحة تحكم منصة نبض" data-no-terms>
+<div class="nbx">
+<aside class="nbx-side">
+<div class="nbx-brand"><span class="nbx-brand-mark" aria-hidden="true"><svg width="22" height="22" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.9" stroke-linecap="round" stroke-linejoin="round"><path d="M3 12h4l2-6 4 12 2-6h6"></path></svg></span><span><b>نَبْض</b><small>لوحة التحكم</small></span></div>
+<nav class="nbx-nav" aria-label="أقسام لوحة التحكم">
+<span class="nbx-nav-group">المنصة</span>
+<button type="button" data-nbx-go="overview"><svg class="nbx-ic" width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.75" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M3 13h8V3H3zM13 21h8V11h-8zM13 3v6h8V3zM3 21h8v-6H3z"></path></svg><span>نظرة عامة</span></button>
+<span class="nbx-nav-group">المؤسسات</span>
+<button type="button" data-nbx-go="unis"><svg class="nbx-ic" width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.75" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M3 21h18M5 21V9l7-5 7 5v12M9 21v-5h6v5M9 12h.01M15 12h.01"></path></svg><span>المؤسسات والجامعات</span></button>
+<button type="button" data-nbx-go="users"><svg class="nbx-ic" width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.75" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><circle cx="9" cy="8" r="3.5"></circle><path d="M2.5 20c.8-3.6 3.4-5.5 6.5-5.5s5.7 1.9 6.5 5.5M16 4.6a3.5 3.5 0 0 1 0 6.8M18 14.8c1.9.7 3.1 2.4 3.5 5.2"></path></svg><span>المستخدمون والأدوار</span><em class="nbx-count" data-nbx-count="users" hidden></em></button>
+<button type="button" data-nbx-go="subs"><svg class="nbx-ic" width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.75" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><rect x="3" y="5" width="18" height="14" rx="2"></rect><path d="M3 10h18M7 15h4"></path></svg><span>الاشتراكات والباقات</span></button>
+<span class="nbx-nav-group">المحتوى السريري</span>
+<button type="button" data-nbx-go="cases"><svg class="nbx-ic" width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.75" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M8 4h8M9 2h6v4H9zM6 4H5a1 1 0 0 0-1 1v15a1 1 0 0 0 1 1h14a1 1 0 0 0 1-1V5a1 1 0 0 0-1-1h-1M8 11h8M8 15h5"></path></svg><span>مكتبة الحالات</span><em class="nbx-count" data-nbx-count="cases" hidden></em></button>
+<button type="button" data-nbx-go="sources"><svg class="nbx-ic" width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.75" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M4 19.5V5a2 2 0 0 1 2-2h14v15H6a2 2 0 0 0-2 2v.5A1.5 1.5 0 0 0 5.5 22H20M8 7h8M8 11h5"></path></svg><span>المصادر والمراجع</span></button>
+<button type="button" data-nbx-go="rules"><svg class="nbx-ic" width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.75" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M12 3 4 6v6c0 4.5 3.4 8 8 9 4.6-1 8-4.5 8-9V6zM9 12l2 2 4-4"></path></svg><span>القوانين والقيود</span></button>
+<span class="nbx-nav-group">الحوكمة</span>
+<button type="button" data-nbx-go="audit"><svg class="nbx-ic" width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.75" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M12 8v4l3 2M3.05 11a9 9 0 1 1 .5 4M3 4v7h7"></path></svg><span>سجل التدقيق</span></button>
+<button type="button" data-nbx-go="settings"><svg class="nbx-ic" width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.75" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><circle cx="12" cy="12" r="3"></circle><path d="M12 2v3M12 19v3M4.9 4.9l2.1 2.1M17 17l2.1 2.1M2 12h3M19 12h3M4.9 19.1 7 17M17 7l2.1-2.1"></path></svg><span>إعدادات المنصة</span></button>
+<span class="nbx-nav-group" hidden>الجامعة</span>
+<button type="button" data-nbx-go="uhome" hidden><svg class="nbx-ic" width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.75" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M3 13h8V3H3zM13 21h8V11h-8zM13 3v6h8V3zM3 21h8v-6H3z"></path></svg><span>لوحة الجامعة</span></button>
+<span class="nbx-nav-group" hidden>التنظيم الأكاديمي</span>
+<button type="button" data-nbx-go="ucourses" hidden><svg class="nbx-ic" width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.75" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M4 19.5V5a2 2 0 0 1 2-2h14v15H6a2 2 0 0 0-2 2v.5A1.5 1.5 0 0 0 5.5 22H20M8 7h8M8 11h5"></path></svg><span>المساقات والشعب</span></button>
+<button type="button" data-nbx-go="ustaff" hidden><svg class="nbx-ic" width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.75" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M3 21h18M5 21V9l7-5 7 5v12M9 21v-5h6v5M9 12h.01M15 12h.01"></path></svg><span>الكادر الأكاديمي</span></button>
+<button type="button" data-nbx-go="ustudents" hidden><svg class="nbx-ic" width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.75" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><circle cx="9" cy="8" r="3.5"></circle><path d="M2.5 20c.8-3.6 3.4-5.5 6.5-5.5s5.7 1.9 6.5 5.5M16 4.6a3.5 3.5 0 0 1 0 6.8M18 14.8c1.9.7 3.1 2.4 3.5 5.2"></path></svg><span>الطلاب</span><em class="nbx-count" data-nbx-count="ustudents" hidden></em></button>
+<span class="nbx-nav-group" hidden>التدريب</span>
+<button type="button" data-nbx-go="ulibrary" hidden><svg class="nbx-ic" width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.75" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M8 4h8M9 2h6v4H9zM6 4H5a1 1 0 0 0-1 1v15a1 1 0 0 0 1 1h14a1 1 0 0 0 1-1V5a1 1 0 0 0-1-1h-1M8 11h8M8 15h5"></path></svg><span>مكتبة الحالات</span></button>
+<button type="button" data-nbx-go="ureports" hidden><svg class="nbx-ic" width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.75" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M4 20V10M10 20V4M16 20v-7M22 20H2"></path></svg><span>التقارير</span></button>
+<span class="nbx-nav-group" hidden>الإعداد</span>
+<button type="button" data-nbx-go="usettings" hidden><svg class="nbx-ic" width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.75" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><circle cx="12" cy="12" r="3"></circle><path d="M12 2v3M12 19v3M4.9 4.9l2.1 2.1M17 17l2.1 2.1M2 12h3M19 12h3M4.9 19.1 7 17M17 7l2.1-2.1"></path></svg><span>إعدادات الجامعة</span></button>
+<span class="nbx-nav-group" hidden>بوابتي</span>
+<button type="button" data-nbx-go="shome" hidden><svg class="nbx-ic" width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.75" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M3 13h8V3H3zM13 21h8V11h-8zM13 3v6h8V3zM3 21h8v-6H3z"></path></svg><span>بوابة المشرف</span></button>
+<span class="nbx-nav-group" hidden>التدريب</span>
+<button type="button" data-nbx-go="sassign" hidden><svg class="nbx-ic" width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.75" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M8 4h8M9 2h6v4H9zM6 4H5a1 1 0 0 0-1 1v15a1 1 0 0 0 1 1h14a1 1 0 0 0 1-1V5a1 1 0 0 0-1-1h-1M8 11h8M8 15h5"></path></svg><span>الواجبات</span></button>
+<button type="button" data-nbx-go="sresults" hidden><svg class="nbx-ic" width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.75" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M9 13l2 2 4-4M8 4h8M9 2h6v4H9zM6 4H5a1 1 0 0 0-1 1v15a1 1 0 0 0 1 1h14a1 1 0 0 0 1-1V5a1 1 0 0 0-1-1h-1"></path></svg><span>النتائج والاعتماد</span><em class="nbx-count" data-nbx-count="sresults" hidden></em></button>
+<span class="nbx-nav-group" hidden>الطلاب</span>
+<button type="button" data-nbx-go="sstudents" hidden><svg class="nbx-ic" width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.75" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><circle cx="9" cy="8" r="3.5"></circle><path d="M2.5 20c.8-3.6 3.4-5.5 6.5-5.5s5.7 1.9 6.5 5.5M16 4.6a3.5 3.5 0 0 1 0 6.8M18 14.8c1.9.7 3.1 2.4 3.5 5.2"></path></svg><span>طلابي</span></button>
+</nav>
+<p class="nbx-side-note"><b>بيئة العرض</b>بيانات توضيحية محفوظة في هذا المتصفح</p>
+</aside>
+<div class="nbx-body">
+<header class="nbx-top">
+<div class="nbx-crumbs"><span>لوحة التحكم</span><span aria-hidden="true">/</span><b id="nbx-title">نظرة عامة</b></div>
+<span class="nbx-asof" id="nbx-asof"></span>
+<span class="nbx-env" title="بيانات توضيحية محفوظة في هذا المتصفح">بيئة العرض</span>
+<div class="nbx-user"><span class="nbx-user-av" id="nbx-user-av" aria-hidden="true"></span><span><b id="nbx-user-name"></b><small id="nbx-user-role"></small></span></div>
+<button type="button" id="nbx-logout" class="nbx-btn nbx-btn-quiet">تسجيل الخروج</button>
+</header>
+<main id="nbx-main" class="nbx-main" tabindex="-1"></main>
+</div>
+</div>
+<div id="nbx-drawer" class="nbx-drawer" hidden>
+<div class="nbx-drawer-scrim" data-nbx-close></div>
+<div class="nbx-drawer-panel" role="dialog" aria-modal="true" aria-labelledby="nbx-drawer-title">
+<header><h2 id="nbx-drawer-title"></h2><button type="button" class="nbx-drawer-x" data-nbx-close aria-label="إغلاق"><svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.75" stroke-linecap="round" aria-hidden="true"><path d="M6 6l12 12M18 6 6 18"></path></svg></button></header>
+<div id="nbx-drawer-body" class="nbx-drawer-body"></div>
+</div>
+</div>
+</section>

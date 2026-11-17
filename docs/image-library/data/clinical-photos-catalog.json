@@ -1,0 +1,3082 @@
+{
+ "_meta": {
+  "file": "clinical-photos-catalog.json",
+  "version": 1,
+  "date": "2026-11-14",
+  "status": "draft; not wired into the site",
+  "purpose": "The body-part photos the simulated patient shows when the student asks to see a limb, throat, skin and so on. The student's phrase picks the REGION; the case's own finding picks the image inside that region (so \"show me your leg\" shows a swollen, red or bruised leg according to the case).",
+  "schema": {
+   "regions": "a body region with the nouns a student uses (Arabic and English) and the normalised trigger phrases",
+   "items": "one image: its region, the finding, the visible signs, the conditions it supports, a one-line patient sentence in Jordanian Arabic, the tests that usually follow, the skin tone assigned to it",
+   "trainingPairs": "utterance to region examples (intent show_body_part)",
+   "negatives": "look-alike utterances that must not trigger an image, with the intent they really are",
+   "review": "medical reviewer sign-off, required before use",
+   "skinTone": "the tone the image should be generated with, spread across the set; erythema shows darker (violaceous or brown) on dark skin"
+  },
+  "reviewRequired": "Every image must be reviewed by a physician; none is shown before review.",
+  "counts": {
+   "regions": 10,
+   "items": 28,
+   "trainingPairs": 273,
+   "negatives": 12
+  }
+ },
+ "regions": {
+  "leg": {
+   "nounsAr": [
+    "رجلك",
+    "ساقك",
+    "سمانتك",
+    "فخذك"
+   ],
+   "nounsEn": [
+    "leg",
+    "calf"
+   ],
+   "kw": [
+    "calf",
+    "leg",
+    "رجلك",
+    "ساقك",
+    "سمانتك",
+    "فخذك"
+   ]
+  },
+  "foot_ankle": {
+   "nounsAr": [
+    "كاحلك",
+    "قدمك"
+   ],
+   "nounsEn": [
+    "ankle",
+    "foot"
+   ],
+   "kw": [
+    "ankle",
+    "foot",
+    "قدمك",
+    "كاحلك"
+   ]
+  },
+  "arm_hand": {
+   "nounsAr": [
+    "ايدك",
+    "ذراعك",
+    "زندك",
+    "اصابعك"
+   ],
+   "nounsEn": [
+    "arm",
+    "hand",
+    "fingers"
+   ],
+   "kw": [
+    "arm",
+    "fingers",
+    "hand",
+    "اصابعك",
+    "ايدك",
+    "ذراعك",
+    "زندك"
+   ]
+  },
+  "shoulder": {
+   "nounsAr": [
+    "كتفك"
+   ],
+   "nounsEn": [
+    "shoulder"
+   ],
+   "kw": [
+    "shoulder",
+    "كتفك"
+   ]
+  },
+  "throat": {
+   "nounsAr": [
+    "حلقك",
+    "زورك",
+    "بلعومك",
+    "لوزتيك"
+   ],
+   "nounsEn": [
+    "throat",
+    "tonsils"
+   ],
+   "kw": [
+    "throat",
+    "tonsils",
+    "بلعومك",
+    "حلقك",
+    "زورك",
+    "لوزتيك"
+   ]
+  },
+  "mouth": {
+   "nounsAr": [
+    "فمك",
+    "شفايفك",
+    "لسانك",
+    "وجهك"
+   ],
+   "nounsEn": [
+    "mouth",
+    "lips",
+    "tongue"
+   ],
+   "kw": [
+    "lips",
+    "mouth",
+    "tongue",
+    "شفايفك",
+    "فمك",
+    "لسانك",
+    "وجهك"
+   ]
+  },
+  "eye": {
+   "nounsAr": [
+    "عينك",
+    "عيونك"
+   ],
+   "nounsEn": [
+    "eyes",
+    "eye"
+   ],
+   "kw": [
+    "eye",
+    "eyes",
+    "عينك",
+    "عيونك"
+   ]
+  },
+  "neck": {
+   "nounsAr": [
+    "رقبتك"
+   ],
+   "nounsEn": [
+    "neck"
+   ],
+   "kw": [
+    "neck",
+    "رقبتك"
+   ]
+  },
+  "skin": {
+   "nounsAr": [
+    "جلدك",
+    "ظهرك",
+    "جسمك",
+    "الطفح"
+   ],
+   "nounsEn": [
+    "skin",
+    "rash",
+    "back"
+   ],
+   "kw": [
+    "back",
+    "rash",
+    "skin",
+    "الطفح",
+    "جسمك",
+    "جلدك",
+    "ظهرك"
+   ]
+  },
+  "abdomen": {
+   "nounsAr": [
+    "بطنك"
+   ],
+   "nounsEn": [
+    "abdomen",
+    "belly"
+   ],
+   "kw": [
+    "abdomen",
+    "belly",
+    "بطنك"
+   ]
+  }
+ },
+ "items": [
+  {
+   "id": "limb-leg-swelling",
+   "file": "img/library/clinical/limb-leg-swelling.webp",
+   "region": "leg",
+   "titleAr": "ساق متورمة (وذمة)",
+   "finding": "Bilateral pitting oedema to the knee",
+   "visibleSigns": [
+    "loss of ankle contour",
+    "shiny skin",
+    "pitting after pressure"
+   ],
+   "linkedConditions": [
+    "heart failure",
+    "nephrotic syndrome",
+    "cirrhosis",
+    "venous insufficiency"
+   ],
+   "sayAr": "رجلي منفخة من الكاحل لفوق، ولما بضغط بإصبعي بتضل الحفرة.",
+   "relatedTests": [
+    "bnp",
+    "kft",
+    "lft",
+    "urine"
+   ],
+   "skinTone": "light",
+   "source": {
+    "type": "ai-generated",
+    "tool": null,
+    "licence": null
+   },
+   "review": {
+    "status": "pending",
+    "by": null,
+    "at": null
+   }
+  },
+  {
+   "id": "limb-leg-redness",
+   "file": "img/library/clinical/limb-leg-redness.webp",
+   "region": "leg",
+   "titleAr": "ساق محمرّة (التهاب نسيج خلوي)",
+   "finding": "Spreading erythema, warmth and swelling of the lower leg",
+   "visibleSigns": [
+    "ill-defined red area",
+    "warm and tender",
+    "swelling"
+   ],
+   "linkedConditions": [
+    "cellulitis",
+    "DVT",
+    "erysipelas"
+   ],
+   "sayAr": "رجلي محمرّة وسخنة وبتوجعني لما حدا يلمسها، ومعي حرارة.",
+   "relatedTests": [
+    "cbc",
+    "crp",
+    "blood_culture",
+    "wound_swab"
+   ],
+   "skinTone": "medium",
+   "source": {
+    "type": "ai-generated",
+    "tool": null,
+    "licence": null
+   },
+   "review": {
+    "status": "pending",
+    "by": null,
+    "at": null
+   }
+  },
+  {
+   "id": "limb-leg-dvt",
+   "file": "img/library/clinical/limb-leg-dvt.webp",
+   "region": "leg",
+   "titleAr": "ساق واحدة متورمة (جلطة محتملة)",
+   "finding": "Unilateral calf swelling with dilated superficial veins",
+   "visibleSigns": [
+    "one leg larger than the other",
+    "calf tenderness",
+    "mild redness only"
+   ],
+   "linkedConditions": [
+    "deep vein thrombosis",
+    "cellulitis",
+    "ruptured Baker cyst"
+   ],
+   "sayAr": "رجل وحدة بس منفخة وبتوجعني بالسمانة.",
+   "relatedTests": [
+    "ddimer",
+    "doppler_leg"
+   ],
+   "skinTone": "dark",
+   "source": {
+    "type": "ai-generated",
+    "tool": null,
+    "licence": null
+   },
+   "review": {
+    "status": "pending",
+    "by": null,
+    "at": null
+   }
+  },
+  {
+   "id": "limb-leg-bruise",
+   "file": "img/library/clinical/limb-leg-bruise.webp",
+   "region": "leg",
+   "titleAr": "ساق مع كدمات",
+   "finding": "Large ecchymosis of the shin without a wound",
+   "visibleSigns": [
+    "purple and blue bruising",
+    "mild swelling",
+    "skin intact"
+   ],
+   "linkedConditions": [
+    "contusion",
+    "tibial fracture",
+    "coagulopathy"
+   ],
+   "sayAr": "وقعت على رجلي وطلعت كدمة زرقا وبنفسجي.",
+   "relatedTests": [
+    "xr_tibia",
+    "coag"
+   ],
+   "skinTone": "medium",
+   "source": {
+    "type": "ai-generated",
+    "tool": null,
+    "licence": null
+   },
+   "review": {
+    "status": "pending",
+    "by": null,
+    "at": null
+   }
+  },
+  {
+   "id": "limb-ankle-sprain",
+   "file": "img/library/clinical/limb-ankle-sprain.webp",
+   "region": "foot_ankle",
+   "titleAr": "التواء الكاحل",
+   "finding": "Swelling and bruising over the lateral malleolus; ankle contour preserved",
+   "visibleSigns": [
+    "lateral swelling",
+    "bruising",
+    "normal alignment"
+   ],
+   "linkedConditions": [
+    "ankle sprain",
+    "ankle fracture"
+   ],
+   "sayAr": "لويت كاحلي، صار منفخ وأزرق من برا.",
+   "relatedTests": [
+    "xr_ankle"
+   ],
+   "skinTone": "light",
+   "source": {
+    "type": "ai-generated",
+    "tool": null,
+    "licence": null
+   },
+   "review": {
+    "status": "pending",
+    "by": null,
+    "at": null
+   }
+  },
+  {
+   "id": "limb-arm-deformity",
+   "file": "img/library/clinical/limb-arm-deformity.webp",
+   "region": "arm_hand",
+   "titleAr": "تشوه الساعد",
+   "finding": "Closed forearm deformity with angulation and swelling; skin intact",
+   "visibleSigns": [
+    "angulation",
+    "swelling",
+    "intact skin"
+   ],
+   "linkedConditions": [
+    "both-bone forearm fracture",
+    "Colles fracture"
+   ],
+   "sayAr": "إيدي صارت معوجّة بعد ما وقعت عليها، وما بقدر أحركها.",
+   "relatedTests": [
+    "xr_forearm",
+    "xr_wrist"
+   ],
+   "skinTone": "medium",
+   "source": {
+    "type": "ai-generated",
+    "tool": null,
+    "licence": null
+   },
+   "review": {
+    "status": "pending",
+    "by": null,
+    "at": null
+   }
+  },
+  {
+   "id": "limb-splint",
+   "file": "img/library/clinical/limb-splint.webp",
+   "region": "arm_hand",
+   "titleAr": "ساعد في جبيرة",
+   "finding": "Forearm in a temporary splint with the fingers visible and pink",
+   "visibleSigns": [
+    "splint in place",
+    "fingers pink",
+    "mild swelling"
+   ],
+   "linkedConditions": [
+    "fracture after immobilisation"
+   ],
+   "sayAr": "حطولي جبيرة، وأصابعي لسا بحس فيها.",
+   "relatedTests": [
+    "xr_forearm"
+   ],
+   "skinTone": "dark",
+   "source": {
+    "type": "ai-generated",
+    "tool": null,
+    "licence": null
+   },
+   "review": {
+    "status": "pending",
+    "by": null,
+    "at": null
+   }
+  },
+  {
+   "id": "limb-cyanosis-finger",
+   "file": "img/library/clinical/limb-cyanosis-finger.webp",
+   "region": "arm_hand",
+   "titleAr": "أصابع زرقاء",
+   "finding": "Cyanotic fingertips with pallor at the nail beds",
+   "visibleSigns": [
+    "blue fingertips",
+    "pale nail beds",
+    "cool skin"
+   ],
+   "linkedConditions": [
+    "Raynaud phenomenon",
+    "acute limb ischaemia",
+    "hypoxia"
+   ],
+   "sayAr": "أصابعي زرقا وباردة.",
+   "relatedTests": [],
+   "skinTone": "medium",
+   "source": {
+    "type": "ai-generated",
+    "tool": null,
+    "licence": null
+   },
+   "review": {
+    "status": "pending",
+    "by": null,
+    "at": null
+   }
+  },
+  {
+   "id": "limb-burn-hand",
+   "file": "img/library/clinical/limb-burn-hand.webp",
+   "region": "arm_hand",
+   "titleAr": "حرق باليد",
+   "finding": "Superficial partial-thickness scald of the dorsum of the hand with small blisters",
+   "visibleSigns": [
+    "red skin",
+    "small intact blisters",
+    "no blood"
+   ],
+   "linkedConditions": [
+    "scald burn"
+   ],
+   "sayAr": "انحرقت إيدي بمي مغلي وطلع فيها فقاعات صغيرة.",
+   "relatedTests": [],
+   "skinTone": "light",
+   "source": {
+    "type": "ai-generated",
+    "tool": null,
+    "licence": null
+   },
+   "review": {
+    "status": "pending",
+    "by": null,
+    "at": null
+   }
+  },
+  {
+   "id": "shoulder-redness",
+   "file": "img/library/clinical/shoulder-redness.webp",
+   "region": "shoulder",
+   "titleAr": "كتف محمرّ",
+   "finding": "Red, warm and swollen shoulder with tight skin over the joint",
+   "visibleSigns": [
+    "erythema",
+    "warmth",
+    "mild swelling"
+   ],
+   "linkedConditions": [
+    "septic arthritis",
+    "cellulitis",
+    "gout"
+   ],
+   "sayAr": "كتفي حامي ومحمرّ وبوجعني مع أي حركة.",
+   "relatedTests": [
+    "cbc",
+    "crp",
+    "esr",
+    "joint_fluid"
+   ],
+   "skinTone": "medium",
+   "source": {
+    "type": "ai-generated",
+    "tool": null,
+    "licence": null
+   },
+   "review": {
+    "status": "pending",
+    "by": null,
+    "at": null
+   }
+  },
+  {
+   "id": "shoulder-bruise",
+   "file": "img/library/clinical/shoulder-bruise.webp",
+   "region": "shoulder",
+   "titleAr": "كتف مع كدمة",
+   "finding": "Blue and yellow bruise over the lateral shoulder after a fall",
+   "visibleSigns": [
+    "bruising",
+    "tenderness",
+    "skin intact"
+   ],
+   "linkedConditions": [
+    "contusion",
+    "clavicle fracture",
+    "rotator cuff tear"
+   ],
+   "sayAr": "وقعت على كتفي وصار أزرق وأصفر.",
+   "relatedTests": [
+    "xr_shoulder"
+   ],
+   "skinTone": "dark",
+   "source": {
+    "type": "ai-generated",
+    "tool": null,
+    "licence": null
+   },
+   "review": {
+    "status": "pending",
+    "by": null,
+    "at": null
+   }
+  },
+  {
+   "id": "shoulder-dislocation",
+   "file": "img/library/clinical/shoulder-dislocation.webp",
+   "region": "shoulder",
+   "titleAr": "خلع الكتف",
+   "finding": "Squared shoulder outline with a hollow below the acromion; the arm held still by the patient",
+   "visibleSigns": [
+    "loss of the round contour",
+    "hollow under the acromion",
+    "arm held in rotation"
+   ],
+   "linkedConditions": [
+    "anterior shoulder dislocation"
+   ],
+   "sayAr": "كتفي طالع من مكانه وما بقدر أرفع إيدي.",
+   "relatedTests": [
+    "xr_shoulder"
+   ],
+   "skinTone": "medium",
+   "source": {
+    "type": "ai-generated",
+    "tool": null,
+    "licence": null
+   },
+   "review": {
+    "status": "pending",
+    "by": null,
+    "at": null
+   }
+  },
+  {
+   "id": "shoulder-swelling",
+   "file": "img/library/clinical/shoulder-swelling.webp",
+   "region": "shoulder",
+   "titleAr": "تورم المفصل",
+   "finding": "Joint swelling with mild redness; movement painful",
+   "visibleSigns": [
+    "swelling",
+    "mild erythema",
+    "guarded movement"
+   ],
+   "linkedConditions": [
+    "septic arthritis",
+    "crystal arthritis"
+   ],
+   "sayAr": "كتفي منفخ وحرارته عالية وما بقدر أحركه.",
+   "relatedTests": [
+    "joint_fluid",
+    "esr",
+    "crp",
+    "cbc",
+    "uric"
+   ],
+   "skinTone": "light",
+   "source": {
+    "type": "ai-generated",
+    "tool": null,
+    "licence": null
+   },
+   "review": {
+    "status": "pending",
+    "by": null,
+    "at": null
+   }
+  },
+  {
+   "id": "throat-pharyngitis",
+   "file": "img/library/clinical/throat-pharyngitis.webp",
+   "region": "throat",
+   "titleAr": "التهاب البلعوم",
+   "finding": "Erythematous pharynx and uvula without exudate",
+   "visibleSigns": [
+    "red pharynx",
+    "swollen uvula",
+    "no exudate"
+   ],
+   "linkedConditions": [
+    "viral pharyngitis",
+    "streptococcal pharyngitis"
+   ],
+   "sayAr": "حلقي بوجعني وبحس فيه حرقة، وبلع الريق صعب.",
+   "relatedTests": [
+    "strep_rapid"
+   ],
+   "skinTone": "medium",
+   "source": {
+    "type": "ai-generated",
+    "tool": null,
+    "licence": null
+   },
+   "review": {
+    "status": "pending",
+    "by": null,
+    "at": null
+   }
+  },
+  {
+   "id": "throat-tonsillitis",
+   "file": "img/library/clinical/throat-tonsillitis.webp",
+   "region": "throat",
+   "titleAr": "التهاب اللوزتين",
+   "finding": "Enlarged tonsils with white exudate",
+   "visibleSigns": [
+    "enlarged tonsils",
+    "white exudate",
+    "red pharynx"
+   ],
+   "linkedConditions": [
+    "streptococcal tonsillitis",
+    "infectious mononucleosis",
+    "peritonsillar abscess"
+   ],
+   "sayAr": "حلقي ملتهب وفي بقع بيضا على اللوزتين ومعي حرارة.",
+   "relatedTests": [
+    "strep_rapid",
+    "cbc",
+    "crp"
+   ],
+   "skinTone": "dark",
+   "source": {
+    "type": "ai-generated",
+    "tool": null,
+    "licence": null
+   },
+   "review": {
+    "status": "pending",
+    "by": null,
+    "at": null
+   }
+  },
+  {
+   "id": "throat-angioedema",
+   "file": "img/library/clinical/throat-angioedema.webp",
+   "region": "mouth",
+   "titleAr": "تورم الشفتين واللسان",
+   "finding": "Swollen lips and tongue with mild erythema",
+   "visibleSigns": [
+    "lip swelling",
+    "tongue swelling",
+    "mild redness"
+   ],
+   "linkedConditions": [
+    "allergic angioedema",
+    "anaphylaxis",
+    "ACE-inhibitor angioedema"
+   ],
+   "sayAr": "شفايفي ولساني منفخين بعد ما أكلت.",
+   "relatedTests": [],
+   "skinTone": "medium",
+   "source": {
+    "type": "ai-generated",
+    "tool": null,
+    "licence": null
+   },
+   "review": {
+    "status": "pending",
+    "by": null,
+    "at": null
+   }
+  },
+  {
+   "id": "lips-cyanosis",
+   "file": "img/library/clinical/lips-cyanosis.webp",
+   "region": "mouth",
+   "titleAr": "شفاه زرقاء",
+   "finding": "Central cyanosis of the lips and tongue",
+   "visibleSigns": [
+    "blue lips",
+    "blue tongue",
+    "pale face"
+   ],
+   "linkedConditions": [
+    "hypoxia",
+    "methaemoglobinaemia"
+   ],
+   "sayAr": "شفايفي صارت زرقا وبحس بضيق نفس.",
+   "relatedTests": [
+    "abg",
+    "cxr"
+   ],
+   "skinTone": "light",
+   "source": {
+    "type": "ai-generated",
+    "tool": null,
+    "licence": null
+   },
+   "review": {
+    "status": "pending",
+    "by": null,
+    "at": null
+   }
+  },
+  {
+   "id": "eye-jaundice",
+   "file": "img/library/clinical/eye-jaundice.webp",
+   "region": "eye",
+   "titleAr": "اصفرار العين",
+   "finding": "Yellow sclerae",
+   "visibleSigns": [
+    "yellow sclera",
+    "normal conjunctiva"
+   ],
+   "linkedConditions": [
+    "hepatitis",
+    "biliary obstruction",
+    "haemolysis"
+   ],
+   "sayAr": "عيوني صارت صفرا.",
+   "relatedTests": [
+    "lft"
+   ],
+   "skinTone": "medium",
+   "source": {
+    "type": "ai-generated",
+    "tool": null,
+    "licence": null
+   },
+   "review": {
+    "status": "pending",
+    "by": null,
+    "at": null
+   }
+  },
+  {
+   "id": "eye-pallor",
+   "file": "img/library/clinical/eye-pallor.webp",
+   "region": "eye",
+   "titleAr": "شحوب الملتحمة",
+   "finding": "Pale conjunctiva on lower-lid eversion",
+   "visibleSigns": [
+    "pale inner eyelid",
+    "normal sclera"
+   ],
+   "linkedConditions": [
+    "anaemia"
+   ],
+   "sayAr": "تعبانة ودايخة، وقالوا لي جوّا عيني شاحب.",
+   "relatedTests": [
+    "cbc",
+    "ferritin"
+   ],
+   "skinTone": "dark",
+   "source": {
+    "type": "ai-generated",
+    "tool": null,
+    "licence": null
+   },
+   "review": {
+    "status": "pending",
+    "by": null,
+    "at": null
+   }
+  },
+  {
+   "id": "neck-lymph",
+   "file": "img/library/clinical/neck-lymph.webp",
+   "region": "neck",
+   "titleAr": "تضخم العقد اللمفاوية",
+   "finding": "Enlarged tender submandibular lymph nodes",
+   "visibleSigns": [
+    "palpable nodes",
+    "mild swelling"
+   ],
+   "linkedConditions": [
+    "infection",
+    "lymphoma"
+   ],
+   "sayAr": "في كبشات تحت فكي بتوجع وبتكبر.",
+   "relatedTests": [
+    "cbc",
+    "esr"
+   ],
+   "skinTone": "medium",
+   "source": {
+    "type": "ai-generated",
+    "tool": null,
+    "licence": null
+   },
+   "review": {
+    "status": "pending",
+    "by": null,
+    "at": null
+   }
+  },
+  {
+   "id": "skin-urticaria",
+   "file": "img/library/clinical/skin-urticaria.webp",
+   "region": "skin",
+   "titleAr": "شرى (حساسية)",
+   "finding": "Raised, red, well-circumscribed wheals on the forearm that blanch",
+   "visibleSigns": [
+    "wheals",
+    "surrounding redness",
+    "itch marks"
+   ],
+   "linkedConditions": [
+    "urticaria",
+    "allergic reaction"
+   ],
+   "sayAr": "طلعلي حبوب حمرا بتحكني.",
+   "relatedTests": [],
+   "skinTone": "light",
+   "source": {
+    "type": "ai-generated",
+    "tool": null,
+    "licence": null
+   },
+   "review": {
+    "status": "pending",
+    "by": null,
+    "at": null
+   }
+  },
+  {
+   "id": "skin-petechiae",
+   "file": "img/library/clinical/skin-petechiae.webp",
+   "region": "skin",
+   "titleAr": "بقع نقطية أرجوانية",
+   "finding": "Small non-blanching purple spots on the trunk",
+   "visibleSigns": [
+    "non-blanching spots",
+    "small purple dots",
+    "trunk"
+   ],
+   "linkedConditions": [
+    "meningococcaemia",
+    "thrombocytopenia",
+    "vasculitis"
+   ],
+   "sayAr": "طلعلي بقع صغيرة بنفسجي وما بتروح لما بضغط عليها.",
+   "relatedTests": [
+    "cbc",
+    "coag",
+    "blood_culture"
+   ],
+   "skinTone": "medium",
+   "source": {
+    "type": "ai-generated",
+    "tool": null,
+    "licence": null
+   },
+   "review": {
+    "status": "pending",
+    "by": null,
+    "at": null
+   }
+  },
+  {
+   "id": "skin-rash-measles",
+   "file": "img/library/clinical/skin-rash-measles.webp",
+   "region": "skin",
+   "titleAr": "طفح الحصبة",
+   "finding": "Red maculopapular rash spreading from behind the ears to the face and trunk",
+   "visibleSigns": [
+    "red patches",
+    "confluent on the face",
+    "spreading downward"
+   ],
+   "linkedConditions": [
+    "measles",
+    "viral exanthem"
+   ],
+   "sayAr": "طلع عندي طفح أحمر بالوجه ونزل على الجسم ومعي حرارة.",
+   "relatedTests": [
+    "viral_pcr"
+   ],
+   "skinTone": "dark",
+   "source": {
+    "type": "ai-generated",
+    "tool": null,
+    "licence": null
+   },
+   "review": {
+    "status": "pending",
+    "by": null,
+    "at": null
+   }
+  },
+  {
+   "id": "skin-pressure-ulcer",
+   "file": "img/library/clinical/skin-pressure-ulcer.webp",
+   "region": "skin",
+   "titleAr": "قرحة ضغط",
+   "finding": "Stage 2 pressure ulcer over the sacrum with a red margin",
+   "visibleSigns": [
+    "shallow ulcer",
+    "red margin",
+    "no deep tissue"
+   ],
+   "linkedConditions": [
+    "pressure ulcer"
+   ],
+   "sayAr": "في جرح صغير على ظهري من القعدة الطويلة.",
+   "relatedTests": [
+    "wound_swab"
+   ],
+   "skinTone": "medium",
+   "source": {
+    "type": "ai-generated",
+    "tool": null,
+    "licence": null
+   },
+   "review": {
+    "status": "pending",
+    "by": null,
+    "at": null
+   }
+  },
+  {
+   "id": "skin-diabetic-foot",
+   "file": "img/library/clinical/skin-diabetic-foot.webp",
+   "region": "foot_ankle",
+   "titleAr": "قدم السكري",
+   "finding": "Small ulcer on a toe with surrounding erythema and warmth",
+   "visibleSigns": [
+    "toe ulcer",
+    "red warm margin",
+    "dry skin"
+   ],
+   "linkedConditions": [
+    "diabetic foot infection"
+   ],
+   "sayAr": "في جرح صغير بإصبع رجلي وما بيطيب.",
+   "relatedTests": [
+    "glucose",
+    "crp",
+    "cbc",
+    "wound_swab"
+   ],
+   "skinTone": "light",
+   "source": {
+    "type": "ai-generated",
+    "tool": null,
+    "licence": null
+   },
+   "review": {
+    "status": "pending",
+    "by": null,
+    "at": null
+   }
+  },
+  {
+   "id": "abdo-distended",
+   "file": "img/library/clinical/abdo-distended.webp",
+   "region": "abdomen",
+   "titleAr": "بطن منتفخ",
+   "finding": "Distended tense abdomen with a prominent umbilicus and shiny skin",
+   "visibleSigns": [
+    "distension",
+    "everted umbilicus",
+    "tight shiny skin"
+   ],
+   "linkedConditions": [
+    "ascites",
+    "bowel obstruction"
+   ],
+   "sayAr": "بطني منفوخ ومشدود.",
+   "relatedTests": [
+    "ct_abdomen",
+    "lft",
+    "pocus"
+   ],
+   "skinTone": "medium",
+   "source": {
+    "type": "ai-generated",
+    "tool": null,
+    "licence": null
+   },
+   "review": {
+    "status": "pending",
+    "by": null,
+    "at": null
+   }
+  },
+  {
+   "id": "abdo-guarding",
+   "file": "img/library/clinical/abdo-guarding.webp",
+   "region": "abdomen",
+   "titleAr": "وضعية الحماية",
+   "finding": "Patient lying curled on the right side with a hand over the abdomen",
+   "visibleSigns": [
+    "protective posture",
+    "hand over abdomen",
+    "reluctance to move"
+   ],
+   "linkedConditions": [
+    "appendicitis",
+    "peritonitis"
+   ],
+   "sayAr": "بوجعني جنبي اليمين وما بقدر أمد جسمي.",
+   "relatedTests": [
+    "cbc",
+    "crp",
+    "ct_abdomen",
+    "urine"
+   ],
+   "skinTone": "dark",
+   "source": {
+    "type": "ai-generated",
+    "tool": null,
+    "licence": null
+   },
+   "review": {
+    "status": "pending",
+    "by": null,
+    "at": null
+   }
+  },
+  {
+   "id": "abdo-scar",
+   "file": "img/library/clinical/abdo-scar.webp",
+   "region": "abdomen",
+   "titleAr": "ندبة جراحية قديمة",
+   "finding": "Healed lower midline surgical scar",
+   "visibleSigns": [
+    "straight healed scar",
+    "no redness",
+    "no swelling"
+   ],
+   "linkedConditions": [
+    "previous laparotomy"
+   ],
+   "sayAr": "عملت عملية من سنين وهاي ندبتها.",
+   "relatedTests": [],
+   "skinTone": "medium",
+   "source": {
+    "type": "ai-generated",
+    "tool": null,
+    "licence": null
+   },
+   "review": {
+    "status": "pending",
+    "by": null,
+    "at": null
+   }
+  }
+ ],
+ "trainingPairs": [
+  {
+   "text": "ورجيني رجلك",
+   "lang": "ar",
+   "intent": "show_body_part",
+   "region": "leg",
+   "norm": "ورجيني رجلك"
+  },
+  {
+   "text": "خليني اشوف رجلك",
+   "lang": "ar",
+   "intent": "show_body_part",
+   "region": "leg",
+   "norm": "خليني اشوف رجلك"
+  },
+  {
+   "text": "اكشف على رجلك",
+   "lang": "ar",
+   "intent": "show_body_part",
+   "region": "leg",
+   "norm": "اكشف علي رجلك"
+  },
+  {
+   "text": "بدي اشوف رجلك",
+   "lang": "ar",
+   "intent": "show_body_part",
+   "region": "leg",
+   "norm": "بدي اشوف رجلك"
+  },
+  {
+   "text": "فرجيني رجلك",
+   "lang": "ar",
+   "intent": "show_body_part",
+   "region": "leg",
+   "norm": "فرجيني رجلك"
+  },
+  {
+   "text": "ممكن اشوف رجلك؟",
+   "lang": "ar",
+   "intent": "show_body_part",
+   "region": "leg",
+   "norm": "ممكن اشوف رجلك"
+  },
+  {
+   "text": "خلينا نشوف رجلك",
+   "lang": "ar",
+   "intent": "show_body_part",
+   "region": "leg",
+   "norm": "خلينا نشوف رجلك"
+  },
+  {
+   "text": "ورجيني ساقك",
+   "lang": "ar",
+   "intent": "show_body_part",
+   "region": "leg",
+   "norm": "ورجيني ساقك"
+  },
+  {
+   "text": "خليني اشوف ساقك",
+   "lang": "ar",
+   "intent": "show_body_part",
+   "region": "leg",
+   "norm": "خليني اشوف ساقك"
+  },
+  {
+   "text": "اكشف على ساقك",
+   "lang": "ar",
+   "intent": "show_body_part",
+   "region": "leg",
+   "norm": "اكشف علي ساقك"
+  },
+  {
+   "text": "بدي اشوف ساقك",
+   "lang": "ar",
+   "intent": "show_body_part",
+   "region": "leg",
+   "norm": "بدي اشوف ساقك"
+  },
+  {
+   "text": "فرجيني ساقك",
+   "lang": "ar",
+   "intent": "show_body_part",
+   "region": "leg",
+   "norm": "فرجيني ساقك"
+  },
+  {
+   "text": "ممكن اشوف ساقك؟",
+   "lang": "ar",
+   "intent": "show_body_part",
+   "region": "leg",
+   "norm": "ممكن اشوف ساقك"
+  },
+  {
+   "text": "خلينا نشوف ساقك",
+   "lang": "ar",
+   "intent": "show_body_part",
+   "region": "leg",
+   "norm": "خلينا نشوف ساقك"
+  },
+  {
+   "text": "ورجيني سمانتك",
+   "lang": "ar",
+   "intent": "show_body_part",
+   "region": "leg",
+   "norm": "ورجيني سمانتك"
+  },
+  {
+   "text": "خليني اشوف سمانتك",
+   "lang": "ar",
+   "intent": "show_body_part",
+   "region": "leg",
+   "norm": "خليني اشوف سمانتك"
+  },
+  {
+   "text": "اكشف على سمانتك",
+   "lang": "ar",
+   "intent": "show_body_part",
+   "region": "leg",
+   "norm": "اكشف علي سمانتك"
+  },
+  {
+   "text": "بدي اشوف سمانتك",
+   "lang": "ar",
+   "intent": "show_body_part",
+   "region": "leg",
+   "norm": "بدي اشوف سمانتك"
+  },
+  {
+   "text": "فرجيني سمانتك",
+   "lang": "ar",
+   "intent": "show_body_part",
+   "region": "leg",
+   "norm": "فرجيني سمانتك"
+  },
+  {
+   "text": "ممكن اشوف سمانتك؟",
+   "lang": "ar",
+   "intent": "show_body_part",
+   "region": "leg",
+   "norm": "ممكن اشوف سمانتك"
+  },
+  {
+   "text": "خلينا نشوف سمانتك",
+   "lang": "ar",
+   "intent": "show_body_part",
+   "region": "leg",
+   "norm": "خلينا نشوف سمانتك"
+  },
+  {
+   "text": "ورجيني فخذك",
+   "lang": "ar",
+   "intent": "show_body_part",
+   "region": "leg",
+   "norm": "ورجيني فخذك"
+  },
+  {
+   "text": "خليني اشوف فخذك",
+   "lang": "ar",
+   "intent": "show_body_part",
+   "region": "leg",
+   "norm": "خليني اشوف فخذك"
+  },
+  {
+   "text": "اكشف على فخذك",
+   "lang": "ar",
+   "intent": "show_body_part",
+   "region": "leg",
+   "norm": "اكشف علي فخذك"
+  },
+  {
+   "text": "بدي اشوف فخذك",
+   "lang": "ar",
+   "intent": "show_body_part",
+   "region": "leg",
+   "norm": "بدي اشوف فخذك"
+  },
+  {
+   "text": "فرجيني فخذك",
+   "lang": "ar",
+   "intent": "show_body_part",
+   "region": "leg",
+   "norm": "فرجيني فخذك"
+  },
+  {
+   "text": "ممكن اشوف فخذك؟",
+   "lang": "ar",
+   "intent": "show_body_part",
+   "region": "leg",
+   "norm": "ممكن اشوف فخذك"
+  },
+  {
+   "text": "خلينا نشوف فخذك",
+   "lang": "ar",
+   "intent": "show_body_part",
+   "region": "leg",
+   "norm": "خلينا نشوف فخذك"
+  },
+  {
+   "text": "show me your leg",
+   "lang": "en",
+   "intent": "show_body_part",
+   "region": "leg",
+   "norm": "show me your leg"
+  },
+  {
+   "text": "can I see your leg?",
+   "lang": "en",
+   "intent": "show_body_part",
+   "region": "leg",
+   "norm": "can i see your leg"
+  },
+  {
+   "text": "let me look at your leg",
+   "lang": "en",
+   "intent": "show_body_part",
+   "region": "leg",
+   "norm": "let me look at your leg"
+  },
+  {
+   "text": "I'd like to examine your leg",
+   "lang": "en",
+   "intent": "show_body_part",
+   "region": "leg",
+   "norm": "i'd like to examine your leg"
+  },
+  {
+   "text": "show me your calf",
+   "lang": "en",
+   "intent": "show_body_part",
+   "region": "leg",
+   "norm": "show me your calf"
+  },
+  {
+   "text": "can I see your calf?",
+   "lang": "en",
+   "intent": "show_body_part",
+   "region": "leg",
+   "norm": "can i see your calf"
+  },
+  {
+   "text": "let me look at your calf",
+   "lang": "en",
+   "intent": "show_body_part",
+   "region": "leg",
+   "norm": "let me look at your calf"
+  },
+  {
+   "text": "I'd like to examine your calf",
+   "lang": "en",
+   "intent": "show_body_part",
+   "region": "leg",
+   "norm": "i'd like to examine your calf"
+  },
+  {
+   "text": "ورجيني كاحلك",
+   "lang": "ar",
+   "intent": "show_body_part",
+   "region": "foot_ankle",
+   "norm": "ورجيني كاحلك"
+  },
+  {
+   "text": "خليني اشوف كاحلك",
+   "lang": "ar",
+   "intent": "show_body_part",
+   "region": "foot_ankle",
+   "norm": "خليني اشوف كاحلك"
+  },
+  {
+   "text": "اكشف على كاحلك",
+   "lang": "ar",
+   "intent": "show_body_part",
+   "region": "foot_ankle",
+   "norm": "اكشف علي كاحلك"
+  },
+  {
+   "text": "بدي اشوف كاحلك",
+   "lang": "ar",
+   "intent": "show_body_part",
+   "region": "foot_ankle",
+   "norm": "بدي اشوف كاحلك"
+  },
+  {
+   "text": "فرجيني كاحلك",
+   "lang": "ar",
+   "intent": "show_body_part",
+   "region": "foot_ankle",
+   "norm": "فرجيني كاحلك"
+  },
+  {
+   "text": "ممكن اشوف كاحلك؟",
+   "lang": "ar",
+   "intent": "show_body_part",
+   "region": "foot_ankle",
+   "norm": "ممكن اشوف كاحلك"
+  },
+  {
+   "text": "خلينا نشوف كاحلك",
+   "lang": "ar",
+   "intent": "show_body_part",
+   "region": "foot_ankle",
+   "norm": "خلينا نشوف كاحلك"
+  },
+  {
+   "text": "ورجيني قدمك",
+   "lang": "ar",
+   "intent": "show_body_part",
+   "region": "foot_ankle",
+   "norm": "ورجيني قدمك"
+  },
+  {
+   "text": "خليني اشوف قدمك",
+   "lang": "ar",
+   "intent": "show_body_part",
+   "region": "foot_ankle",
+   "norm": "خليني اشوف قدمك"
+  },
+  {
+   "text": "اكشف على قدمك",
+   "lang": "ar",
+   "intent": "show_body_part",
+   "region": "foot_ankle",
+   "norm": "اكشف علي قدمك"
+  },
+  {
+   "text": "بدي اشوف قدمك",
+   "lang": "ar",
+   "intent": "show_body_part",
+   "region": "foot_ankle",
+   "norm": "بدي اشوف قدمك"
+  },
+  {
+   "text": "فرجيني قدمك",
+   "lang": "ar",
+   "intent": "show_body_part",
+   "region": "foot_ankle",
+   "norm": "فرجيني قدمك"
+  },
+  {
+   "text": "ممكن اشوف قدمك؟",
+   "lang": "ar",
+   "intent": "show_body_part",
+   "region": "foot_ankle",
+   "norm": "ممكن اشوف قدمك"
+  },
+  {
+   "text": "خلينا نشوف قدمك",
+   "lang": "ar",
+   "intent": "show_body_part",
+   "region": "foot_ankle",
+   "norm": "خلينا نشوف قدمك"
+  },
+  {
+   "text": "show me your ankle",
+   "lang": "en",
+   "intent": "show_body_part",
+   "region": "foot_ankle",
+   "norm": "show me your ankle"
+  },
+  {
+   "text": "can I see your ankle?",
+   "lang": "en",
+   "intent": "show_body_part",
+   "region": "foot_ankle",
+   "norm": "can i see your ankle"
+  },
+  {
+   "text": "let me look at your ankle",
+   "lang": "en",
+   "intent": "show_body_part",
+   "region": "foot_ankle",
+   "norm": "let me look at your ankle"
+  },
+  {
+   "text": "I'd like to examine your ankle",
+   "lang": "en",
+   "intent": "show_body_part",
+   "region": "foot_ankle",
+   "norm": "i'd like to examine your ankle"
+  },
+  {
+   "text": "show me your foot",
+   "lang": "en",
+   "intent": "show_body_part",
+   "region": "foot_ankle",
+   "norm": "show me your foot"
+  },
+  {
+   "text": "can I see your foot?",
+   "lang": "en",
+   "intent": "show_body_part",
+   "region": "foot_ankle",
+   "norm": "can i see your foot"
+  },
+  {
+   "text": "let me look at your foot",
+   "lang": "en",
+   "intent": "show_body_part",
+   "region": "foot_ankle",
+   "norm": "let me look at your foot"
+  },
+  {
+   "text": "I'd like to examine your foot",
+   "lang": "en",
+   "intent": "show_body_part",
+   "region": "foot_ankle",
+   "norm": "i'd like to examine your foot"
+  },
+  {
+   "text": "ورجيني ايدك",
+   "lang": "ar",
+   "intent": "show_body_part",
+   "region": "arm_hand",
+   "norm": "ورجيني ايدك"
+  },
+  {
+   "text": "خليني اشوف ايدك",
+   "lang": "ar",
+   "intent": "show_body_part",
+   "region": "arm_hand",
+   "norm": "خليني اشوف ايدك"
+  },
+  {
+   "text": "اكشف على ايدك",
+   "lang": "ar",
+   "intent": "show_body_part",
+   "region": "arm_hand",
+   "norm": "اكشف علي ايدك"
+  },
+  {
+   "text": "بدي اشوف ايدك",
+   "lang": "ar",
+   "intent": "show_body_part",
+   "region": "arm_hand",
+   "norm": "بدي اشوف ايدك"
+  },
+  {
+   "text": "فرجيني ايدك",
+   "lang": "ar",
+   "intent": "show_body_part",
+   "region": "arm_hand",
+   "norm": "فرجيني ايدك"
+  },
+  {
+   "text": "ممكن اشوف ايدك؟",
+   "lang": "ar",
+   "intent": "show_body_part",
+   "region": "arm_hand",
+   "norm": "ممكن اشوف ايدك"
+  },
+  {
+   "text": "خلينا نشوف ايدك",
+   "lang": "ar",
+   "intent": "show_body_part",
+   "region": "arm_hand",
+   "norm": "خلينا نشوف ايدك"
+  },
+  {
+   "text": "ورجيني ذراعك",
+   "lang": "ar",
+   "intent": "show_body_part",
+   "region": "arm_hand",
+   "norm": "ورجيني ذراعك"
+  },
+  {
+   "text": "خليني اشوف ذراعك",
+   "lang": "ar",
+   "intent": "show_body_part",
+   "region": "arm_hand",
+   "norm": "خليني اشوف ذراعك"
+  },
+  {
+   "text": "اكشف على ذراعك",
+   "lang": "ar",
+   "intent": "show_body_part",
+   "region": "arm_hand",
+   "norm": "اكشف علي ذراعك"
+  },
+  {
+   "text": "بدي اشوف ذراعك",
+   "lang": "ar",
+   "intent": "show_body_part",
+   "region": "arm_hand",
+   "norm": "بدي اشوف ذراعك"
+  },
+  {
+   "text": "فرجيني ذراعك",
+   "lang": "ar",
+   "intent": "show_body_part",
+   "region": "arm_hand",
+   "norm": "فرجيني ذراعك"
+  },
+  {
+   "text": "ممكن اشوف ذراعك؟",
+   "lang": "ar",
+   "intent": "show_body_part",
+   "region": "arm_hand",
+   "norm": "ممكن اشوف ذراعك"
+  },
+  {
+   "text": "خلينا نشوف ذراعك",
+   "lang": "ar",
+   "intent": "show_body_part",
+   "region": "arm_hand",
+   "norm": "خلينا نشوف ذراعك"
+  },
+  {
+   "text": "ورجيني زندك",
+   "lang": "ar",
+   "intent": "show_body_part",
+   "region": "arm_hand",
+   "norm": "ورجيني زندك"
+  },
+  {
+   "text": "خليني اشوف زندك",
+   "lang": "ar",
+   "intent": "show_body_part",
+   "region": "arm_hand",
+   "norm": "خليني اشوف زندك"
+  },
+  {
+   "text": "اكشف على زندك",
+   "lang": "ar",
+   "intent": "show_body_part",
+   "region": "arm_hand",
+   "norm": "اكشف علي زندك"
+  },
+  {
+   "text": "بدي اشوف زندك",
+   "lang": "ar",
+   "intent": "show_body_part",
+   "region": "arm_hand",
+   "norm": "بدي اشوف زندك"
+  },
+  {
+   "text": "فرجيني زندك",
+   "lang": "ar",
+   "intent": "show_body_part",
+   "region": "arm_hand",
+   "norm": "فرجيني زندك"
+  },
+  {
+   "text": "ممكن اشوف زندك؟",
+   "lang": "ar",
+   "intent": "show_body_part",
+   "region": "arm_hand",
+   "norm": "ممكن اشوف زندك"
+  },
+  {
+   "text": "خلينا نشوف زندك",
+   "lang": "ar",
+   "intent": "show_body_part",
+   "region": "arm_hand",
+   "norm": "خلينا نشوف زندك"
+  },
+  {
+   "text": "ورجيني اصابعك",
+   "lang": "ar",
+   "intent": "show_body_part",
+   "region": "arm_hand",
+   "norm": "ورجيني اصابعك"
+  },
+  {
+   "text": "خليني اشوف اصابعك",
+   "lang": "ar",
+   "intent": "show_body_part",
+   "region": "arm_hand",
+   "norm": "خليني اشوف اصابعك"
+  },
+  {
+   "text": "اكشف على اصابعك",
+   "lang": "ar",
+   "intent": "show_body_part",
+   "region": "arm_hand",
+   "norm": "اكشف علي اصابعك"
+  },
+  {
+   "text": "بدي اشوف اصابعك",
+   "lang": "ar",
+   "intent": "show_body_part",
+   "region": "arm_hand",
+   "norm": "بدي اشوف اصابعك"
+  },
+  {
+   "text": "فرجيني اصابعك",
+   "lang": "ar",
+   "intent": "show_body_part",
+   "region": "arm_hand",
+   "norm": "فرجيني اصابعك"
+  },
+  {
+   "text": "ممكن اشوف اصابعك؟",
+   "lang": "ar",
+   "intent": "show_body_part",
+   "region": "arm_hand",
+   "norm": "ممكن اشوف اصابعك"
+  },
+  {
+   "text": "خلينا نشوف اصابعك",
+   "lang": "ar",
+   "intent": "show_body_part",
+   "region": "arm_hand",
+   "norm": "خلينا نشوف اصابعك"
+  },
+  {
+   "text": "show me your arm",
+   "lang": "en",
+   "intent": "show_body_part",
+   "region": "arm_hand",
+   "norm": "show me your arm"
+  },
+  {
+   "text": "can I see your arm?",
+   "lang": "en",
+   "intent": "show_body_part",
+   "region": "arm_hand",
+   "norm": "can i see your arm"
+  },
+  {
+   "text": "let me look at your arm",
+   "lang": "en",
+   "intent": "show_body_part",
+   "region": "arm_hand",
+   "norm": "let me look at your arm"
+  },
+  {
+   "text": "I'd like to examine your arm",
+   "lang": "en",
+   "intent": "show_body_part",
+   "region": "arm_hand",
+   "norm": "i'd like to examine your arm"
+  },
+  {
+   "text": "show me your hand",
+   "lang": "en",
+   "intent": "show_body_part",
+   "region": "arm_hand",
+   "norm": "show me your hand"
+  },
+  {
+   "text": "can I see your hand?",
+   "lang": "en",
+   "intent": "show_body_part",
+   "region": "arm_hand",
+   "norm": "can i see your hand"
+  },
+  {
+   "text": "let me look at your hand",
+   "lang": "en",
+   "intent": "show_body_part",
+   "region": "arm_hand",
+   "norm": "let me look at your hand"
+  },
+  {
+   "text": "I'd like to examine your hand",
+   "lang": "en",
+   "intent": "show_body_part",
+   "region": "arm_hand",
+   "norm": "i'd like to examine your hand"
+  },
+  {
+   "text": "show me your fingers",
+   "lang": "en",
+   "intent": "show_body_part",
+   "region": "arm_hand",
+   "norm": "show me your fingers"
+  },
+  {
+   "text": "can I see your fingers?",
+   "lang": "en",
+   "intent": "show_body_part",
+   "region": "arm_hand",
+   "norm": "can i see your fingers"
+  },
+  {
+   "text": "let me look at your fingers",
+   "lang": "en",
+   "intent": "show_body_part",
+   "region": "arm_hand",
+   "norm": "let me look at your fingers"
+  },
+  {
+   "text": "I'd like to examine your fingers",
+   "lang": "en",
+   "intent": "show_body_part",
+   "region": "arm_hand",
+   "norm": "i'd like to examine your fingers"
+  },
+  {
+   "text": "ورجيني كتفك",
+   "lang": "ar",
+   "intent": "show_body_part",
+   "region": "shoulder",
+   "norm": "ورجيني كتفك"
+  },
+  {
+   "text": "خليني اشوف كتفك",
+   "lang": "ar",
+   "intent": "show_body_part",
+   "region": "shoulder",
+   "norm": "خليني اشوف كتفك"
+  },
+  {
+   "text": "اكشف على كتفك",
+   "lang": "ar",
+   "intent": "show_body_part",
+   "region": "shoulder",
+   "norm": "اكشف علي كتفك"
+  },
+  {
+   "text": "بدي اشوف كتفك",
+   "lang": "ar",
+   "intent": "show_body_part",
+   "region": "shoulder",
+   "norm": "بدي اشوف كتفك"
+  },
+  {
+   "text": "فرجيني كتفك",
+   "lang": "ar",
+   "intent": "show_body_part",
+   "region": "shoulder",
+   "norm": "فرجيني كتفك"
+  },
+  {
+   "text": "ممكن اشوف كتفك؟",
+   "lang": "ar",
+   "intent": "show_body_part",
+   "region": "shoulder",
+   "norm": "ممكن اشوف كتفك"
+  },
+  {
+   "text": "خلينا نشوف كتفك",
+   "lang": "ar",
+   "intent": "show_body_part",
+   "region": "shoulder",
+   "norm": "خلينا نشوف كتفك"
+  },
+  {
+   "text": "show me your shoulder",
+   "lang": "en",
+   "intent": "show_body_part",
+   "region": "shoulder",
+   "norm": "show me your shoulder"
+  },
+  {
+   "text": "can I see your shoulder?",
+   "lang": "en",
+   "intent": "show_body_part",
+   "region": "shoulder",
+   "norm": "can i see your shoulder"
+  },
+  {
+   "text": "let me look at your shoulder",
+   "lang": "en",
+   "intent": "show_body_part",
+   "region": "shoulder",
+   "norm": "let me look at your shoulder"
+  },
+  {
+   "text": "I'd like to examine your shoulder",
+   "lang": "en",
+   "intent": "show_body_part",
+   "region": "shoulder",
+   "norm": "i'd like to examine your shoulder"
+  },
+  {
+   "text": "ورجيني حلقك",
+   "lang": "ar",
+   "intent": "show_body_part",
+   "region": "throat",
+   "norm": "ورجيني حلقك"
+  },
+  {
+   "text": "خليني اشوف حلقك",
+   "lang": "ar",
+   "intent": "show_body_part",
+   "region": "throat",
+   "norm": "خليني اشوف حلقك"
+  },
+  {
+   "text": "اكشف على حلقك",
+   "lang": "ar",
+   "intent": "show_body_part",
+   "region": "throat",
+   "norm": "اكشف علي حلقك"
+  },
+  {
+   "text": "بدي اشوف حلقك",
+   "lang": "ar",
+   "intent": "show_body_part",
+   "region": "throat",
+   "norm": "بدي اشوف حلقك"
+  },
+  {
+   "text": "فرجيني حلقك",
+   "lang": "ar",
+   "intent": "show_body_part",
+   "region": "throat",
+   "norm": "فرجيني حلقك"
+  },
+  {
+   "text": "ممكن اشوف حلقك؟",
+   "lang": "ar",
+   "intent": "show_body_part",
+   "region": "throat",
+   "norm": "ممكن اشوف حلقك"
+  },
+  {
+   "text": "خلينا نشوف حلقك",
+   "lang": "ar",
+   "intent": "show_body_part",
+   "region": "throat",
+   "norm": "خلينا نشوف حلقك"
+  },
+  {
+   "text": "ورجيني زورك",
+   "lang": "ar",
+   "intent": "show_body_part",
+   "region": "throat",
+   "norm": "ورجيني زورك"
+  },
+  {
+   "text": "خليني اشوف زورك",
+   "lang": "ar",
+   "intent": "show_body_part",
+   "region": "throat",
+   "norm": "خليني اشوف زورك"
+  },
+  {
+   "text": "اكشف على زورك",
+   "lang": "ar",
+   "intent": "show_body_part",
+   "region": "throat",
+   "norm": "اكشف علي زورك"
+  },
+  {
+   "text": "بدي اشوف زورك",
+   "lang": "ar",
+   "intent": "show_body_part",
+   "region": "throat",
+   "norm": "بدي اشوف زورك"
+  },
+  {
+   "text": "فرجيني زورك",
+   "lang": "ar",
+   "intent": "show_body_part",
+   "region": "throat",
+   "norm": "فرجيني زورك"
+  },
+  {
+   "text": "ممكن اشوف زورك؟",
+   "lang": "ar",
+   "intent": "show_body_part",
+   "region": "throat",
+   "norm": "ممكن اشوف زورك"
+  },
+  {
+   "text": "خلينا نشوف زورك",
+   "lang": "ar",
+   "intent": "show_body_part",
+   "region": "throat",
+   "norm": "خلينا نشوف زورك"
+  },
+  {
+   "text": "ورجيني بلعومك",
+   "lang": "ar",
+   "intent": "show_body_part",
+   "region": "throat",
+   "norm": "ورجيني بلعومك"
+  },
+  {
+   "text": "خليني اشوف بلعومك",
+   "lang": "ar",
+   "intent": "show_body_part",
+   "region": "throat",
+   "norm": "خليني اشوف بلعومك"
+  },
+  {
+   "text": "اكشف على بلعومك",
+   "lang": "ar",
+   "intent": "show_body_part",
+   "region": "throat",
+   "norm": "اكشف علي بلعومك"
+  },
+  {
+   "text": "بدي اشوف بلعومك",
+   "lang": "ar",
+   "intent": "show_body_part",
+   "region": "throat",
+   "norm": "بدي اشوف بلعومك"
+  },
+  {
+   "text": "فرجيني بلعومك",
+   "lang": "ar",
+   "intent": "show_body_part",
+   "region": "throat",
+   "norm": "فرجيني بلعومك"
+  },
+  {
+   "text": "ممكن اشوف بلعومك؟",
+   "lang": "ar",
+   "intent": "show_body_part",
+   "region": "throat",
+   "norm": "ممكن اشوف بلعومك"
+  },
+  {
+   "text": "خلينا نشوف بلعومك",
+   "lang": "ar",
+   "intent": "show_body_part",
+   "region": "throat",
+   "norm": "خلينا نشوف بلعومك"
+  },
+  {
+   "text": "ورجيني لوزتيك",
+   "lang": "ar",
+   "intent": "show_body_part",
+   "region": "throat",
+   "norm": "ورجيني لوزتيك"
+  },
+  {
+   "text": "خليني اشوف لوزتيك",
+   "lang": "ar",
+   "intent": "show_body_part",
+   "region": "throat",
+   "norm": "خليني اشوف لوزتيك"
+  },
+  {
+   "text": "اكشف على لوزتيك",
+   "lang": "ar",
+   "intent": "show_body_part",
+   "region": "throat",
+   "norm": "اكشف علي لوزتيك"
+  },
+  {
+   "text": "بدي اشوف لوزتيك",
+   "lang": "ar",
+   "intent": "show_body_part",
+   "region": "throat",
+   "norm": "بدي اشوف لوزتيك"
+  },
+  {
+   "text": "فرجيني لوزتيك",
+   "lang": "ar",
+   "intent": "show_body_part",
+   "region": "throat",
+   "norm": "فرجيني لوزتيك"
+  },
+  {
+   "text": "ممكن اشوف لوزتيك؟",
+   "lang": "ar",
+   "intent": "show_body_part",
+   "region": "throat",
+   "norm": "ممكن اشوف لوزتيك"
+  },
+  {
+   "text": "خلينا نشوف لوزتيك",
+   "lang": "ar",
+   "intent": "show_body_part",
+   "region": "throat",
+   "norm": "خلينا نشوف لوزتيك"
+  },
+  {
+   "text": "show me your throat",
+   "lang": "en",
+   "intent": "show_body_part",
+   "region": "throat",
+   "norm": "show me your throat"
+  },
+  {
+   "text": "can I see your throat?",
+   "lang": "en",
+   "intent": "show_body_part",
+   "region": "throat",
+   "norm": "can i see your throat"
+  },
+  {
+   "text": "let me look at your throat",
+   "lang": "en",
+   "intent": "show_body_part",
+   "region": "throat",
+   "norm": "let me look at your throat"
+  },
+  {
+   "text": "I'd like to examine your throat",
+   "lang": "en",
+   "intent": "show_body_part",
+   "region": "throat",
+   "norm": "i'd like to examine your throat"
+  },
+  {
+   "text": "show me your tonsils",
+   "lang": "en",
+   "intent": "show_body_part",
+   "region": "throat",
+   "norm": "show me your tonsils"
+  },
+  {
+   "text": "can I see your tonsils?",
+   "lang": "en",
+   "intent": "show_body_part",
+   "region": "throat",
+   "norm": "can i see your tonsils"
+  },
+  {
+   "text": "let me look at your tonsils",
+   "lang": "en",
+   "intent": "show_body_part",
+   "region": "throat",
+   "norm": "let me look at your tonsils"
+  },
+  {
+   "text": "I'd like to examine your tonsils",
+   "lang": "en",
+   "intent": "show_body_part",
+   "region": "throat",
+   "norm": "i'd like to examine your tonsils"
+  },
+  {
+   "text": "ورجيني فمك",
+   "lang": "ar",
+   "intent": "show_body_part",
+   "region": "mouth",
+   "norm": "ورجيني فمك"
+  },
+  {
+   "text": "خليني اشوف فمك",
+   "lang": "ar",
+   "intent": "show_body_part",
+   "region": "mouth",
+   "norm": "خليني اشوف فمك"
+  },
+  {
+   "text": "اكشف على فمك",
+   "lang": "ar",
+   "intent": "show_body_part",
+   "region": "mouth",
+   "norm": "اكشف علي فمك"
+  },
+  {
+   "text": "بدي اشوف فمك",
+   "lang": "ar",
+   "intent": "show_body_part",
+   "region": "mouth",
+   "norm": "بدي اشوف فمك"
+  },
+  {
+   "text": "فرجيني فمك",
+   "lang": "ar",
+   "intent": "show_body_part",
+   "region": "mouth",
+   "norm": "فرجيني فمك"
+  },
+  {
+   "text": "ممكن اشوف فمك؟",
+   "lang": "ar",
+   "intent": "show_body_part",
+   "region": "mouth",
+   "norm": "ممكن اشوف فمك"
+  },
+  {
+   "text": "خلينا نشوف فمك",
+   "lang": "ar",
+   "intent": "show_body_part",
+   "region": "mouth",
+   "norm": "خلينا نشوف فمك"
+  },
+  {
+   "text": "ورجيني شفايفك",
+   "lang": "ar",
+   "intent": "show_body_part",
+   "region": "mouth",
+   "norm": "ورجيني شفايفك"
+  },
+  {
+   "text": "خليني اشوف شفايفك",
+   "lang": "ar",
+   "intent": "show_body_part",
+   "region": "mouth",
+   "norm": "خليني اشوف شفايفك"
+  },
+  {
+   "text": "اكشف على شفايفك",
+   "lang": "ar",
+   "intent": "show_body_part",
+   "region": "mouth",
+   "norm": "اكشف علي شفايفك"
+  },
+  {
+   "text": "بدي اشوف شفايفك",
+   "lang": "ar",
+   "intent": "show_body_part",
+   "region": "mouth",
+   "norm": "بدي اشوف شفايفك"
+  },
+  {
+   "text": "فرجيني شفايفك",
+   "lang": "ar",
+   "intent": "show_body_part",
+   "region": "mouth",
+   "norm": "فرجيني شفايفك"
+  },
+  {
+   "text": "ممكن اشوف شفايفك؟",
+   "lang": "ar",
+   "intent": "show_body_part",
+   "region": "mouth",
+   "norm": "ممكن اشوف شفايفك"
+  },
+  {
+   "text": "خلينا نشوف شفايفك",
+   "lang": "ar",
+   "intent": "show_body_part",
+   "region": "mouth",
+   "norm": "خلينا نشوف شفايفك"
+  },
+  {
+   "text": "ورجيني لسانك",
+   "lang": "ar",
+   "intent": "show_body_part",
+   "region": "mouth",
+   "norm": "ورجيني لسانك"
+  },
+  {
+   "text": "خليني اشوف لسانك",
+   "lang": "ar",
+   "intent": "show_body_part",
+   "region": "mouth",
+   "norm": "خليني اشوف لسانك"
+  },
+  {
+   "text": "اكشف على لسانك",
+   "lang": "ar",
+   "intent": "show_body_part",
+   "region": "mouth",
+   "norm": "اكشف علي لسانك"
+  },
+  {
+   "text": "بدي اشوف لسانك",
+   "lang": "ar",
+   "intent": "show_body_part",
+   "region": "mouth",
+   "norm": "بدي اشوف لسانك"
+  },
+  {
+   "text": "فرجيني لسانك",
+   "lang": "ar",
+   "intent": "show_body_part",
+   "region": "mouth",
+   "norm": "فرجيني لسانك"
+  },
+  {
+   "text": "ممكن اشوف لسانك؟",
+   "lang": "ar",
+   "intent": "show_body_part",
+   "region": "mouth",
+   "norm": "ممكن اشوف لسانك"
+  },
+  {
+   "text": "خلينا نشوف لسانك",
+   "lang": "ar",
+   "intent": "show_body_part",
+   "region": "mouth",
+   "norm": "خلينا نشوف لسانك"
+  },
+  {
+   "text": "ورجيني وجهك",
+   "lang": "ar",
+   "intent": "show_body_part",
+   "region": "mouth",
+   "norm": "ورجيني وجهك"
+  },
+  {
+   "text": "خليني اشوف وجهك",
+   "lang": "ar",
+   "intent": "show_body_part",
+   "region": "mouth",
+   "norm": "خليني اشوف وجهك"
+  },
+  {
+   "text": "اكشف على وجهك",
+   "lang": "ar",
+   "intent": "show_body_part",
+   "region": "mouth",
+   "norm": "اكشف علي وجهك"
+  },
+  {
+   "text": "بدي اشوف وجهك",
+   "lang": "ar",
+   "intent": "show_body_part",
+   "region": "mouth",
+   "norm": "بدي اشوف وجهك"
+  },
+  {
+   "text": "فرجيني وجهك",
+   "lang": "ar",
+   "intent": "show_body_part",
+   "region": "mouth",
+   "norm": "فرجيني وجهك"
+  },
+  {
+   "text": "ممكن اشوف وجهك؟",
+   "lang": "ar",
+   "intent": "show_body_part",
+   "region": "mouth",
+   "norm": "ممكن اشوف وجهك"
+  },
+  {
+   "text": "خلينا نشوف وجهك",
+   "lang": "ar",
+   "intent": "show_body_part",
+   "region": "mouth",
+   "norm": "خلينا نشوف وجهك"
+  },
+  {
+   "text": "show me your mouth",
+   "lang": "en",
+   "intent": "show_body_part",
+   "region": "mouth",
+   "norm": "show me your mouth"
+  },
+  {
+   "text": "can I see your mouth?",
+   "lang": "en",
+   "intent": "show_body_part",
+   "region": "mouth",
+   "norm": "can i see your mouth"
+  },
+  {
+   "text": "let me look at your mouth",
+   "lang": "en",
+   "intent": "show_body_part",
+   "region": "mouth",
+   "norm": "let me look at your mouth"
+  },
+  {
+   "text": "I'd like to examine your mouth",
+   "lang": "en",
+   "intent": "show_body_part",
+   "region": "mouth",
+   "norm": "i'd like to examine your mouth"
+  },
+  {
+   "text": "show me your lips",
+   "lang": "en",
+   "intent": "show_body_part",
+   "region": "mouth",
+   "norm": "show me your lips"
+  },
+  {
+   "text": "can I see your lips?",
+   "lang": "en",
+   "intent": "show_body_part",
+   "region": "mouth",
+   "norm": "can i see your lips"
+  },
+  {
+   "text": "let me look at your lips",
+   "lang": "en",
+   "intent": "show_body_part",
+   "region": "mouth",
+   "norm": "let me look at your lips"
+  },
+  {
+   "text": "I'd like to examine your lips",
+   "lang": "en",
+   "intent": "show_body_part",
+   "region": "mouth",
+   "norm": "i'd like to examine your lips"
+  },
+  {
+   "text": "show me your tongue",
+   "lang": "en",
+   "intent": "show_body_part",
+   "region": "mouth",
+   "norm": "show me your tongue"
+  },
+  {
+   "text": "can I see your tongue?",
+   "lang": "en",
+   "intent": "show_body_part",
+   "region": "mouth",
+   "norm": "can i see your tongue"
+  },
+  {
+   "text": "let me look at your tongue",
+   "lang": "en",
+   "intent": "show_body_part",
+   "region": "mouth",
+   "norm": "let me look at your tongue"
+  },
+  {
+   "text": "I'd like to examine your tongue",
+   "lang": "en",
+   "intent": "show_body_part",
+   "region": "mouth",
+   "norm": "i'd like to examine your tongue"
+  },
+  {
+   "text": "ورجيني عينك",
+   "lang": "ar",
+   "intent": "show_body_part",
+   "region": "eye",
+   "norm": "ورجيني عينك"
+  },
+  {
+   "text": "خليني اشوف عينك",
+   "lang": "ar",
+   "intent": "show_body_part",
+   "region": "eye",
+   "norm": "خليني اشوف عينك"
+  },
+  {
+   "text": "اكشف على عينك",
+   "lang": "ar",
+   "intent": "show_body_part",
+   "region": "eye",
+   "norm": "اكشف علي عينك"
+  },
+  {
+   "text": "بدي اشوف عينك",
+   "lang": "ar",
+   "intent": "show_body_part",
+   "region": "eye",
+   "norm": "بدي اشوف عينك"
+  },
+  {
+   "text": "فرجيني عينك",
+   "lang": "ar",
+   "intent": "show_body_part",
+   "region": "eye",
+   "norm": "فرجيني عينك"
+  },
+  {
+   "text": "ممكن اشوف عينك؟",
+   "lang": "ar",
+   "intent": "show_body_part",
+   "region": "eye",
+   "norm": "ممكن اشوف عينك"
+  },
+  {
+   "text": "خلينا نشوف عينك",
+   "lang": "ar",
+   "intent": "show_body_part",
+   "region": "eye",
+   "norm": "خلينا نشوف عينك"
+  },
+  {
+   "text": "ورجيني عيونك",
+   "lang": "ar",
+   "intent": "show_body_part",
+   "region": "eye",
+   "norm": "ورجيني عيونك"
+  },
+  {
+   "text": "خليني اشوف عيونك",
+   "lang": "ar",
+   "intent": "show_body_part",
+   "region": "eye",
+   "norm": "خليني اشوف عيونك"
+  },
+  {
+   "text": "اكشف على عيونك",
+   "lang": "ar",
+   "intent": "show_body_part",
+   "region": "eye",
+   "norm": "اكشف علي عيونك"
+  },
+  {
+   "text": "بدي اشوف عيونك",
+   "lang": "ar",
+   "intent": "show_body_part",
+   "region": "eye",
+   "norm": "بدي اشوف عيونك"
+  },
+  {
+   "text": "فرجيني عيونك",
+   "lang": "ar",
+   "intent": "show_body_part",
+   "region": "eye",
+   "norm": "فرجيني عيونك"
+  },
+  {
+   "text": "ممكن اشوف عيونك؟",
+   "lang": "ar",
+   "intent": "show_body_part",
+   "region": "eye",
+   "norm": "ممكن اشوف عيونك"
+  },
+  {
+   "text": "خلينا نشوف عيونك",
+   "lang": "ar",
+   "intent": "show_body_part",
+   "region": "eye",
+   "norm": "خلينا نشوف عيونك"
+  },
+  {
+   "text": "show me your eyes",
+   "lang": "en",
+   "intent": "show_body_part",
+   "region": "eye",
+   "norm": "show me your eyes"
+  },
+  {
+   "text": "can I see your eyes?",
+   "lang": "en",
+   "intent": "show_body_part",
+   "region": "eye",
+   "norm": "can i see your eyes"
+  },
+  {
+   "text": "let me look at your eyes",
+   "lang": "en",
+   "intent": "show_body_part",
+   "region": "eye",
+   "norm": "let me look at your eyes"
+  },
+  {
+   "text": "I'd like to examine your eyes",
+   "lang": "en",
+   "intent": "show_body_part",
+   "region": "eye",
+   "norm": "i'd like to examine your eyes"
+  },
+  {
+   "text": "show me your eye",
+   "lang": "en",
+   "intent": "show_body_part",
+   "region": "eye",
+   "norm": "show me your eye"
+  },
+  {
+   "text": "can I see your eye?",
+   "lang": "en",
+   "intent": "show_body_part",
+   "region": "eye",
+   "norm": "can i see your eye"
+  },
+  {
+   "text": "let me look at your eye",
+   "lang": "en",
+   "intent": "show_body_part",
+   "region": "eye",
+   "norm": "let me look at your eye"
+  },
+  {
+   "text": "I'd like to examine your eye",
+   "lang": "en",
+   "intent": "show_body_part",
+   "region": "eye",
+   "norm": "i'd like to examine your eye"
+  },
+  {
+   "text": "ورجيني رقبتك",
+   "lang": "ar",
+   "intent": "show_body_part",
+   "region": "neck",
+   "norm": "ورجيني رقبتك"
+  },
+  {
+   "text": "خليني اشوف رقبتك",
+   "lang": "ar",
+   "intent": "show_body_part",
+   "region": "neck",
+   "norm": "خليني اشوف رقبتك"
+  },
+  {
+   "text": "اكشف على رقبتك",
+   "lang": "ar",
+   "intent": "show_body_part",
+   "region": "neck",
+   "norm": "اكشف علي رقبتك"
+  },
+  {
+   "text": "بدي اشوف رقبتك",
+   "lang": "ar",
+   "intent": "show_body_part",
+   "region": "neck",
+   "norm": "بدي اشوف رقبتك"
+  },
+  {
+   "text": "فرجيني رقبتك",
+   "lang": "ar",
+   "intent": "show_body_part",
+   "region": "neck",
+   "norm": "فرجيني رقبتك"
+  },
+  {
+   "text": "ممكن اشوف رقبتك؟",
+   "lang": "ar",
+   "intent": "show_body_part",
+   "region": "neck",
+   "norm": "ممكن اشوف رقبتك"
+  },
+  {
+   "text": "خلينا نشوف رقبتك",
+   "lang": "ar",
+   "intent": "show_body_part",
+   "region": "neck",
+   "norm": "خلينا نشوف رقبتك"
+  },
+  {
+   "text": "show me your neck",
+   "lang": "en",
+   "intent": "show_body_part",
+   "region": "neck",
+   "norm": "show me your neck"
+  },
+  {
+   "text": "can I see your neck?",
+   "lang": "en",
+   "intent": "show_body_part",
+   "region": "neck",
+   "norm": "can i see your neck"
+  },
+  {
+   "text": "let me look at your neck",
+   "lang": "en",
+   "intent": "show_body_part",
+   "region": "neck",
+   "norm": "let me look at your neck"
+  },
+  {
+   "text": "I'd like to examine your neck",
+   "lang": "en",
+   "intent": "show_body_part",
+   "region": "neck",
+   "norm": "i'd like to examine your neck"
+  },
+  {
+   "text": "ورجيني جلدك",
+   "lang": "ar",
+   "intent": "show_body_part",
+   "region": "skin",
+   "norm": "ورجيني جلدك"
+  },
+  {
+   "text": "خليني اشوف جلدك",
+   "lang": "ar",
+   "intent": "show_body_part",
+   "region": "skin",
+   "norm": "خليني اشوف جلدك"
+  },
+  {
+   "text": "اكشف على جلدك",
+   "lang": "ar",
+   "intent": "show_body_part",
+   "region": "skin",
+   "norm": "اكشف علي جلدك"
+  },
+  {
+   "text": "بدي اشوف جلدك",
+   "lang": "ar",
+   "intent": "show_body_part",
+   "region": "skin",
+   "norm": "بدي اشوف جلدك"
+  },
+  {
+   "text": "فرجيني جلدك",
+   "lang": "ar",
+   "intent": "show_body_part",
+   "region": "skin",
+   "norm": "فرجيني جلدك"
+  },
+  {
+   "text": "ممكن اشوف جلدك؟",
+   "lang": "ar",
+   "intent": "show_body_part",
+   "region": "skin",
+   "norm": "ممكن اشوف جلدك"
+  },
+  {
+   "text": "خلينا نشوف جلدك",
+   "lang": "ar",
+   "intent": "show_body_part",
+   "region": "skin",
+   "norm": "خلينا نشوف جلدك"
+  },
+  {
+   "text": "ورجيني ظهرك",
+   "lang": "ar",
+   "intent": "show_body_part",
+   "region": "skin",
+   "norm": "ورجيني ظهرك"
+  },
+  {
+   "text": "خليني اشوف ظهرك",
+   "lang": "ar",
+   "intent": "show_body_part",
+   "region": "skin",
+   "norm": "خليني اشوف ظهرك"
+  },
+  {
+   "text": "اكشف على ظهرك",
+   "lang": "ar",
+   "intent": "show_body_part",
+   "region": "skin",
+   "norm": "اكشف علي ظهرك"
+  },
+  {
+   "text": "بدي اشوف ظهرك",
+   "lang": "ar",
+   "intent": "show_body_part",
+   "region": "skin",
+   "norm": "بدي اشوف ظهرك"
+  },
+  {
+   "text": "فرجيني ظهرك",
+   "lang": "ar",
+   "intent": "show_body_part",
+   "region": "skin",
+   "norm": "فرجيني ظهرك"
+  },
+  {
+   "text": "ممكن اشوف ظهرك؟",
+   "lang": "ar",
+   "intent": "show_body_part",
+   "region": "skin",
+   "norm": "ممكن اشوف ظهرك"
+  },
+  {
+   "text": "خلينا نشوف ظهرك",
+   "lang": "ar",
+   "intent": "show_body_part",
+   "region": "skin",
+   "norm": "خلينا نشوف ظهرك"
+  },
+  {
+   "text": "ورجيني جسمك",
+   "lang": "ar",
+   "intent": "show_body_part",
+   "region": "skin",
+   "norm": "ورجيني جسمك"
+  },
+  {
+   "text": "خليني اشوف جسمك",
+   "lang": "ar",
+   "intent": "show_body_part",
+   "region": "skin",
+   "norm": "خليني اشوف جسمك"
+  },
+  {
+   "text": "اكشف على جسمك",
+   "lang": "ar",
+   "intent": "show_body_part",
+   "region": "skin",
+   "norm": "اكشف علي جسمك"
+  },
+  {
+   "text": "بدي اشوف جسمك",
+   "lang": "ar",
+   "intent": "show_body_part",
+   "region": "skin",
+   "norm": "بدي اشوف جسمك"
+  },
+  {
+   "text": "فرجيني جسمك",
+   "lang": "ar",
+   "intent": "show_body_part",
+   "region": "skin",
+   "norm": "فرجيني جسمك"
+  },
+  {
+   "text": "ممكن اشوف جسمك؟",
+   "lang": "ar",
+   "intent": "show_body_part",
+   "region": "skin",
+   "norm": "ممكن اشوف جسمك"
+  },
+  {
+   "text": "خلينا نشوف جسمك",
+   "lang": "ar",
+   "intent": "show_body_part",
+   "region": "skin",
+   "norm": "خلينا نشوف جسمك"
+  },
+  {
+   "text": "ورجيني الطفح",
+   "lang": "ar",
+   "intent": "show_body_part",
+   "region": "skin",
+   "norm": "ورجيني الطفح"
+  },
+  {
+   "text": "خليني اشوف الطفح",
+   "lang": "ar",
+   "intent": "show_body_part",
+   "region": "skin",
+   "norm": "خليني اشوف الطفح"
+  },
+  {
+   "text": "اكشف على الطفح",
+   "lang": "ar",
+   "intent": "show_body_part",
+   "region": "skin",
+   "norm": "اكشف علي الطفح"
+  },
+  {
+   "text": "بدي اشوف الطفح",
+   "lang": "ar",
+   "intent": "show_body_part",
+   "region": "skin",
+   "norm": "بدي اشوف الطفح"
+  },
+  {
+   "text": "فرجيني الطفح",
+   "lang": "ar",
+   "intent": "show_body_part",
+   "region": "skin",
+   "norm": "فرجيني الطفح"
+  },
+  {
+   "text": "ممكن اشوف الطفح؟",
+   "lang": "ar",
+   "intent": "show_body_part",
+   "region": "skin",
+   "norm": "ممكن اشوف الطفح"
+  },
+  {
+   "text": "خلينا نشوف الطفح",
+   "lang": "ar",
+   "intent": "show_body_part",
+   "region": "skin",
+   "norm": "خلينا نشوف الطفح"
+  },
+  {
+   "text": "show me your skin",
+   "lang": "en",
+   "intent": "show_body_part",
+   "region": "skin",
+   "norm": "show me your skin"
+  },
+  {
+   "text": "can I see your skin?",
+   "lang": "en",
+   "intent": "show_body_part",
+   "region": "skin",
+   "norm": "can i see your skin"
+  },
+  {
+   "text": "let me look at your skin",
+   "lang": "en",
+   "intent": "show_body_part",
+   "region": "skin",
+   "norm": "let me look at your skin"
+  },
+  {
+   "text": "I'd like to examine your skin",
+   "lang": "en",
+   "intent": "show_body_part",
+   "region": "skin",
+   "norm": "i'd like to examine your skin"
+  },
+  {
+   "text": "show me your rash",
+   "lang": "en",
+   "intent": "show_body_part",
+   "region": "skin",
+   "norm": "show me your rash"
+  },
+  {
+   "text": "can I see your rash?",
+   "lang": "en",
+   "intent": "show_body_part",
+   "region": "skin",
+   "norm": "can i see your rash"
+  },
+  {
+   "text": "let me look at your rash",
+   "lang": "en",
+   "intent": "show_body_part",
+   "region": "skin",
+   "norm": "let me look at your rash"
+  },
+  {
+   "text": "I'd like to examine your rash",
+   "lang": "en",
+   "intent": "show_body_part",
+   "region": "skin",
+   "norm": "i'd like to examine your rash"
+  },
+  {
+   "text": "show me your back",
+   "lang": "en",
+   "intent": "show_body_part",
+   "region": "skin",
+   "norm": "show me your back"
+  },
+  {
+   "text": "can I see your back?",
+   "lang": "en",
+   "intent": "show_body_part",
+   "region": "skin",
+   "norm": "can i see your back"
+  },
+  {
+   "text": "let me look at your back",
+   "lang": "en",
+   "intent": "show_body_part",
+   "region": "skin",
+   "norm": "let me look at your back"
+  },
+  {
+   "text": "I'd like to examine your back",
+   "lang": "en",
+   "intent": "show_body_part",
+   "region": "skin",
+   "norm": "i'd like to examine your back"
+  },
+  {
+   "text": "ورجيني بطنك",
+   "lang": "ar",
+   "intent": "show_body_part",
+   "region": "abdomen",
+   "norm": "ورجيني بطنك"
+  },
+  {
+   "text": "خليني اشوف بطنك",
+   "lang": "ar",
+   "intent": "show_body_part",
+   "region": "abdomen",
+   "norm": "خليني اشوف بطنك"
+  },
+  {
+   "text": "اكشف على بطنك",
+   "lang": "ar",
+   "intent": "show_body_part",
+   "region": "abdomen",
+   "norm": "اكشف علي بطنك"
+  },
+  {
+   "text": "بدي اشوف بطنك",
+   "lang": "ar",
+   "intent": "show_body_part",
+   "region": "abdomen",
+   "norm": "بدي اشوف بطنك"
+  },
+  {
+   "text": "فرجيني بطنك",
+   "lang": "ar",
+   "intent": "show_body_part",
+   "region": "abdomen",
+   "norm": "فرجيني بطنك"
+  },
+  {
+   "text": "ممكن اشوف بطنك؟",
+   "lang": "ar",
+   "intent": "show_body_part",
+   "region": "abdomen",
+   "norm": "ممكن اشوف بطنك"
+  },
+  {
+   "text": "خلينا نشوف بطنك",
+   "lang": "ar",
+   "intent": "show_body_part",
+   "region": "abdomen",
+   "norm": "خلينا نشوف بطنك"
+  },
+  {
+   "text": "show me your abdomen",
+   "lang": "en",
+   "intent": "show_body_part",
+   "region": "abdomen",
+   "norm": "show me your abdomen"
+  },
+  {
+   "text": "can I see your abdomen?",
+   "lang": "en",
+   "intent": "show_body_part",
+   "region": "abdomen",
+   "norm": "can i see your abdomen"
+  },
+  {
+   "text": "let me look at your abdomen",
+   "lang": "en",
+   "intent": "show_body_part",
+   "region": "abdomen",
+   "norm": "let me look at your abdomen"
+  },
+  {
+   "text": "I'd like to examine your abdomen",
+   "lang": "en",
+   "intent": "show_body_part",
+   "region": "abdomen",
+   "norm": "i'd like to examine your abdomen"
+  },
+  {
+   "text": "show me your belly",
+   "lang": "en",
+   "intent": "show_body_part",
+   "region": "abdomen",
+   "norm": "show me your belly"
+  },
+  {
+   "text": "can I see your belly?",
+   "lang": "en",
+   "intent": "show_body_part",
+   "region": "abdomen",
+   "norm": "can i see your belly"
+  },
+  {
+   "text": "let me look at your belly",
+   "lang": "en",
+   "intent": "show_body_part",
+   "region": "abdomen",
+   "norm": "let me look at your belly"
+  },
+  {
+   "text": "I'd like to examine your belly",
+   "lang": "en",
+   "intent": "show_body_part",
+   "region": "abdomen",
+   "norm": "i'd like to examine your belly"
+  }
+ ],
+ "negatives": [
+  {
+   "text": "اسمع صدرك",
+   "norm": "اسمع صدرك",
+   "intent": "auscultation",
+   "reason": "يطلب إصغاءً بالسماعة، لا صورة"
+  },
+  {
+   "text": "وين الوجع بالضبط؟",
+   "norm": "وين الوجع بالضبط",
+   "intent": "ask_pain_location",
+   "reason": "سؤال عن مكان الألم، والجواب كلام لا صورة"
+  },
+  {
+   "text": "من امتى رجلك منفخه؟",
+   "norm": "من امتي رجلك منفخه",
+   "intent": "ask_history",
+   "reason": "سؤال عن البداية، لا طلب لرؤية الطرف"
+  },
+  {
+   "text": "احكيلي عن رجلك",
+   "norm": "احكيلي عن رجلك",
+   "intent": "ask_history",
+   "reason": "يطلب وصفاً شفهياً"
+  },
+  {
+   "text": "قديش وجع كتفك من عشره؟",
+   "norm": "قديش وجع كتفك من عشره",
+   "intent": "ask_pain_score",
+   "reason": "يسأل عن شدة الألم"
+  },
+  {
+   "text": "هل في حساسيه عندك؟",
+   "norm": "هل في حساسيه عندك",
+   "intent": "ask_allergy",
+   "reason": "سؤال عن الحساسية، لا صورة للجلد"
+  },
+  {
+   "text": "جس بطنك وقلي وين بوجع",
+   "norm": "جس بطنك وقلي وين بوجع",
+   "intent": "ask_patient_to_palpate",
+   "reason": "يطلب من المريض أن يجسّ ويصف، ولا يطلب صورة"
+  },
+  {
+   "text": "خذ ادويتك",
+   "norm": "خذ ادويتك",
+   "intent": "order_care",
+   "reason": "أمر علاجي"
+  },
+  {
+   "text": "بدي اشعه كتف",
+   "norm": "بدي اشعه كتف",
+   "intent": "order_test",
+   "reason": "طلب فحص، يذهب لكتالوج الفحوصات لا الصور السريرية"
+  },
+  {
+   "text": "وريني نتيجه الدم",
+   "norm": "وريني نتيجه الدم",
+   "intent": "ask_result",
+   "reason": "طلب نتيجة فحص لا صورة جسد"
+  },
+  {
+   "text": "كيف شكل الاشعه؟",
+   "norm": "كيف شكل الاشعه",
+   "intent": "ask_result",
+   "reason": "طلب نتيجة أشعة"
+  },
+  {
+   "text": "افتح فمك واتنفس",
+   "norm": "افتح فمك واتنفس",
+   "intent": "ask_patient_action",
+   "reason": "تعليمات للمريض أثناء الفحص"
+  }
+ ]
+}

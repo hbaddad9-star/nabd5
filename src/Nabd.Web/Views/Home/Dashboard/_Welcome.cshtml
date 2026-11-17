@@ -1,0 +1,32 @@
+      <!-- 1. Welcome (V6.6): the trainee's line, name and actions beside a framed photo, then four facts.
+           Since V6.9.3 the facts are the trainee's own (his last session, his sessions, his average, his weakest
+           axis), filled by admin.js (040-access.js); the platform's facts below stay for anyone else. The other
+           ids are filled by the legacy client (130-auth-shell-ui.js, 470-home-learning-and-track.js);
+           #home-quick-er-btn is shown on phones only (theme.css). -->
+      <div class="bg-white v7-welcome nh-hero" data-no-terms>
+        <div class="nh-hero-main">
+          <div class="nh-hero-copy">
+            <div class="nh-hero-meta">
+              <span id="home-welcome-role">طالبة تمريض · السنة الرابعة</span>
+              <span id="home-demo-indicator" class="nh-hero-demo">حساب تجريبي</span>
+            </div>
+            <h1 id="home-welcome-name">أهلاً بك</h1>
+            <p id="home-welcome-sub">غرفة الطوارئ مفتوحة، وباقي الغرف تُفتح لاحقاً.</p>
+            <div class="v7-welcome-actions">
+              <button id="home-quick-er-btn" class="focus-ring" type="button">ادخل غرفة الطوارئ</button>
+              <button id="home-quick-profile-btn" class="focus-ring" type="button">ملفي وتقدّمي</button>
+              <button id="home-quick-uni-btn" class="focus-ring" type="button">البوابة الجامعية</button>
+            </div>
+          </div>
+          <figure class="nh-hero-media">
+            <img src="img/welcome.jpg" alt="طلبة يتدربون في مختبر المحاكاة" width="960" height="540" loading="lazy" decoding="async" onerror="nbImgFail(this)">
+            <figcaption>مختبر المحاكاة السريرية</figcaption>
+          </figure>
+        </div>
+        <dl class="nh-hero-facts" id="nh-me-facts">
+          <div><dt>القسم المتاح الآن</dt><dd>الطوارئ <span dir="ltr">Emergency</span></dd></div>
+          <div><dt>حالات جاهزة</dt><dd>6 حالات حرجة</dd></div>
+          <div><dt>تقييم الأداء</dt><dd>تقرير من 100 نقطة</dd></div>
+          <div><dt>تسليم الحالة</dt><dd>بصيغة <span dir="ltr">SBAR</span></dd></div>
+        </dl>
+      </div>

@@ -1,0 +1,14 @@
+@* Ready accounts for a demonstration, without registration. The legacy client binds every [data-demo-login]
+   button to nbDemoLogin(name); the three names are its demo accounts. V6.6: each button has a drawn role tile.
+   V6.7 (2026-11-14): a fourth, "admin", opens the admin console prototype (admin/010-admin-console.js, ADR 0015);
+   V6.7.3: the "reviewer" account of V6.7.1 is gone (owner: the reviewer tries the room as a trainee does).
+   V6.7.7 (2026-11-16, owner): the two student accounts are gone; a trainee signs in directly with his e-mail
+   (admin/040-access.js). V6.7.2 (2026-11-15): a sixth, "uniadmin", opens the university's console (sections, staff, students, reports). *@
+<div class="nl-auth-demo" role="group" aria-labelledby="nb-demo-title">
+<div class="nl-auth-demo-head"><span id="nb-demo-title">دخول تجريبي للإدارات</span></div>
+<div class="nl-auth-demo-grid">
+<button type="button" data-demo-login="doctor"><span class="nl-auth-demo-av" aria-hidden="true"><svg fill="none" stroke="currentColor" stroke-linecap="round" stroke-linejoin="round" stroke-width="1.7" viewBox="0 0 24 24"><path d="M3 21h18M5 21V8l7-4 7 4v13M9 21v-6h6v6M9 11h.01M15 11h.01"></path></svg></span><span class="nl-auth-demo-copy"><b>مشرف أكاديمي</b><small>شعبه وطلابه ونتائجهم</small></span></button>
+<button type="button" class="nl-auth-demo-admin" data-demo-login="uniadmin"><span class="nl-auth-demo-av" aria-hidden="true"><svg fill="none" stroke="currentColor" stroke-linecap="round" stroke-linejoin="round" stroke-width="1.75" viewBox="0 0 24 24"><path d="M3 21h18M5 21V9l7-5 7 5v12M9 21v-5h6v5M9 12h.01M15 12h.01"></path></svg></span><span class="nl-auth-demo-copy"><b>مدير الجامعة</b><small>الشعب والكادر والتقارير</small></span></button>
+<button type="button" class="nl-auth-demo-admin" data-demo-login="admin"><span class="nl-auth-demo-av" aria-hidden="true"><svg fill="none" stroke="currentColor" stroke-linecap="round" stroke-linejoin="round" stroke-width="1.75" viewBox="0 0 24 24"><path d="M3 13h8V3H3zM13 21h8V11h-8zM13 3v6h8V3zM3 21h8v-6H3z"></path></svg></span><span class="nl-auth-demo-copy"><b>إدارة نبض</b><small>المؤسسات، الاشتراكات، المحتوى والقوانين</small></span></button>
+</div>
+</div>

@@ -1,0 +1,76 @@
+      <!-- 4B. University assignments (V6.6): the section's line and its assignments (filled by nb8RenderStudentUni
+           into #nb8-home-stu-uni) beside how an assignment works and the way to the university portal
+           (#home-student-open-uni-btn, bound by the legacy client). Shown to university students only (the legacy
+           client toggles .hidden on the section). -->
+      <div id="home-student-uni-section" class="hidden bg-white nh-uni" aria-labelledby="nh-uni-title" data-no-terms>
+        <div class="nh-uni-grid">
+          <div class="nh-uni-main">
+            <div class="nh-uni-head">
+              <span class="nh-uni-kicker"><span class="nh-ic" aria-hidden="true"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M22 10 12 5 2 10l10 5 10-5z"/><path d="M6 12v5c3 2 9 2 12 0v-5"/></svg></span>البوابة الجامعية <span dir="ltr">· University Portal</span></span>
+              <h2 id="nh-uni-title">واجباتك الجامعية</h2>
+              <p>الحالات التي يسندها مشرفك لشعبتك تظهر هنا بموعد تسليمها. كل واجب يفتح غرفة الطوارئ على الحالة نفسها، ويصل تقريرك إلى المشرف عند إنهائها.</p>
+              <span id="home-student-uni-badge" class="nh-uni-badge">مساقات التدريب السريري</span>
+            </div>
+            <div id="nb8-home-stu-uni" class="nb8-stu"></div>
+          </div>
+          <aside class="nh-uni-aside" aria-label="كيف تعمل الواجبات الجامعية">
+            <span class="nh-uni-aside-title">مسار الواجب</span>
+            <ol class="nh-uni-flow">
+              <li><span class="nh-ic" aria-hidden="true"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M16 4h2a2 2 0 0 1 2 2v14a2 2 0 0 1-2 2H6a2 2 0 0 1-2-2V6a2 2 0 0 1 2-2h2"/><rect x="8" y="2" width="8" height="4" rx="1"/><path d="M9 13h6M9 17h4"/></svg></span><span><b>يُسند المشرف الحالة</b><small>لشعبتك، بموعد تسليم وملاحظات.</small></span></li>
+              <li><span class="nh-ic" aria-hidden="true"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M3 12h4l2.5-6 4 12 2.5-6H21"/></svg></span><span><b>تُدير الحالة في غرفة الطوارئ</b><small>الحالة نفسها، بالأدوات نفسها.</small></span></li>
+              <li><span class="nh-ic" aria-hidden="true"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M14 3H6a2 2 0 0 0-2 2v14a2 2 0 0 0 2 2h12a2 2 0 0 0 2-2V9z"/><path d="M14 3v6h6"/><path d="m9 15 2 2 4-4"/></svg></span><span><b>يعتمد المشرف نتيجتك</b><small>يراجع تقريرك ثم ينشر الدرجة لك.</small></span></li>
+            </ol>
+            <button type="button" id="home-student-open-uni-btn" class="focus-ring">افتح البوابة الجامعية ←</button>
+          </aside>
+        </div>
+
+        <!-- phase8 2026-11-07: the static cards below opened the closed specialty room; kept in the page, hidden by academic8.css -->
+        <div class="nb8-legacy grid grid-cols-1 md:grid-cols-3 gap-4 text-xs sm:text-sm">
+          <!-- Assigned Case 1 -->
+          <div class="p-5 rounded-2xl border border-slate-200/90 bg-slate-50/70 flex flex-col justify-between space-y-4">
+            <div class="space-y-2">
+              <div class="flex items-center justify-between gap-2">
+                <span class="text-xs font-bold px-2.5 py-0.5 rounded-full bg-teal-100 text-teal-900">واجب نشط</span>
+                <span class="text-xs text-amber-800 font-semibold">التسليم: غداً</span>
+              </div>
+              <h3 class="text-sm sm:text-base font-bold text-slate-900">حالة قلب وأوعية دموية مترافقة مع السكري</h3>
+              <p class="text-xs text-slate-600 leading-relaxed">د. عبدالرحمن المجالي · تخطيط القلب والتروبونين.</p>
+            </div>
+            <button type="button" data-uni-start="case_cardio_dm" class="uni-start-case-btn w-full py-2.5 rounded-xl bg-teal-700 hover:bg-teal-800 text-white text-xs font-bold transition-colors focus-ring">
+              بدء الجلسة الجامعية ←
+            </button>
+          </div>
+
+          <!-- Assigned Case 2 -->
+          <div class="p-5 rounded-2xl border border-slate-200/90 bg-slate-50/70 flex flex-col justify-between space-y-4">
+            <div class="space-y-2">
+              <div class="flex items-center justify-between gap-2">
+                <span class="text-xs font-bold px-2.5 py-0.5 rounded-full bg-teal-100 text-teal-900">واجب نشط</span>
+                <span class="text-xs text-slate-500 font-semibold">التسليم: بعد يومين</span>
+              </div>
+              <h3 class="text-sm sm:text-base font-bold text-slate-900">حالة جهاز تنفسي حادة مترافقة مع قصور كلوي</h3>
+              <p class="text-xs text-slate-600 leading-relaxed">د. عبدالرحمن المجالي · غازات الدم ووظائف الكلى.</p>
+            </div>
+            <button type="button" data-uni-start="case_resp_renal" class="uni-start-case-btn w-full py-2.5 rounded-xl bg-teal-700 hover:bg-teal-800 text-white text-xs font-bold transition-colors focus-ring">
+              بدء الجلسة الجامعية ←
+            </button>
+          </div>
+
+          <!-- Graded & Published Feedback Card -->
+          <div class="p-5 rounded-2xl border border-emerald-200/90 bg-emerald-50/40 flex flex-col justify-between space-y-3">
+            <div class="space-y-2">
+              <div class="flex items-center justify-between gap-2">
+                <span class="text-xs font-bold px-2.5 py-0.5 rounded-full bg-emerald-100 text-emerald-900">تقييم معتمد ومنشور ✓</span>
+                <span class="text-sm font-bold text-emerald-800 font-num">91%</span>
+              </div>
+              <h3 class="text-sm sm:text-base font-bold text-slate-900">حالة باطنية وجهاز هضمي (سارة العلي)</h3>
+              <p class="text-xs text-slate-700 leading-relaxed">
+                <strong>ملاحظة د. عبدالرحمن المجالي:</strong> «تحليل ممتاز لنتيجة فحص البول وتعداد الكريات البيض، وانتباه سليم لاستبعاد الأشعة بسبب الحمل المبكر.»
+              </p>
+            </div>
+            <button type="button" data-uni-start="case_gi_allergy" class="uni-start-case-btn w-full py-2 rounded-xl bg-white hover:bg-emerald-50 text-emerald-900 border border-emerald-200 text-xs font-bold transition-colors focus-ring">
+              إعادة استعراض الحالة
+            </button>
+          </div>
+        </div>
+      </div>
