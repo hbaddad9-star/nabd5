@@ -129,7 +129,7 @@
           <details class="nbx-drill-principle"><summary>المبدأ في ثلاثة أسطر</summary><ul>${d.principle.map(p => `<li>${esc(p)}</li>`).join('')}</ul></details>
         </div>
         <section id="nbx-drill-end" class="nbx-drill-end" hidden></section>
-        <form id="nbx-drill-form" class="nbx-drill-form" autocomplete="off"><input id="nbx-drill-in" type="text" maxlength="300" placeholder="قلّه شو بتعمل…" aria-label="جوابك في التمرين"><button type="submit" class="nbx-c2-main">أرسل</button></form>
+        <form id="nbx-drill-form" class="nbx-drill-form" autocomplete="off"><input id="nbx-drill-in" type="text" maxlength="300" placeholder="اكتب ما ستفعله…" aria-label="جوابك في التمرين"><button type="submit" class="nbx-c2-main">أرسل</button></form>
       </section>
     </div>`;
     fullOn();

@@ -19,7 +19,7 @@
 
   /* ---------- 1, 2, 4, 7. views and the browser's history ---------- */
   let popping = false, last = null;
-  const CLOSED = ['university', 'debrief', 'profile', 'coach'];
+  const CLOSED = ['university', 'debrief', 'profile', 'coach', 'or'];
   const showBeforeShell = window.showOnlySection;
   window.showOnlySection = function (viewId) {
     if (isConsole() && CLOSED.includes(viewId)) { navigateTo('home'); return; }

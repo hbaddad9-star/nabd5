@@ -37,7 +37,7 @@
     { id: 'senior', title: 'الأخصائي المناوب', note: 'الحالة تسوء، أو قرار أكبر منك', say: 'نادوا الأخصائي المناوب' },
     { id: 'icu', title: 'العناية الحثيثة', note: 'تنفس يتعب، إشباع لا يرتفع، أو ضغط لا يستجيب', say: 'اتصلوا بالعناية الحثيثة' },
     { id: 'code', title: 'فريق الإنعاش (كود)', note: 'توقف وشيك: يظهر حين يدخل المونيتور مرحلة الخطر', say: 'اطلبوا فريق الإنعاش، code', needStage: 2 },
-    { id: 'surgery', title: 'الجراحة', note: 'رأي جراحي عاجل', say: 'بدي استشارة جراحة', needs: 'call_surgery' }
+    { id: 'surgery', title: 'الجراحة', note: 'رأي جراحي عاجل', say: 'أطلب استشارة جراحة', needs: 'call_surgery' }
   ];
   // the nurse's room has two calls of its own: the doctor on the phone (who then asks for an SBAR) and the code team
   function nurseHelp(E) {

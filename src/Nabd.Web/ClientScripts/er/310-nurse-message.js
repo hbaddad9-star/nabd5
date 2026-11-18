@@ -73,7 +73,7 @@
     const N = E.nurse;
     N.allergyAnswered = true;
     const unknown = /(ما بعرف|مش عارف|ما سالت|مش متاكد)/.test(t);
-    if (unknown) docSay('اسأل هسا قبل أي دوا.');
+    if (unknown) docSay('اسأل الآن قبل أي دواء.');
     else {
       // "No allergy" said before anyone asked the patient or the family is a guess, not a report.
       const neg = /^(?:لا|لاء|لأ|مافي|ما في|ما عنده|ما عندها)(?: |$)/.test(t) || /(?:ما في|مافي|ما عند\S*) حساسي/.test(t);
@@ -82,7 +82,7 @@
     }
     const held = !!N.holdRel;
     N.holdRel = null;
-    N.relLead = unknown ? 'بدي: ' : 'تمام. بدي: ';
+    N.relLead = unknown ? 'أريد: ' : 'حسناً. أريد: ';
     const spoke = held && releaseOrders();
     N.relLead = null;
     if (!spoke && !unknown) docSay('تمام.');
@@ -92,7 +92,7 @@
     if (N.rbTurns > 0 && N.relTurn < E.turns) N.rbTurns--;
     if (X.awaiting && ['patient', 'companion', 'supervisor'].includes(to)) {
       X.unans++;
-      if (X.unans === 2 && !X.nagged) { X.nagged = true; docSay('ألو؟ شو الوضع عندك؟'); }
+      if (X.unans === 2 && !X.nagged) { X.nagged = true; docSay('ألو؟ ما الوضع عندك؟'); }
       else if (X.unans >= 4) escGiveUp();
     }
   }

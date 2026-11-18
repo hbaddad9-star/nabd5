@@ -36,6 +36,9 @@ variables (`Section__Key`).
 | `UnderstandingServices:ErRoom:Endpoint` | the service's URL | Where the service is |
 | `UnderstandingServices:ErRoom:TimeoutSeconds` | `20` | How long to wait for it |
 | `UnderstandingServices:ErRoom:Origin` | empty (the endpoint's own origin) | The `Origin` header sent to the service; see decision 0006 |
+| `Claude:Enabled` | `false` | **Claude as the room's understanding service** (agent decision D-67). On, with a key, it replaces the relay above. The key is read from the `ANTHROPIC_API_KEY` environment variable or a secret store (`Claude:ApiKey`), never from a file of the repository |
+| `Claude:ReaderModel` / `Claude:VoiceModel` | `claude-opus-5-5` | The model that reads and grades, and the model that voices the people; a smaller one (for example `claude-haiku-5-5`) for the voices is faster and cheaper |
+| `Claude:TimeoutSeconds` | `7` | One Claude call; a turn is a read then a voice and the room gives up after 15 seconds |
 | `RateLimits:UnderstandingPerMinute` | `40` | Requests per minute, per caller address, to `/api/er-chat` |
 | `RateLimits:SimulationPerMinute` | `240` | The same, for the session API |
 | `RateLimits:SimulationStartsPerMinute` | `6` | Sessions one caller address may start per minute |

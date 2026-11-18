@@ -67,5 +67,7 @@ docs/
   layers in `erplus/`. A test fingerprints it.
 - Designed regions (headers, landing, home, sign-in, footer) change through approved snapshots (`tools/approve-regions.mjs`).
 - No unused code: a view, function, rule, image or data file that nothing uses is removed ([decision 0021](docs/decisions/0021-v7-clean-release.md)).
+- The 3D operating room (`src/Nabd.Web/wwwroot/or3d`) is a separate application served as it is in a frame; its
+  third-party notices are kept beside its files (`vendor/*/LICENSE`, `assets/*/PROVENANCE.md`) and credited on its page.
 - Images are named in `src/Nabd.Web/images.json`; credits are in `src/Nabd.Web/wwwroot/img/CREDITS.txt` and
   `img/landing/CREDITS.md`; the Arabic font's licence is `src/Nabd.Web/wwwroot/fonts/noto-sans-arabic/LICENSE.md`.

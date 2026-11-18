@@ -42,6 +42,7 @@
 | تعدّل شاشة من شاشات المتدرب (الرئيسية، التقارير، المدرب، الملف الشخصي) | `ClientScripts/app/` و `css/trainee.css` | `admin/` |
 | تعدّل لوحة إدارة (نبض، الجامعة، المشرف) | `ClientScripts/admin/` و `css/admin.css` | `app/` |
 | تضيف سلوكاً داخل غرفة الطوارئ | `ClientScripts/erplus/` و `css/er-plus.css` | ملفات `er/` |
+| تعدّل غرفة العمليات ثلاثية الأبعاد | المحاكي في `wwwroot/or3d` (يُعرض في إطار؛ وضع الإطار في `embed.css`)، والمحادثة في `app/095-operating-room.js` و `app/096-or-chat.js` و `css/operating-room.css` | الغرفة المعتمدة، أو أنماط المحاكي من صفحات الموقع |
 | تقرأ أو تحفظ بيانات | `window.NabdStore` (`shared/010-store.js`) | `localStorage` مباشرة (اختبار يمنعه) |
 | تغيّر صورة | `src/Nabd.Web/images.json` | مسار داخل صفحة (اختبار يمنعه) |
 | تغيّر نصاً ثابتاً في صفحة | ملف العرض في `Views/` | السكربت، إلا إن كان النص يُرسم بالسكربت |

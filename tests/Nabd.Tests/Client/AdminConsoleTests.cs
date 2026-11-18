@@ -267,7 +267,7 @@ public class AdminConsoleTests : IClassFixture<WebApplicationFactory<Program>>
         Assert.Contains("history.pushState({ nbView: viewId }, '')", admin);
         Assert.Contains("window.addEventListener('popstate'", admin);
         // a console account is led back to its console from the legacy views
-        Assert.Contains("const CLOSED = ['university', 'debrief', 'profile', 'coach'];", admin);
+        Assert.Contains("const CLOSED = ['university', 'debrief', 'profile', 'coach', 'or'];", admin);
         // a case that was never started is replaced by the one asked for; one under way is kept
         Assert.Contains("if (E.over || !E.started) { h.begin(id); return; }", await Text("/js/er-plus.js"));
         // registering with an e-mail that has an account signs in to it and overwrites nothing

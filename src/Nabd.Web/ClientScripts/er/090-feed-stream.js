@@ -1,5 +1,5 @@
   /* ---------- the stream ---------- */
-  const LABEL = () => (NM() ? { p: E.c.patient.name, c: E.c.companion.name, n: 'د. ' + E.nurse.doc, d: 'المشرفة ' + E.c.nurse.name, me: 'أنت' } : { p: E.c.patient.name, c: E.c.companion.name, n: 'الممرضة ' + E.c.nurse.name, d: 'المشرف', me: 'أنت' });
+  const LABEL = () => { const pat = (E.c.patient.sex === 'F' ? 'المريضة ' : 'المريض ') + E.c.patient.name, rel = E.c.companion.rel || '', comp = (/^(?:والدت|زوجت|ابنت|بنت|أخت|اخت)/.test(rel) ? 'المرافقة' : 'المرافق') + (rel ? ' (' + rel + ')' : ''); return NM() ? { p: pat, c: comp, n: 'د. ' + E.nurse.doc, d: 'المشرفة ' + E.c.nurse.name, me: 'أنت' } : { p: pat, c: comp, n: 'الممرضة ' + E.c.nurse.name, d: 'المشرف', me: 'أنت' }; };
   // Latin runs keep their own order inside Arabic: "12-lead ECG", "5 mg".
   const bidi = s => String(s == null ? '' : s).split(/([A-Za-z0-9](?:[A-Za-z0-9 .,\-/%+]|\([A-Za-z0-9 .,\-/%+]*\))*(?<![ .,\-/+])|[A-Za-z0-9])/).map((x, i) => (i % 2 ? `<bdi dir="ltr">${esc(x)}</bdi>` : esc(x))).join('');
   function say(who, text, extra) {

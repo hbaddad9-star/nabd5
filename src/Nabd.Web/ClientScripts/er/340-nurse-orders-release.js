@@ -53,7 +53,7 @@
     const item = ordItem;
     if (acts.length || tests.length || rem.length) spoke = true;
     if (acts.length || tests.length || rem.length) {
-      let lead = first ? (N.present ? 'تمام. بدي: ' : 'تمام، ' + comes() + '. لحد ما أوصل بدي: ') : fresh.some(o => o.when === 'gated' && ((N.nm.orders[o.key] || {}).gate || {}).needTest) ? 'طلعت النتيجة. هسا بدي: ' : fresh.some(o => o.when === 'gated') ? 'تمام. هسا بدي: ' : 'هسا بدي: ';
+      let lead = first ? (N.present ? 'حسناً. أريد: ' : 'حسناً، ' + comes() + '. إلى أن أصل أريد: ') : fresh.some(o => o.when === 'gated' && ((N.nm.orders[o.key] || {}).gate || {}).needTest) ? 'ظهرت النتيجة. الآن أريد: ' : fresh.some(o => o.when === 'gated') ? 'تمام. هسا بدي: ' : 'هسا بدي: ';
       if (N.relLead && !first) lead = N.relLead;
       let line = '';
       if (acts.length || tests.length) line = lead + acts.map(item).join('، و') + (tests.length ? (acts.length ? '. وبدي ' : '') + tests.map(item).join('، و') : '') + '.';

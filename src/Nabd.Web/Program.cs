@@ -64,8 +64,13 @@ app.Use(async (context, next) =>
 // A failure never shows its details to the browser: a short problem document, the details in the log.
 app.UseExceptionHandler();
 
-// Styles and images. Scripts and data are not static files: controllers serve them.
-app.UseStaticFiles();
+// Styles and images. Scripts and data are not static files: controllers serve them. The one exception is the 3D
+// operating room (wwwroot/or3d), a separate application served as it is inside its own frame; its models (.glb)
+// and its physics module (.mjs) need their types named.
+var staticTypes = new Microsoft.AspNetCore.StaticFiles.FileExtensionContentTypeProvider();
+staticTypes.Mappings[".glb"] = "model/gltf-binary";
+staticTypes.Mappings[".mjs"] = "text/javascript";
+app.UseStaticFiles(new StaticFileOptions { ContentTypeProvider = staticTypes });
 app.UseRateLimiter();
 app.MapControllers();
 app.MapMethods("/healthz", [HttpMethods.Get, HttpMethods.Head], () => Results.Text("ok"));

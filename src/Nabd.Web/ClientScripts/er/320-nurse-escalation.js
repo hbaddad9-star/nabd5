@@ -14,7 +14,7 @@
       const rest = nz(text).replace(new RegExp(N.rx.docv.source, 'g'), ' ').replace(new RegExp(CALL_N.source, 'g'), ' ').replace(/(?:^| )يا(?= |$)/g, ' ').replace(/\s+/g, ' ').trim();
       if (wordsIn(rest) >= 2) X.buf = rest;
     }
-    later(0.15, () => { if (!E.over && X.awaiting && !X.hello) { X.hello = true; X.awaitAt = E.sim; docSay('أهلين، معك ' + N.doc + '. شو الوضع؟'); } });
+    later(0.15, () => { if (!E.over && X.awaiting && !X.hello) { X.hello = true; X.awaitAt = E.sim; docSay('أهلاً، معك ' + N.doc + '. ما الوضع؟'); } });
   }
   function reEscalate(read, text) {
     const N = E.nurse, X = N.esc;
@@ -35,7 +35,7 @@
       X.before = { s: g.s, b: g.b, a: g.a, r: g.r };
       X.asked = !g.a ? 'a' : 'b';
       X.hello = true;
-      docSay(X.asked === 'a' ? 'عطيني الأرقام: الضغط، النبض، التنفس، والـSpO2.' : E.c.patient.sex === 'F' ? 'شو قصتها؟ أمراض مزمنة، أدوية، حساسية؟' : 'شو قصته؟ أمراض مزمنة، أدوية، حساسية؟');
+      docSay(X.asked === 'a' ? 'أعطني الأرقام: الضغط، النبض، التنفس، والـSpO2.' : E.c.patient.sex === 'F' ? 'ما قصتها؟ أمراض مزمنة، أدوية، حساسية؟' : 'ما قصته؟ أمراض مزمنة، أدوية، حساسية؟');
       return;
     }
     // A part supplied only after the doctor asked for it is worth half.

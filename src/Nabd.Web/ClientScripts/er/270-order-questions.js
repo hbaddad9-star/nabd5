@@ -6,7 +6,7 @@
   // (live check 2026-11-08) She asks «ماشي عالاتنين؟» / «ماشي عالكل؟»: «ماشي عالاتنين»، «آه الاتنين»، «ماشي على الكل» are that yes.
   const ACCEPT = new RegExp('^(?:' + YES_WORD + '|زي ما (?:قلتي|اقترحتي)|علي كلامك)(?: (?:' + YES_WORD + '|دكتوره?|سستر|كلهم|كله|هيك|اعطيهم|عطيهم|ابدئي|(?:علي )?(?:عال|ع|ال)?(?:اتنين|تنين|ثنين|كل)))*$');
   const YES_FIRST = new RegExp('^(?:' + YES_WORD + ')(?: |$)');
-  const bundleLine = list => 'حاضر دكتور. بقترح: ' + list.map((p, i) => `${'١٢٣٤٥٦٧٨'[i]}) ${p.name}: ${p.tip || 'أي نوع وكم؟'}`).join(' — ') + ' — موافق؟ أو غيّر أي واحد.';
+  const bundleLine = list => 'حاضر يا دكتور. أقترح: ' + list.map((p, i) => `${'١٢٣٤٥٦٧٨'[i]}) ${p.name}: ${p.tip || 'أي نوع وبأي جرعة؟'}`).join(' — ') + ' — هل توافق؟ أو غيّر أيّاً منها.';
   // All open doses are one question, with the ones she has a proposal for first.
   function openDoses(first) {
     let items = [...(E.pending ? [[E.pending, first, 'n']] : []), ...E.queue.filter(([q]) => q.type === 'dose')];
@@ -31,10 +31,10 @@
     E.pending.since = E.sim;
     const fresh = items.filter(i => !i[0].asks), olds = items.filter(i => i[0].asks);
     // (chat fix 2 2026-11-08) Doctor room: several new proposals are said as one plain sentence, not a numbered list.
-    const dmBundle = list => { const s = list.filter(q => q.sug), n = list.filter(q => !q.sug); return 'حاضر. ' + (s.length ? 'بقترح ' + s.map(named).join('، و') + (s.length > 1 ? '. ماشي عالكل؟' : '، ماشي؟') : '') + (n.length ? (s.length ? ' و' : '') + n.map(q => spk(q) + (q.a && q.a.sayName ? ': قديش الجرعة؟' : ': أي نوع وقديش؟')).join(' و') : ''); };
+    const dmBundle = list => { const s = list.filter(q => q.sug), n = list.filter(q => !q.sug); return 'حاضر. ' + (s.length ? 'أقترح ' + s.map(named).join('، و') + (s.length > 1 ? '. هل توافق على الجميع؟' : '، هل توافق؟') : '') + (n.length ? (s.length ? ' و' : '') + n.map(q => spk(q) + (q.a && q.a.sayName ? ': كم الجرعة؟' : ': أي نوع وبأي جرعة؟')).join(' و') : ''); };
     // (An older one with no proposal is asked by name and dose after the yes/no part, never «والمضاد. ماشي عالاتنين؟».)
     const oldS = olds.filter(i => i[0].sug), oldN = olds.filter(i => !i[0].sug);
-    const doseLine = items.length === 1 ? items[0][1] : !NM() && fresh.length === 1 && fresh[0][0].sug && olds.length ? fresh[0][1].replace(/،\s*ماشي؟\s*$/, '') + (oldS.length ? '، و' + oldS.map(i => named(i[0])).join('، و') + (oldS.length > 1 ? '. ماشي عالكل؟' : '. ماشي عالاتنين؟') : '، ماشي؟') + (oldN.length ? ' و' + oldN.map(i => spk(i[0]) + (i[0].a && i[0].a.sayName ? ': قديش الجرعة؟' : ': أي نوع وقديش؟')).join(' و') : '') : !NM() && !fresh.length ? 'دكتور، ' + dmBundle(items.map(i => i[0])).replace(/^حاضر\. /, '') : NM() ? bundleLine(items.map(i => i[0])) : dmBundle(items.map(i => i[0]));
+    const doseLine = items.length === 1 ? items[0][1] : !NM() && fresh.length === 1 && fresh[0][0].sug && olds.length ? fresh[0][1].replace(/،\s*هل توافق؟\s*$/, '') + (oldS.length ? '، و' + oldS.map(i => named(i[0])).join('، و') + (oldS.length > 1 ? '. هل توافق على الجميع؟' : '. هل توافق على الاثنين؟') : '، هل توافق؟') + (oldN.length ? ' و' + oldN.map(i => spk(i[0]) + (i[0].a && i[0].a.sayName ? ': كم الجرعة؟' : ': أي نوع وبأي جرعة؟')).join(' و') : '') : !NM() && !fresh.length ? 'دكتور، ' + dmBundle(items.map(i => i[0])).replace(/^حاضر\. /, '') : NM() ? bundleLine(items.map(i => i[0])) : dmBundle(items.map(i => i[0]));
     if (!NM()) { items.forEach(i => { i[0].asks = (i[0].asks || 0) + 1; }); E.askedThisTurn = true; }
     if (!NM() && (E.inApply || E.bufQ)) { E.qLine = ['n', doseLine]; return; }
     nurse(doseLine, { d: doseLine });

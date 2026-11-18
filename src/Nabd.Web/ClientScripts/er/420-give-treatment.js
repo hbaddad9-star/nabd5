@@ -12,8 +12,8 @@
     // The drug's name once: "سلاين 500 مل سلاين" is not how anyone reads an order back.
     const withName = a.dose && norm(a.dose).includes(norm(named)) ? a.dose : `${named} ${a.dose}`;
     // Asked for the numbers, she reads them at once; "حاضر" is for orders, said once for all of a message's orders.
-    if (a.id === 'bp_repeat') { E.bpAt = 0; paint(); nurse(`قست الضغط هسا: ${spokenVitals()}.`); }
-    else if (!NM() && a._titr) sayBack(`حاضر، ${a._titr === 'down' ? 'نزّلت' : 'رفعت'} ${SPOKEN[a.id] || meta.ar} لـ${a.dose}.`, meta.ar, a.dose);
+    if (a.id === 'bp_repeat') { E.bpAt = 0; paint(); nurse(`قست الضغط الآن: ${spokenVitals()}.`); }
+    else if (!NM() && a._titr) sayBack(`حاضر، ${a._titr === 'down' ? 'خفضتُ' : 'رفعتُ'} ${SPOKEN[a.id] || meta.ar} إلى ${a.dose}.`, meta.ar, a.dose);
     else if (!NM() && a._later) sayBack(`علّقت ${withName} كمان.`, meta.ar, a.dose);
     else sayBack(a.sayDose ? `حاضر، ${a.sayDose}.` : a.dose ? `حاضر، ${withName}.` : (def.rb && !meta.dose ? def.rb : NM() || def.done ? 'حاضر.' : `حاضر، ${SPOKEN[a.id] || meta.ar}.`), meta.ar, a.dose);
     // More of the same adds something; saying the same flow again does not. (Turning a drip up is more of it.)
@@ -38,7 +38,7 @@
         E.risk = E.c.risk.critical - 5; E.stage = 2; E.vtNow = false; E.shockedAt = E.sim; E.bpAt = 0;
         stageCheck(); paint();
         log('better', 'رجع النظم بعد الصدمة');
-        nurse('رجع sinus، وفي نبض. بس لسا مش ثابت.', 'عاد النظم الجيبي وهناك نبض، لكنه غير مستقر بعد.');
+        nurse('عاد النظم الجيبي (sinus) وظهر نبض، لكنه ما زال غير ثابت.', 'عاد النظم الجيبي وهناك نبض، لكنه غير مستقر بعد.');
       });
     }
     const fin = () => {

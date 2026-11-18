@@ -174,6 +174,8 @@
     "app/070-coach-page.js",
     "app/080-coach-drill.js",
     "app/090-profile.js",
+    "app/095-operating-room.js",
+    "app/096-or-chat.js",
     "app/100-shell.js"
    ],
    "open": "app/_open.txt",

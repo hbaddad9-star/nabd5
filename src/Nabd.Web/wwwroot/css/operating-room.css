@@ -1,0 +1,162 @@
+/* =========================================================================
+   The operating-room section (2026-11-18, owner): the 3D operating room with the team's chat on its left.
+   Three parts, all in the platform's identity (navy #082f3d, copper #c98768 / action #9b6247, paper #f3f6f7):
+   - #view-or      the section's page (Views/Home/OperatingRoom): a case bar, the room's frame #or3d-stage with the platform's camera bar, and the chat;
+   - #home-or3d-card  its card on the signed-in home (Views/Home/Dashboard/_OperatingRoomCard);
+   - #nl-or3d      its section on the public landing (Views/Home/Landing/_OperatingRoom).
+   Every selector starts from one of these three, so nothing here reaches another view. The font has only regular
+   and bold cuts: nothing is heavier than 700. Loaded last.
+   ========================================================================= */
+
+#view-or, #home-or3d-card, #nl-or3d {
+  --or-navy: #082f3d;
+  --or-navy-2: #0a3948;
+  --or-copper: #c98768;
+  --or-copper-light: #f0bd9f;
+  --or-action: #9b6247;
+  --or-line: #d9e1e5;
+  --or-muted: #5a707b;
+}
+
+/* ---------- the sketch (one drawing, three places) ---------- */
+#view-or .or-sketch, #home-or3d-card .or-sketch, #nl-or3d .or-sketch { display: block; width: 100%; height: auto; }
+
+/* ---------- the pill and the eyebrow ---------- */
+#view-or .or-eyebrow, #home-or3d-card .or-eyebrow, #nl-or3d .or-eyebrow { display: inline-flex; align-items: center; flex-wrap: wrap; gap: 10px; font-size: 13.5px; font-weight: 700; color: var(--or-action); }
+#home-or3d-card .or-eyebrow, #nl-or3d .or-eyebrow { color: var(--or-copper-light); }
+#view-or .or-pill, #home-or3d-card .or-pill, #nl-or3d .or-pill {
+  display: inline-block; padding: 2px 11px; border-radius: 999px; font-style: normal; font-size: 12.5px; font-weight: 700; line-height: 1.7;
+  color: var(--or-action); background: #f7ece5; border: 1px solid #ecd2c3;
+}
+#home-or3d-card .or-pill, #nl-or3d .or-pill { color: var(--or-copper-light); background: rgba(240, 189, 159, .12); border-color: rgba(240, 189, 159, .35); }
+
+/* ---------- the page: a case bar, then the room (right) and the chat (left) ---------- */
+#view-or .or-wrap { width: min(1680px, 100%); margin-inline: auto; padding: 16px clamp(10px, 1.6vw, 24px) 22px; display: grid; gap: 14px; }
+#view-or .or-bar { display: flex; align-items: center; flex-wrap: wrap; gap: 12px 22px; padding: 12px 16px; border: 1px solid var(--or-line); border-radius: 12px; background: #fff; }
+#view-or .or-back { display: inline-flex; align-items: center; gap: 8px; padding: 8px 14px; border: 1px solid var(--or-line); border-radius: 8px; background: #fff; color: var(--or-navy); font: inherit; font-size: 14px; font-weight: 700; cursor: pointer; }
+#view-or .or-back:hover { border-color: var(--or-action); color: var(--or-action); }
+#view-or .or-head { display: grid; gap: 2px; justify-items: start; }
+#view-or .or-head h1 { margin: 0; color: var(--or-navy); font-size: clamp(19px, 1.7vw, 24px); font-weight: 700; line-height: 1.45; }
+#view-or .or-facts { display: flex; flex-wrap: wrap; gap: 8px; margin: 0 auto 0 0; padding: 0; }
+#view-or .or-facts > div { display: grid; gap: 1px; padding: 6px 14px; border-radius: 8px; background: #f1f6f7; border: 1px solid #dde7ea; }
+#view-or .or-facts dt { margin: 0; color: var(--or-muted); font-size: 12px; }
+#view-or .or-facts dd { margin: 0; color: var(--or-navy); font-size: 14.5px; font-weight: 700; }
+
+#view-or .or-room { display: grid; grid-template-columns: minmax(0, 1fr) clamp(330px, 27vw, 420px); gap: 14px; height: clamp(560px, calc(100dvh - 190px), 960px); }
+
+/* the room's frame, the platform's own camera bar over it, and the loading card until the simulator is ready */
+#view-or .or-stage { position: relative; min-width: 0; border-radius: 14px; overflow: hidden; border: 1px solid #0f4252; background: #0b3a4a; box-shadow: 0 14px 40px -22px rgba(8, 47, 61, .6); }
+#view-or .or-frame { display: block; width: 100%; height: 100%; border: 0; }
+#view-or .or-side { position: absolute; top: 14px; inset-inline-end: 14px; display: flex; gap: 6px; flex-wrap: wrap; justify-content: flex-end; max-width: calc(100% - 28px); }
+#view-or .or-tools { position: absolute; inset-inline: 0; bottom: 14px; display: flex; justify-content: center; pointer-events: none; padding-inline: 14px; }
+#view-or .or-tools-row { pointer-events: auto; display: flex; align-items: center; gap: 4px; padding: 6px; border-radius: 14px; max-width: 100%; overflow-x: auto; scrollbar-width: none; background: rgba(6, 43, 57, .84); border: 1px solid rgba(255, 255, 255, .14); backdrop-filter: blur(10px); }
+#view-or .or-tools-row::-webkit-scrollbar { display: none; }
+#view-or .or-group { display: flex; align-items: center; gap: 2px; flex: none; }
+#view-or .or-group + .or-group { margin-inline-start: 6px; padding-inline-start: 8px; border-inline-start: 1px solid rgba(255, 255, 255, .2); }
+#view-or .or-group-label { padding-inline: 8px; color: #9fc0c9; font-size: 12px; white-space: nowrap; }
+#view-or .or-tool { display: inline-flex; align-items: center; gap: 7px; padding: 7px 12px; border: 0; border-radius: 9px; background: transparent; color: #e6f0f2; font: inherit; font-size: 13.5px; white-space: nowrap; cursor: pointer; }
+#view-or .or-tool:hover { background: rgba(255, 255, 255, .12); }
+#view-or .or-tool[aria-pressed="true"] { background: var(--or-copper-light); color: #2a1608; font-weight: 700; }
+#view-or .or-tool.is-icon { background: rgba(6, 43, 57, .84); border: 1px solid rgba(255, 255, 255, .14); backdrop-filter: blur(10px); font-weight: 700; }
+#view-or .or-tool.is-icon[aria-pressed="true"] { background: var(--or-copper-light); }
+#view-or .or-tool svg { width: 17px; height: 17px; fill: none; stroke: currentColor; stroke-width: 1.9; stroke-linecap: round; stroke-linejoin: round; }
+#view-or .or-loading { position: absolute; inset: 0; display: grid; place-content: center; justify-items: center; gap: 6px; padding: 1.5rem; text-align: center; color: var(--or-copper-light); background: linear-gradient(110deg, #062b39, var(--or-navy-2) 58%, #062c3a); }
+#view-or .or-loading[hidden] { display: none; }
+#view-or .or-loading .or-sketch { width: min(18rem, 60vw); margin-bottom: 12px; animation: or-breathe 2.4s ease-in-out infinite; }
+#view-or .or-loading b { color: #fff; font-size: 17px; font-weight: 700; }
+#view-or .or-loading span { color: #b9ccd3; font-size: 14px; }
+@keyframes or-breathe { 50% { opacity: .45; } }
+
+/* the chat */
+#view-or .or-chat { display: flex; flex-direction: column; min-height: 0; border: 1px solid var(--or-line); border-radius: 14px; background: #fff; overflow: hidden; box-shadow: 0 14px 40px -26px rgba(8, 47, 61, .45); }
+#view-or .or-chat-head { display: grid; grid-template-columns: 1fr auto; align-items: center; gap: 8px 10px; padding: 14px 16px 12px; border-bottom: 1px solid var(--or-line); background: var(--or-navy); }
+#view-or .or-chat-who { display: grid; gap: 1px; }
+#view-or .or-chat-who b { color: #fff; font-size: 16px; font-weight: 700; }
+#view-or .or-chat-who span { color: #a9c5cd; font-size: 12.5px; }
+#view-or .or-chat-step { padding: 3px 11px; border-radius: 999px; background: rgba(240, 189, 159, .16); color: var(--or-copper-light); border: 1px solid rgba(240, 189, 159, .4); font-size: 12.5px; font-weight: 700; white-space: nowrap; }
+#view-or .or-progress { grid-column: 1 / -1; height: 4px; border-radius: 4px; background: rgba(255, 255, 255, .16); overflow: hidden; }
+#view-or .or-progress i { display: block; width: 0; height: 100%; background: var(--or-copper-light); transition: width .4s ease; }
+
+#view-or .or-chat-log { flex: 1; min-height: 0; overflow-y: auto; margin: 0; padding: 16px 14px 8px; list-style: none; display: flex; flex-direction: column; gap: 12px; background: #f3f6f7; }
+#view-or .or-msg { display: grid; gap: 3px; max-width: 90%; align-self: flex-start; }
+#view-or .or-msg b { font-size: 12px; font-weight: 700; color: var(--or-muted); }
+#view-or .or-msg p { margin: 0; padding: 10px 13px; border-radius: 12px; border-start-start-radius: 4px; background: #fff; border: 1px solid #dde6ea; color: var(--or-navy); font-size: 14.5px; line-height: 1.9; }
+#view-or .or-msg.is-sup b { color: #176a72; }
+#view-or .or-msg.is-sup p { border-inline-start: 3px solid #176a72; }
+#view-or .or-msg.is-pat b { color: var(--or-action); }
+#view-or .or-msg.is-pat p { background: #fbf4ef; border-color: #f0dccf; }
+#view-or .or-msg.is-me { align-self: flex-end; }
+#view-or .or-msg.is-me b { justify-self: end; }
+#view-or .or-msg.is-me p { background: var(--or-navy); border-color: var(--or-navy); color: #fff; border-start-start-radius: 12px; border-start-end-radius: 4px; }
+#view-or .or-msg.is-sys { align-self: center; max-width: 94%; }
+#view-or .or-msg.is-sys p { padding: 5px 12px; border-radius: 999px; background: #e7eef0; border: 0; color: #4c6470; font-size: 12.5px; line-height: 1.7; text-align: center; }
+#view-or .or-msg.is-typing p { display: flex; gap: 4px; padding: 13px 14px; }
+#view-or .or-msg.is-typing i { width: 6px; height: 6px; border-radius: 50%; background: #9fb3bb; animation: or-dot 1s infinite ease-in-out; }
+#view-or .or-msg.is-typing i:nth-child(2) { animation-delay: .15s; }
+#view-or .or-msg.is-typing i:nth-child(3) { animation-delay: .3s; }
+@keyframes or-dot { 50% { transform: translateY(-3px); opacity: .5; } }
+
+#view-or .or-chat-reply { display: grid; gap: 8px; padding: 12px 14px 14px; border-top: 1px solid var(--or-line); background: #fff; }
+#view-or .or-reply-label { color: var(--or-muted); font-size: 12px; font-weight: 700; }
+#view-or .or-chat-actions { display: flex; flex-wrap: wrap; gap: 6px; }
+#view-or .or-act { padding: 7px 12px; border: 1px solid #cfdde2; border-radius: 8px; background: #fff; color: var(--or-navy); font: inherit; font-size: 13.5px; font-weight: 700; cursor: pointer; }
+#view-or .or-act:hover:not(:disabled) { border-color: #176a72; background: #eef6f6; color: #135c63; }
+#view-or .or-act.is-hint { border-style: dashed; color: var(--or-muted); font-weight: 400; }
+#view-or .or-act.is-main { border-color: var(--or-action); background: var(--or-action); color: #fff; }
+#view-or .or-act:disabled { opacity: .5; cursor: default; }
+#view-or .or-chat-form { display: flex; gap: 6px; }
+#view-or .or-chat-form input { flex: 1; min-width: 0; padding: 10px 12px; border: 1px solid #cfdde2; border-radius: 8px; font: inherit; font-size: 14px; color: var(--or-navy); background: #fff; }
+#view-or .or-chat-form input:focus { outline: 2px solid #176a72; outline-offset: -1px; border-color: transparent; }
+#view-or .or-chat-form button { flex: none; width: 44px; border: 0; border-radius: 8px; background: var(--or-action); color: #fff; cursor: pointer; display: grid; place-items: center; }
+#view-or .or-chat-form button svg { width: 20px; height: 20px; fill: none; stroke: currentColor; stroke-width: 2; stroke-linecap: round; stroke-linejoin: round; }
+
+#view-or .or-credits { margin: 0; color: var(--or-muted); font-size: 12px; line-height: 1.8; }
+#view-or .or-credits a { color: #176a72; }
+
+@media (max-width: 900px) {
+  #view-or .or-room { grid-template-columns: 1fr; height: auto; }
+  #view-or .or-stage { height: 62vh; min-height: 360px; }
+  #view-or .or-chat { height: 72vh; min-height: 460px; }
+  #view-or .or-facts { margin: 0; flex-basis: 100%; }
+  #view-or .or-side .or-tool { padding: 6px 9px; font-size: 12.5px; }
+  #view-or .or-group-label { display: none; }
+}
+@media (prefers-reduced-motion: reduce) {
+  #view-or .or-loading .or-sketch, #view-or .or-msg.is-typing i { animation: none; }
+  #view-or .or-progress i { transition: none; }
+}
+
+/* ---------- the card on the signed-in home ---------- */
+#home-or3d-card.or-home-card {
+  display: grid; grid-template-columns: minmax(0, 1.3fr) minmax(0, 1fr); align-items: center; gap: clamp(1rem, 3vw, 2.5rem); overflow: hidden;
+  padding: clamp(1.4rem, 3vw, 2.4rem); border-radius: 10px; color: #fff;
+  background: linear-gradient(110deg, #062b39, var(--or-navy-2) 58%, #062c3a); box-shadow: inset 0 -2px 0 rgba(201, 135, 104, .55);
+}
+#view-home > #home-or3d-card { order: 4; }
+#home-or3d-card .or-home-copy { display: grid; gap: 10px; justify-items: start; }
+#home-or3d-card h2 { margin: 0; color: #fff; font-size: clamp(22px, 2.4vw, 30px); font-weight: 700; line-height: 1.45; }
+#home-or3d-card .or-home-copy > p { margin: 0; max-width: 56ch; color: #c9d9de; font-size: 15px; line-height: 1.95; }
+#home-or3d-card .or-btn { margin-top: 6px; padding: 11px 22px; border: 0; border-radius: 8px; background: var(--or-action); color: #fff; font: inherit; font-size: 15px; font-weight: 700; cursor: pointer; }
+#home-or3d-card .or-btn:hover { background: #89543d; }
+#home-or3d-card .or-home-art { color: var(--or-copper-light); opacity: .9; }
+
+/* ---------- the section on the landing ---------- */
+#nl-or3d.or-land { padding: clamp(44px, 6vw, 80px) 0; background: linear-gradient(110deg, #062b39, var(--or-navy-2) 58%, #062c3a); color: #fff; }
+#nl-or3d .or-land-grid { width: min(1240px, calc(100% - 64px)); margin-inline: auto; display: grid; grid-template-columns: minmax(0, 1.2fr) minmax(0, 1fr); align-items: center; gap: clamp(24px, 5vw, 64px); }
+#nl-or3d .or-land-copy { display: grid; gap: 14px; justify-items: start; }
+#nl-or3d h2 { margin: 0; color: #fff; font-size: clamp(26px, 3vw, 38px); font-weight: 700; line-height: 1.4; }
+#nl-or3d .or-land-copy > p { margin: 0; max-width: 54ch; color: #c9d9de; font-size: 16px; line-height: 2; }
+#nl-or3d .or-land-stage { color: var(--or-copper-light); opacity: .9; }
+
+/* style.css fixes every h2 of the landing and the home to 1.08rem with !important; a layered important declaration
+   (the layer landing.css places first) wins over it, as home.css does for its own headings. */
+@layer nl-refine {
+  #home-or3d-card h2 { font-size: clamp(22px, 2.4vw, 30px) !important; line-height: 1.45 !important; }
+  #nl-or3d h2 { font-size: clamp(26px, 3vw, 38px) !important; line-height: 1.4 !important; }
+}
+
+@media (max-width: 768px) {
+  #home-or3d-card.or-home-card, #nl-or3d .or-land-grid { grid-template-columns: 1fr; }
+  #home-or3d-card .or-home-art, #nl-or3d .or-land-stage { max-width: 15rem; margin-inline: auto; }
+  #nl-or3d .or-land-grid { width: calc(100% - 44px); }
+}

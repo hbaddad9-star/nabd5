@@ -8,13 +8,13 @@
       // in the same question, so a yes starts the safe order first.
       const pre = !NM() && !allergic && def.early && ((E.c.care[a.id] || {}).stableHarm || {}).unlessDone;
       if (pre && !E.done.has(pre) && actOf(pre) && !(E.pending && E.pending.type === 'dose' && E.pending.a.id === pre) && !E.queue.some(([q]) => q.type === 'dose' && q.a.id === pre)) order({ id: pre, agent: '', dose: '' }, '');
-      ask(pending, (!allergic && def.challenge) || `دكتور، ${meta.ar}؟ في قصة حساسية، متأكد؟`);
+      ask(pending, (!allergic && def.challenge) || `دكتور، ${meta.ar}؟ هناك قصة حساسية، هل أنت متأكد؟`);
       log('harm', 'أوقفت الممرضة أمراً غير آمن: ' + meta.ar);
       if (!E.caught.some(x => x.ar === meta.ar)) E.caught.push({ id: a.id, ar: meta.ar, why: allergic ? def.allergyEffect : def.why });
       return;
     }
     // A bare drug name read without the server is not yet an order for something dangerous.
-    if (a.bare) { ask(pending, `${meta.ar}؟ بدك إياه هسا؟`); return; }
+    if (a.bare) { ask(pending, `${meta.ar}؟ هل تريده الآن؟`); return; }
     harm(a, meta, def, allergic);
   }
 

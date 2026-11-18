@@ -5,7 +5,7 @@
     // (chat fix 2 2026-11-08) The drug he just asked for: a dose said on its own in the next message is for it.
     if (!NM() && E.inApply && meta.dose && a.id !== 'oxygen') E.lastOrdered = { id: a.id, turn: E.turns };
     a.said = a.said || text;
-    if (a.id === 'cpr') { nurse(E.stage === 3 ? 'لسا في نبض ضعيف دكتور، شو بدك قبل ما يوقف؟' : 'في نبض دكتور، مش وقت إنعاش.', { d: 'في نبض، مش وقت ضغطات. بلّغ الدكتور فوراً.' }); if (NM() && E.stage === 3 && E.nurse.esc.calledAt === null && !E.nurse.present) escalate(''); return; }
+    if (a.id === 'cpr') { nurse(E.stage === 3 ? 'ما زال هناك نبض ضعيف يا دكتور، ماذا تريد قبل أن يتوقف؟' : 'يوجد نبض يا دكتور، ليس وقت إنعاش.', { d: 'يوجد نبض، ليس وقت ضغطات. أبلغ الدكتور فوراً.' }); if (NM() && E.stage === 3 && E.nurse.esc.calledAt === null && !E.nurse.present) escalate(''); return; }
     if (a.id === 'sedative' && E.done.has('airway')) { nurse('طبيب التخدير رح يعطي المهدئ مع التنبيب.'); return; }
     const care = E.c.care[a.id], treating = E.anaph && !E.anaph.treated;
     let def = care || (E.anaph && ADJUNCT.includes(a.id) ? {} : offCase(meta));
@@ -18,12 +18,12 @@
     if (def.invasiveHarm && E.stage < 3 && /intubat|تنبيب|نبب|(?:^| )rsi(?: |$)|انبوب/.test(said)) def = { ...def, ...def.invasiveHarm };
     // Some orders wait for a number or for an earlier step; the nurse says which.
     if (!def.harm && def.needTest && !(E.tests[def.needTest] && E.tests[def.needTest].back) && !NM() && /[؟?]\s*$/.test(def.needLine || '') && !E.tests[def.needTest]) { ask({ type: 'offer', id: def.needTest, ask: `The nurse offered to order ${testOf(def.needTest).en} before ${meta.en}. good = yes, withdraw = no, na = not a reply.` }, def.needLine); return; }
-    if (!def.harm && def.needTest && !(E.tests[def.needTest] && E.tests[def.needTest].back)) { nurse(def.needLine || `دكتور، قبل ${meta.ar} بدنا نتيجة ${testOf(def.needTest).ar}.`, 'لم يُنفَّذ بعد: يلزم أولاً ' + testOf(def.needTest).ar + '.'); return; }
+    if (!def.harm && def.needTest && !(E.tests[def.needTest] && E.tests[def.needTest].back)) { nurse(def.needLine || `دكتور، قبل ${meta.ar} نحتاج إلى نتيجة ${testOf(def.needTest).ar}.`, 'لم يُنفَّذ بعد: يلزم أولاً ' + testOf(def.needTest).ar + '.'); return; }
     if (!def.harm && def.needDone && !E.done.has(def.needDone) && !NM() && /[؟?]\s*$/.test(def.needLine || '')) { ask({ type: 'offer', a: { id: def.needDone }, ask: `The nurse offered to start ${actOf(def.needDone).en} before ${meta.en}. good = yes, withdraw = no, na = not a reply.` }, def.needLine); return; }
     if (!def.harm && def.needDone && !E.done.has(def.needDone)) { nurse(def.needLine || `دكتور، قبل ${meta.ar} ما عملنا ${actOf(def.needDone).ar}.`, 'لم يُنفَّذ بعد: يلزم أولاً ' + actOf(def.needDone).ar + '.'); return; }
     const allergic = allergicTo(a, def, text);
     // An order insisted on too early does not stop the same order once it is right.
-    if (!allergic && E.harmed.has(a.id) && !def.allergyKw && (early || !(care && care.stableHarm))) { nurse(`${meta.ar}؟ عملناه من شوي.`, 'سبق أن نفّذت هذا قبل قليل.'); return; }
+    if (!allergic && E.harmed.has(a.id) && !def.allergyKw && (early || !(care && care.stableHarm))) { nurse(`${meta.ar}؟ نفّذناه قبل قليل.`, 'سبق أن نفّذت هذا قبل قليل.'); return; }
     const prev = E.done.get(a.id);
     const rescue = (treating && a.id === 'adrenaline') || (E.vtNow && a.id === 'shock');
     /* (chat fix 2 2026-11-08) Doctor room: turning up or down what is running («ارفعوا النيترو ل 20»، «زيدلها الأكسجين»)
@@ -41,11 +41,11 @@
         const steps = sg0 ? String(sg0.text).split(/\s*\(أو\s*|\)\s*/).map(s => s.trim()).filter(Boolean).map(s => ({ tip: s.replace(/[،,].*$/, ''), n: ((doseOf(s) || {}).hi) || 0 })).filter(s => s.n) : [];
         const next = a._titr === 'up' && a.id === 'oxygen' ? steps.filter(s => s.n > cur).sort((x, y) => x.n - y.n)[0] : null;
         if (next) { ask({ type: 'dose', a: { ...a }, name: meta.ar, tip: next.tip, sug: next.n + ' L/min', ask: `The nurse offered to turn ${meta.en} up to ${next.tip}. good = yes or a flow, na = not a reply, withdraw = no.` }, `${sp} هسا ${prev.dose || ''}. أعلّيه لـ${next.tip}، ماشي؟`.replace(/ +\./, '.')); return; }
-        if (a._titr === 'up' && a.id === 'oxygen' && cur && steps.length && cur >= Math.max(...steps.map(s => s.n))) { nurse(`${sp} على أعلى إشي عندي هون: ${prev.dose}.`); return; }
+        if (a._titr === 'up' && a.id === 'oxygen' && cur && steps.length && cur >= Math.max(...steps.map(s => s.n))) { nurse(`${sp} عند أعلى مستوى لدي هنا: ${prev.dose}.`); return; }
         ask({ type: 'dose', a: { ...a }, name: meta.ar, tip: '', sug: undefined, ask: `The nurse asked the new rate of ${meta.en}. good = a correct dose, wrong = unsafe, na = not a reply, withdraw = the trainee cancels.` }, `لقديش ${a._titr === 'up' ? 'أرفع' : 'أنزّل'} ${sp} يا دكتور؟`);
         return;
       }
-      if (doseBad({ ...a, dose }, def, dose, a.dose_ok)) { badDose({ ...a, dose }, meta, def); nurse(`دكتور، ${sp} ${dose}؟ هاي الجرعة مش مناسبة. راجعها.`); return; }
+      if (doseBad({ ...a, dose }, def, dose, a.dose_ok)) { badDose({ ...a, dose }, meta, def); nurse(`دكتور، ${sp} ${dose}؟ هذه الجرعة غير مناسبة. راجعها.`); return; }
       give({ ...a, dose, _asked: true }, meta, def);
       return;
     }
@@ -56,7 +56,7 @@
     const sg = treating && a.id === 'adrenaline' ? { text: 'أدرينالين 0.5 ملغ عضل بالفخذ', dose: '0.5 mg IM' } : def.suggest || meta.suggest || null;
     // (chat fix 2026-11-08) The trainee named his own drug («اعطوه مورفين»): she asks its dose, she does not propose another.
     const ownAgent = !NM() && meta.dose && !a.dose && a.sayName && sg && sg.dose && !norm(sg.text).includes(norm(a.sayName));
-    let propose = sg && !ownAgent ? (sg.dose ? `بقترح ${sg.text}، ماشي؟` : sg.text) : '';
+    let propose = sg && !ownAgent ? (sg.dose ? `أقترح ${sg.text}، هل توافق؟` : sg.text) : '';
     // (chat fix 2026-11-08) A culture already drawn is not asked about again.
     if (!NM() && E.tests.blood_culture) propose = propose.replace(/\s*بسحب زراع[هة] الدم قبل[؟?]/, '');
     // (chat fix 2 2026-11-08) Oxygen the case gives only below a number: with the SpO2 above it she says so and asks.

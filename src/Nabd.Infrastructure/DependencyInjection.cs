@@ -38,7 +38,21 @@ public static class DependencyInjection
             client.Timeout = TimeSpan.FromSeconds(65);
             client.DefaultRequestHeaders.UserAgent.ParseAdd("Nabd/1.0");
         });
-        services.AddSingleton<IUnderstandingServiceGateway, HttpUnderstandingServiceGateway>();
+
+        // Claude, when it is switched on and has a key (Claude:Enabled, and ANTHROPIC_API_KEY or Claude:ApiKey from a secret
+        // store), is the room's understanding service; otherwise the old relay (or the room's own rules) stays.
+        services.AddOptions<ClaudeOptions>().Bind(configuration.GetSection(ClaudeOptions.SectionName));
+        var claude = configuration.GetSection(ClaudeOptions.SectionName).Get<ClaudeOptions>() ?? new ClaudeOptions();
+        if (claude.Enabled && claude.ResolveKey().Length > 0)
+        {
+            services.AddSingleton<IClaudeCompleter, AnthropicSdkCompleter>();
+            services.AddSingleton<IUnderstandingServiceGateway, ClaudeUnderstandingServiceGateway>();
+        }
+        else
+        {
+            services.AddSingleton<IUnderstandingServiceGateway, HttpUnderstandingServiceGateway>();
+        }
+
         return services;
     }
 }

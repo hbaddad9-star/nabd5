@@ -7,15 +7,15 @@
       later(3, () => {
         if (E.over || N.vchecks.some(x => x > at) || N.reassess7 >= 2 || E.sim - N.last7 < 2) return;
         N.reassess7++; N.last7 = E.sim; E.hints++;
-        person('d', 'بعد آخر تدخل، شو تغيّر بالأرقام؟');
+        person('d', 'بعد آخر تدخل، ماذا تغيّر في الأرقام؟');
       });
     }
     if (isDrug(a.id) && !N.docDoing) {
       N.given.push({ id: a.id, at: E.sim, allergyAsked: E.facts.has('allergy') });
       // Live check 2026-11-07: after a guessed "no allergy" to the doctor, say plainly that it was a guess.
       if (!E.facts.has('allergy')) later(0.01, () => dOnce('6', N.allergyGuess !== null
-        ? 'حكيت لل' + docW().slice(2) + ' ما في حساسية، بس ما سألت المريض ولا أهله. اسأل هسا قبل الجرعة الجاية.'
-        : 'عطيت الدوا قبل ما تسأل عن الحساسية؟ اسأل هسا وبلّغ ' + docW() + '.'));
+        ? 'أبلغتَ ' + docW() + ' بعدم وجود حساسية، لكنك لم تسأل المريض ولا أهله. اسأل الآن قبل الجرعة التالية.'
+        : 'أعطيتَ الدواء قبل أن تسأل عن الحساسية؟ اسأل الآن وأبلغ ' + docW() + '.'));
     }
     const o = N.orders.find(x => x.kind === 'act' && x.id === a.id && openOrd(x));
     if (o && !N.docDoing) o.doneAt = E.sim;
@@ -44,7 +44,7 @@
     log('scope', 'دون أمر طبيب: ' + ar);
     if (why === 'wrong-agent') {
       sys('لم يُعطَ: ما كتبته ليس الدواء الذي طلبه الطبيب (' + ((ord && (ord.show || ord.ar)) || ar) + ').');
-      E.hints++; person('d', 'هاد مش الدوا اللي انطلب.');
+      E.hints++; person('d', 'هذا ليس الدواء الذي طُلب.');
       return;
     }
     // Airway support beyond basic life support, the cath lab and a shock are the doctor's steps, not drugs.
@@ -54,6 +54,6 @@
     const F = E.nurse.sex === 'F';
     if (why === 'allergen' && E.facts.has('allergy')) { dOnce('allergen:' + id, 'استنى! ' + (E.c.patient.sex === 'F' ? 'المريضة عندها' : 'المريض عنده') + ' حساسية من هاد الدوا، وأصلاً الدوا بدو أمر من ' + docW() + '.'); return; }
     const distinct = [...new Set(N.scope.filter(x => x.why !== 'wrong-agent').map(x => x.id))];
-    if (distinct.length <= 3 && distinct.includes(id)) dOnce('5:' + id, 'هاد بدو أمر من ' + docW() + '. إذا شايفه لازم، بلّغ' + (F ? 'ها' : 'ه') + ' واقترحه.');
+    if (distinct.length <= 3 && distinct.includes(id)) dOnce('5:' + id, 'هذا يحتاج إلى أمر من ' + docW() + '. إن رأيته لازماً، فأبلغ' + (F ? 'ها' : 'ه') + ' واقترحه.');
   }
 

@@ -35,7 +35,7 @@
     }
 
     function showOnlySection(viewId) {
-      ['index', 'home', 'coach', 'profile', 'er'].forEach(v => {
+      ['index', 'home', 'coach', 'profile', 'er', 'or'].forEach(v => {
         const sec = document.getElementById('view-' + v);
         if (sec) sec.classList.toggle('hidden', v !== viewId);
       });

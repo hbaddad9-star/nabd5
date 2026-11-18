@@ -3,7 +3,7 @@
     if (E.over || NM()) return; // nurse mode: the instructor has her own fixed lines
     const missing = keyMissing().map(k => k.label).join('، ');
     // (chat fix 2026-11-08) He has just spoken: he does not announce himself again.
-    if (why === 'called') { if (E.turns - (E.dTurn ?? -9) <= 2) return; person('d', 'أنا هون. شو عندك؟ بجملتين: situation وأهم رقم.'); return; }
+    if (why === 'called') { if (E.turns - (E.dTurn ?? -9) <= 2) return; person('d', 'أنا هنا. ماذا لديك؟ في جملتين: situation وأهم رقم.'); return; }
     if (why === 'harm') { E.coachAt = E.sim; voice('d', 'supervisor', 'Something the trainee ordered just harmed the patient. Say it calmly, ask what changed and what they do now.', 'وقف. شو تغيّر بعد آخر دوا؟ شو بتعمل هسا؟', true); return; }
     if (why === 'urgent' && !missing) return;
     // One supervisor line per event: what just harmed the patient is said, not a second teaching question on top of it.

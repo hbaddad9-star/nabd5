@@ -88,8 +88,8 @@ Controllers are thin: each action calls one use case or one port and maps the re
 
 ## The client
 
-The page is one Razor page with five views (`#view-index` the landing, `#view-home`, `#view-coach`, `#view-profile`,
-`#view-er`) plus the consoles' frame (`#view-admin`) and the sign-in screen. Joining is plain concatenation: nothing
+The page is one Razor page with six views (`#view-index` the landing, `#view-home`, `#view-coach`, `#view-profile`,
+`#view-er`, and `#view-or`, the operating room: the 3D simulator in a frame and the team's chat beside it) plus the consoles' frame (`#view-admin`) and the sign-in screen. Joining is plain concatenation: nothing
 is minified or reordered.
 
 | Bundle | Folder | Responsibility |

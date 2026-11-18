@@ -21,7 +21,7 @@
   const offCase = meta => ({
     harm: true, off: true, risk: meta.risky ? 8 : 0, label: meta.ar + ' دون استطباب',
     why: meta.risky ? 'لا استطباب له في هذه الحالة، وقد يضر المريض.' : 'لا استطباب له في هذه الحالة، ولم يغيّر شيئاً.',
-    challenge: `دكتور، ${meta.ar}؟ شو الاستطباب هون؟ متأكد؟`, effect: 'ساءت حالة المريض.',
+    challenge: `دكتور، ${meta.ar}؟ ما الاستطباب هنا؟ هل أنت متأكد؟`, effect: 'ساءت حالة المريض.',
   });
   // Safe only once the patient is sick enough: by the reading on the monitor when the case gives one.
   // A pressor holding the number up does not mean the pressure is holding.
@@ -45,19 +45,19 @@
 
   function again(a, meta, def, prev) {
     const r = meta.repeat;
-    if (!r || def.once) { nurse(`${meta.ar}؟ ${!NM() && fem(meta.ar) ? 'عملناها' : 'عملناه'} من شوي.`, 'سبق أن نفّذت هذا قبل قليل.'); return false; }
-    if (prev.n >= r.max) { nurse(`${meta.ar} أخدنا كفاية منه، شو الخطوة الجاية؟`, 'بلغ هذا الحد الأقصى المقرر، فلم يُنفَّذ.'); return false; }
+    if (!r || def.once) { nurse(`${meta.ar}؟ ${!NM() && fem(meta.ar) ? 'نفّذناها' : 'نفّذناه'} قبل قليل.`, 'سبق أن نفّذت هذا قبل قليل.'); return false; }
+    if (prev.n >= r.max) { nurse(`${meta.ar} أخذنا منه ما يكفي، ما الخطوة التالية؟`, 'بلغ هذا الحد الأقصى المقرر، فلم يُنفَّذ.'); return false; }
     if (E.sim - prev.last < r.gap) {
       // (chat fix 2 2026-11-08) Doctor room: more fluid asked while the first bolus runs is hung as soon as it is in.
       if (!NM() && a.id === 'fluids' && !a._later && !E.fluidLater) {
         const wait = r.gap - (E.sim - prev.last), dose = a.dose || prev.dose || '';
         E.fluidLater = true;
         later(wait + 0.02, () => { E.fluidLater = false; if (!E || E.over) return; order({ ...a, dose, _asked: true, _ok: 'good', _later: true }, a.said || ''); });
-        nurse(`السوايل الأولى لسا نازلة. ${dose ? 'بعلّق ' + dose : 'بعلّق التانية'} أول ما تخلص، ${wait <= 0.4 ? 'بعد شوي' : wait <= 1.2 ? 'بعد دقيقة تقريباً' : 'بعد دقيقتين تقريباً'}.`);
+        nurse(`السوائل الأولى ما زالت تنزل. ${dose ? 'سأعلّق ' + dose : 'سأعلّق الثانية'} حالما تنتهي، ${wait <= 0.4 ? 'بعد قليل' : wait <= 1.2 ? 'بعد دقيقة تقريباً' : 'بعد دقيقتين تقريباً'}.`);
         return false;
       }
       if (!NM() && a.id === 'fluids' && E.fluidLater) { nurse('التانية مستنية تخلص الأولى، وبعلّقها.'); return false; }
-      nurse(`${meta.ar}؟ لسا معطيينه، خلينا نشوف تأثيره.`, 'انتظر أثر ما أعطيته أولاً.');
+      nurse(`${meta.ar}؟ أعطيناه قبل قليل، فلننتظر أثره.`, 'انتظر أثر ما أعطيته أولاً.');
       return false;
     }
     return true;

@@ -1,0 +1,16 @@
+/* Nabd platform: the simulator inside its frame on the operating-room page (index.html?embed=1). Only the 3D view is
+   shown: the simulator's own header, side panel, buttons, captions and hints are hidden, because the platform draws
+   its own camera bar, monitor and anatomy buttons over the frame and presses the simulator's (app/095-operating-room.js).
+   The two things the simulator must still show are its loading card and, in the anatomy view, its group and organ
+   pickers. Nothing changes when the simulator is opened on its own. */
+html.is-embedded, html.is-embedded body { height: 100%; min-height: 0 !important; overflow: hidden; background: #0a3948; }
+html.is-embedded body { display: flex; flex-direction: column; }
+html.is-embedded .site-header,
+html.is-embedded .control-panel { display: none !important; }
+html.is-embedded .workspace { display: flex !important; flex-direction: column; flex: 1 1 auto; min-height: 0 !important; gap: 0 !important; padding: 0 !important; }
+html.is-embedded .viewport-panel { flex: 1 1 auto; min-height: 0; border: 0 !important; border-radius: 0 !important; box-shadow: none !important; }
+html.is-embedded .viewport { flex: 1 1 auto; min-height: 0 !important; }
+html.is-embedded .viewport > *:not(canvas):not(.viewport-loading) { display: none !important; }
+html.is-embedded .viewport-panel > *:not(.viewport):not(#anatomy-controls) { display: none !important; }
+/* the anatomy pickers sit over the foot of the scene, above the platform's camera bar */
+html.is-embedded #anatomy-controls:not([hidden]) { position: absolute; inset-inline: 14px; bottom: 76px; z-index: 5; border-radius: 12px; box-shadow: 0 10px 30px rgba(8, 47, 61, .25); }

@@ -1,0 +1,13 @@
+      <!-- 2b. The operating-room section's entry: the 3D operating room with the team's chat (#view-or).
+           #home-or3d-btn is bound by app/095-operating-room.js. -->
+      <div id="home-or3d-card" class="or-home-card" data-no-terms>
+        <div class="or-home-copy">
+          <span class="or-eyebrow">قسم العمليات <em class="or-pill">نسخة تجريبية</em></span>
+          <h2>غرف العمليات ثلاثية الأبعاد</h2>
+          <p>غرفة عمليات بثلاثة أبعاد فيها المريض والفريق والأجهزة، ومشرف يرافقك بالمحادثة. الجلسة الأولى: تجهيز مريض لاستئصال الزائدة الدودية قبل الشق.</p>
+          <button id="home-or3d-btn" class="or-btn focus-ring" type="button" data-or-open>ادخل غرفة العمليات <span aria-hidden="true">←</span></button>
+        </div>
+        <div class="or-home-art" aria-hidden="true">
+@await Html.PartialAsync("~/Views/Home/OperatingRoom/_RoomSketch.cshtml")
+        </div>
+      </div>

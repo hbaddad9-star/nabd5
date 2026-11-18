@@ -9,7 +9,7 @@
     const have = E.tests[id];
     if (have) {
       if (have.el && have.el.scrollIntoView) have.el.scrollIntoView({ block: 'center' });
-      if (!quiet) nurse(have.back ? `طلع من شوي، ${resultBrief(id)}` : `نتيجة ${meta.ar} لسا ما طلعت.`, have.back ? 'النتيجة صدرت من قبل.' : 'النتيجة لم تصدر بعد.');
+      if (!quiet) nurse(have.back ? `ظهرت قبل قليل: ${resultBrief(id)}` : `نتيجة ${meta.ar} لم تظهر بعد.`, have.back ? 'النتيجة صدرت من قبل.' : 'النتيجة لم تصدر بعد.');
       return;
     }
     submitTest(id, reason || '', reason ? (ok === 'good' || ok === 'ungraded' ? ok : 'weak') : 'ungraded');
@@ -34,7 +34,7 @@
       voice('d', 'supervisor', `The trainee ordered ${meta.en}, which is dangerous right now: ${why} Stop them firmly and ask what it would change.`, `استنى، ليش ${meta.en} هسا؟ شو رح يغيّر بالـmanagement والمريض مش stable؟`, true);
     } else if (ASK_NO_NOW && ind === 'no' && E.askedNo < 2) {
       E.askedNo++;
-      voice('d', 'supervisor', `The trainee ordered ${meta.en}, not needed here: ${res.why} Ask one short question about what it would change, without giving the answer.`, `${meta.en}؟ شو رح يغيّر بالخطة هسا؟`);
+      voice('d', 'supervisor', `The trainee ordered ${meta.en}, not needed here: ${res.why} Ask one short question about what it would change, without giving the answer.`, `${meta.en}؟ ماذا سيغيّر في الخطة الآن؟`);
     }
     // A test is work being done, from the chat or from the records panel.
     E.busyTurn = E.turns;

@@ -19,7 +19,7 @@ public class SiteAssetsTests : IClassFixture<WebApplicationFactory<Program>>
     /// </summary>
     private static readonly IReadOnlyDictionary<string, string> ApprovedRoom = new Dictionary<string, string>
     {
-        ["/js/er.js"] = "7b126404b2748724dfc63d8f3da05c33b6530ebf30ae7d2b45f0d612426f2204",
+        ["/js/er.js"] = "4c0c3262d3b47c839024f8d9fff3d5cc2f618240849606fbb487c5319dbed6ee",
         ["/css/er.css"] = "03b5f056098883f5a96e75efe220200791d077f91be27409229c3bc88dd5aa38",
     };
 

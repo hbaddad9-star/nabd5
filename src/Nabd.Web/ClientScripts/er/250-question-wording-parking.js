@@ -6,13 +6,13 @@
   // (live check 2026-11-08) Doctor room: a proposal is named in speech, never as a note («والأكسجين: nasal 2 لتر»):
   // inside a sentence «والأكسجين nasal 2 لتر», asked on its own «والأكسجين، بقترح nasal 2 لتر، ماشي؟».
   const named = p => { const t = shortTip(p); if (!t) return spk(p); return norm(t).includes(norm(nameOf(p)).split(' ')[0]) ? t : spk(p) + (NM() ? ': ' : ' ') + t; };
-  const namedAsk = p => { const t = shortTip(p); return NM() || !t || norm(t).includes(norm(nameOf(p)).split(' ')[0]) ? named(p) : spk(p) + '، بقترح ' + t; };
-  const shortAsk = p => p.type === 'unsafe' ? 'و' + spk(p) + '؟ بعطيه ولا لأ؟' : p.type === 'dose' ? (p.sug ? 'و' + namedAsk(p) + '، ماشي؟' : 'و' + spk(p) + (!NM() && p.a && p.a.sayName ? ': قديش الجرعة؟' : ': أي نوع وقديش؟')) : '';
+  const namedAsk = p => { const t = shortTip(p); return NM() || !t || norm(t).includes(norm(nameOf(p)).split(' ')[0]) ? named(p) : spk(p) + '، أقترح ' + t; };
+  const shortAsk = p => p.type === 'unsafe' ? 'و' + spk(p) + '؟ هل أعطيه أم لا؟' : p.type === 'dose' ? (p.sug ? 'و' + namedAsk(p) + '، هل توافق؟' : 'و' + spk(p) + (!NM() && p.a && p.a.sayName ? ': كم الجرعة؟' : ': أي نوع وبأي جرعة؟')) : '';
   // (chat fix 2 2026-11-08) Doctor room: a drug held for an allergy is refused with its reason and an alternative asked.
-  const parkLine = (list, tail) => { const d = list.filter(q => q.type === 'dose'), u = list.filter(q => q.type === 'unsafe'); const out = [d.length ? 'ما أعطيت ' + d.map(spk).join(' و') + ' لسا، بستنى كلمتك.' : '', ...u.map(q => (!NM() && q.allergic ? 'ما رح أعطي ' + spk(q) + '، عند' + hisHer() + ' حساسية منه. بدك بديل؟' : 'ما رح أعطي ' + spk(q) + ' قبل ما تأكدلي.'))].filter(Boolean).join(' '); return tail ? 'و' + out : out; };
+  const parkLine = (list, tail) => { const d = list.filter(q => q.type === 'dose'), u = list.filter(q => q.type === 'unsafe'); const out = [d.length ? 'لم أُعطِ ' + d.map(spk).join(' و') + ' بعد، وأنتظر كلمتك.' : '', ...u.map(q => (!NM() && q.allergic ? 'لن أعطي ' + spk(q) + '، فلدي' + hisHer() + ' حساسية منه. هل تريد بديلاً؟' : 'لن أعطي ' + spk(q) + ' قبل أن تؤكد لي.'))].filter(Boolean).join(' '); return tail ? 'و' + out : out; };
   // The nurse asks which drug and how much; she never names one, so the order stays the trainee's.
-  const VAGUE_LINE = { drug: 'أي دوا بالزبط دكتور، وقديش؟', needle: 'أي إبرة بالزبط دكتور؟ احكيلي اسم الدوا وجرعته.', analgesic: 'أي مسكن بالزبط دكتور، وقديش؟', bp: 'للضغط؟ أي دوا بالزبط، وقديش؟', fever: 'للحرارة؟ أي دوا بالزبط، وقديش؟', labs: 'أي فحوصات بدك أسحب يا دكتور؟' };
-  const vagueLine = (k, sub, again) => (again ? (k === 'labs' ? 'دكتور، احكيلي أسماء الفحوصات، وبسحبها فوراً.' : 'دكتور، احكيلي اسم الدوا وجرعته، وبجهّزه فوراً.') : k === 'labs' || k === 'analgesic' ? VAGUE_LINE[k] : VAGUE_LINE[sub] || VAGUE_LINE.drug);
+  const VAGUE_LINE = { drug: 'أي دواء بالضبط يا دكتور، وبأي جرعة؟', needle: 'أي حقنة بالضبط يا دكتور؟ أخبرني باسم الدواء وجرعته.', analgesic: 'أي مسكّن بالضبط يا دكتور، وبأي جرعة؟', bp: 'للضغط؟ أي دواء بالضبط، وبأي جرعة؟', fever: 'للحرارة؟ أي دواء بالضبط، وبأي جرعة؟', labs: 'أي فحوصات تريد أن أسحب يا دكتور؟' };
+  const vagueLine = (k, sub, again) => (again ? (k === 'labs' ? 'دكتور، أخبرني بأسماء الفحوصات وسأسحبها فوراً.' : 'دكتور، أخبرني باسم الدواء وجرعته وسأجهّزه فوراً.') : k === 'labs' || k === 'analgesic' ? VAGUE_LINE[k] : VAGUE_LINE[sub] || VAGUE_LINE.drug);
   const FAM = [['analgesia', 'opioid', 'paracetamol'], ['anticoag', 'thrombolysis'], ['nitrate', 'antihypertensive', 'diuretic', 'beta_blocker'], ['fluids', 'noradrenaline', 'adrenaline'], ['neb_salbutamol', 'neb_ipratropium', 'aminophylline', 'magnesium'], ['insulin', 'dextrose'], ['sedative', 'airway'], ['antacid', 'aspirin']];
   const sameFam = (x, y) => x !== y && FAM.some(f => f.includes(x) && f.includes(y));
   const BARE = /^(?:اه|ايوه|ايوا|نعم|تمام|ماشي|اوكي|اوك|طيب|لا|لاء|لا خلص|خلص)$/;
@@ -50,6 +50,6 @@
       list.forEach(q => { q.asks = (q.asks || 1) + 1; });
       // (chat fix 2 2026-11-08) Doctor room: a drug with no proposal is asked by name and dose, never «والمضاد، ماشي؟».
       const sg = list.filter(q => q.sug), ns = list.filter(q => !q.sug);
-      nurse(list.length > 1 ? (NM() ? 'و' + list.map(named).join('، و') + '، ماشي؟' : (sg.length ? 'و' + sg.map(named).join('، و') + '، ماشي؟' : '') + (ns.length ? (sg.length ? ' ' : '') + 'و' + ns.map(q => spk(q) + ': أي نوع وقديش؟').join(' و') : '')) : shortAsk(tl.p));
+      nurse(list.length > 1 ? (NM() ? 'و' + list.map(named).join('، و') + '، هل توافق؟' : (sg.length ? 'و' + sg.map(named).join('، و') + '، هل توافق؟' : '') + (ns.length ? (sg.length ? ' ' : '') + 'و' + ns.map(q => spk(q) + ': أي نوع وبأي جرعة؟').join(' و') : '')) : shortAsk(tl.p));
     }
   }

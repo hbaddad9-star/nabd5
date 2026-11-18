@@ -23,10 +23,10 @@
     // She names the drug she is waiting on: a busy doctor has forgotten which one.
     const nm = open.name || (open.a && actOf(open.a.id) ? actOf(open.a.id).ar : 'الدوا');
     if (open.wait >= 4) {
-      nurse(open.type === 'unsafe' ? `ما رح أعطي ${nm} قبل ما تأكدلي.` : open.type === 'dose' ? `ما بعطي ${nm} بدون جرعة. احكيلي لما تقرر.` : 'ما بطلبه بدون استطباب. احكيلي لما تقرر.');
+      nurse(open.type === 'unsafe' ? `لن أعطي ${nm} قبل أن تؤكد لي.` : open.type === 'dose' ? `لن أعطي ${nm} دون جرعة. أخبرني عندما تقرر.` : 'لن أطلبه دون استطباب. أخبرني عندما تقرر.');
       settle(q => q === open);
     } else if (open.wait % 2 === 0) {
-      nurse(open.type === 'unsafe' ? `دكتور، ${nm}: بعطيه ولا لأ؟` : open.type === 'dose' ? (open.tip ? `دكتور، ${nm}: ${open.tip}${open.sug ? '، ماشي؟' : ''}` : `دكتور، ${nm}: قديش بدك؟`) : 'دكتور، لسا مستنية جوابك على طلبك.');
+      nurse(open.type === 'unsafe' ? `دكتور، ${nm}: هل أعطيه أم لا؟` : open.type === 'dose' ? (open.tip ? `دكتور، ${nm}: ${open.tip}${open.sug ? '، هل توافق؟' : ''}` : `دكتور، ${nm}: كم تريد؟`) : 'دكتور، ما زلتُ بانتظار جوابك على طلبك.');
     }
   }
 

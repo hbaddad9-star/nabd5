@@ -141,21 +141,21 @@
   const IDCHK = /(اسم|تأكيد|أكد|اكد|رقم الملف|التاريخ|تاريخ الميلاد|اسمها|اسمه)/;
   const NO_WATER = /(لا|ممنوع|مش هلأ|مش هلا|استن|بعدين|صايم|لحد ما|حتى)/;
   function script(E) {
-    const c = E.c, comp = c.companion || {}, nurse = isNurse(E), cn = comp.name || 'المرافق', p = c.patient || {};
+    const c = E.c, comp = c.companion || {}, nurse = isNurse(E), cn = comp.rel ? (/^(?:والدت|زوجت|ابنت|بنت|أخت|اخت)/.test(comp.rel) ? 'المرافقة' : 'المرافق') + ' (' + comp.rel + ')' : 'المرافق', p = c.patient || {};
     const kin = /أم|أب|ابن|بنت|زوج|أخ/.test(comp.rel || '') ? 'أخو المريض' : 'قريب المريض';
     const he = (p.sex || '') === 'F' ? 'ها' : 'ه';
     if (nurse) return [
-      { at: 1.3, who: 'kin', name: kin, kind: 'water', text: `يا أستاذ، ${p.sex === 'F' ? 'هي' : 'هو'} عطشان كثير، ممكن نعطي${he} شوية مي؟`, ok: NO_WATER },
-      { at: 2.6, who: 'bell', name: 'جرس سرير 4', kind: 'defer', text: 'جرس سرير 4 عم يرن: المريض بدّه يقوم عالحمام لحاله.', ok: DEFER },
-      { at: 3.8, who: 'kin', name: kin, kind: 'angry', text: 'وين الدكتور؟! صرلنا ساعة ومحد إجا! بدي أحكي مع المسؤول!', ok: CALM },
-      { at: 5.4, who: 'phone', name: 'المختبر على الهاتف', kind: 'id', text: 'المختبر: العينة اللي وصلتنا مكتوب عليها اسم ناقص، بدنا تأكيد الاسم الكامل وتاريخ الميلاد.', ok: IDCHK }
+      { at: 1.3, who: 'kin', name: kin, kind: 'water', text: `يا أستاذ، ${p.sex === 'F' ? 'هي عطشانة' : 'هو عطشان'} كثيراً، هل يمكن أن نعطي${he} قليلاً من الماء؟`, ok: NO_WATER },
+      { at: 2.6, who: 'bell', name: 'جرس سرير 4', kind: 'defer', text: 'جرس سرير 4 يرنّ: المريض يريد الذهاب إلى الحمام وحده.', ok: DEFER },
+      { at: 3.8, who: 'kin', name: kin, kind: 'angry', text: 'أين الطبيب؟! مضت ساعة ولم يأتِ أحد! أريد التحدث مع المسؤول!', ok: CALM },
+      { at: 5.4, who: 'phone', name: 'المختبر على الهاتف', kind: 'id', text: 'المختبر: العينة التي وصلتنا مكتوب عليها اسم ناقص، نحتاج إلى تأكيد الاسم الكامل وتاريخ الميلاد.', ok: IDCHK }
     ];
     return [
-      { at: 1.2, who: 'kin', name: kin, kind: 'angry', text: 'شو صاير؟! ليش كلكم واقفين؟ يا دكتور اعمل إشي هلأ!', ok: CALM },
-      { at: 2.5, who: 'staff', name: 'ممرضة من الفرز', kind: 'defer', text: 'دكتور، سرير 7 ألم صدر وصل هلأ، بدهم إياك. بتيجي ولا يستنوا؟', ok: DEFER },
-      { at: 3.6, who: 'comp', name: cn, kind: 'angry', text: 'إذا صار فيها إشي أنا بحمّلك المسؤولية! ليش ما حدا عم يحكيلنا شو فيها؟', ok: CALM, needStage: 1 },
-      { at: 4.8, who: 'phone', name: 'المختبر على الهاتف', kind: 'id', text: 'المختبر: في عينة دم بدون اسم كامل من عندكم، بدنا تأكيد اسم المريض وتاريخ ميلاده.', ok: IDCHK },
-      { at: 6.2, who: 'kin', name: kin, kind: 'angry', text: 'بدي أصوّر وأبعث لأبوها، وبدي أعرف شو العلاج بالضبط!', ok: CALM }
+      { at: 1.2, who: 'kin', name: kin, kind: 'angry', text: 'ماذا يحدث؟! لماذا تقفون جميعاً؟ يا دكتور، افعل شيئاً الآن!', ok: CALM },
+      { at: 2.5, who: 'staff', name: 'ممرضة من الفرز', kind: 'defer', text: 'دكتور، وصل مريض بألم صدر إلى سرير 7 الآن، ويحتاجون إليك. هل تأتي أم ينتظرون؟', ok: DEFER },
+      { at: 3.6, who: 'comp', name: cn, kind: 'angry', text: 'إذا أصابها مكروه فسأحمّلك المسؤولية! لماذا لا يخبرنا أحد بما أصابها؟', ok: CALM, needStage: 1 },
+      { at: 4.8, who: 'phone', name: 'المختبر على الهاتف', kind: 'id', text: 'المختبر: لدينا عينة دم بلا اسم كامل من عندكم، نحتاج إلى تأكيد اسم المريض وتاريخ ميلاده.', ok: IDCHK },
+      { at: 6.2, who: 'kin', name: kin, kind: 'angry', text: 'أريد أن أصوّر وأرسل إلى والدها، وأريد أن أعرف ما العلاج بالضبط!', ok: CALM }
     ];
   }
   const R = { E: null, list: [], fired: [], out: false, panic: false, turns: 0, lastStage: 0, hints: 'on' };
@@ -182,7 +182,7 @@
     // the family panics the moment the monitor alarms in earnest
     if (!R.panic && E.stage >= 3 && !outNow) {
       R.panic = true;
-      const item = { who: 'kin', name: (E.c.companion || {}).name || 'المرافق', kind: 'angry', text: 'شو صار؟! ليش الجهاز بزمّر هيك؟! الحقوها!', ok: CALM, firedAt: E.sim, turnAt: R.turns, doneAt: E.done ? E.done.size : 0, done: true };
+      const item = { who: 'kin', name: (E.c.companion || {}).name || 'المرافق', kind: 'angry', text: 'ماذا حدث؟! لماذا يصدر الجهاز هذا الإنذار؟! أسرعوا!', ok: CALM, firedAt: E.sim, turnAt: R.turns, doneAt: E.done ? E.done.size : 0, done: true };
       inject(item, E); R.fired.push(item);
     }
   }

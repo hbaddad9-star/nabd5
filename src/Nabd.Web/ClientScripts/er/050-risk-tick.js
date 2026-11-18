@@ -29,18 +29,18 @@
     // (Nurse mode: only once the doctor knows, and the instructor asks for an SBAR handover.)
     if (!E.nudged && E.risk <= E.c.risk.watch - 6 && netRate() <= 0 && !keyMissing().length && E.done.size >= 3 && E.sim > 2 && (!NM() || E.nurse.esc.calledAt !== null || E.nurse.present) && (NM() || E.turns - (E.dTurn ?? -9) >= 2 || E.sim - (E.dAt ?? -9) >= 1)) {
       E.nudged = true;
-      later(0.2, () => person('d', NM() ? 'الأرقام استقرت. جاهز تسلّم الحالة بصيغة SBAR؟' : pickOf(['الأرقام استقرت. بقي إشي بدك تعمله؟ ولا جاهز تسلّم؟', 'تمام، الوضع أحسن. شو الخطة، والوجهة؟'])));
+      later(0.2, () => person('d', NM() ? 'الأرقام استقرت. هل أنت جاهز لتسليم الحالة بصيغة SBAR؟' : pickOf(['الأرقام استقرت. هل بقي ما تريد فعله، أم أنت جاهز للتسليم؟', 'حسناً، الوضع أفضل. ما الخطة، وما الوجهة؟'])));
     }
     // An order waiting on a dose is not given: the nurse says so rather than let him think it was.
     const open = E.pending;
     if (open && open.type === 'dose' && !open.nagged && E.sim - (open.since || 0) > 0.75 && (NM() || E.turns === open.turnAt)) {
       open.nagged = true;
-      nurse(`دكتور، ${open.name} لسا ما أعطيته. ${open.tip}${open.sug ? '، ماشي؟' : ''}`);
+      nurse(`دكتور، لم أُعطِ ${open.name} بعد. ${open.tip}${open.sug ? '، هل توافق؟' : ''}`);
     }
     const hold = E.c.risk.hold;
     if (hold && !E.holdAsked && !E.done.has(hold.until) && E.sim > 7 && E.risk <= hold.at + 1) {
       E.holdAsked = true;
-      person('d', NM() ? (E.nurse.orders.some(o => openOrd(o)) ? 'الأرقام ما تحسنت. في أمر من الدكتور لسا ما تنفّذ؟' : 'الأرقام ما تحسنت. لازم الدكتور يعرف؟') : hold.ask || 'الأرقام ثابتة بس ما تحسنت. شو الخطوة الناقصة؟');
+      person('d', NM() ? (E.nurse.orders.some(o => openOrd(o)) ? 'الأرقام لم تتحسن. هل هناك أمر من الدكتور لم يُنفَّذ بعد؟' : 'الأرقام لم تتحسن. هل يجب أن يعلم الدكتور؟') : hold.ask || 'الأرقام ثابتة لكنها لم تتحسّن. شو الخطوة الناقصة؟');
     }
     alarm(now);
     if (E.risk >= 100) arrest();

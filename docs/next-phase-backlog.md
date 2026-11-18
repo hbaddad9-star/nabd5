@@ -13,6 +13,7 @@ What Nabd 7 leaves open, most important first. Updated 2026-11-18 with v7.0.0.
 | P5 | **Clinical images** | The room shows no image. 15 images for the six cases and 28 body photographs are listed in [image-library/README.ar.md](image-library/README.ar.md), with what to make first |
 | P6 | **The level quiz** | Hidden (D-60); rebuild it from Nabd's own cases |
 | P7 | **The respiratory room and the specialty cases** | Shown as «قريباً» (D-61). The old respiratory room was removed in v7; the new rooms are built as layers like `erplus/`, on the server once P1 exists |
+| P7b | **The 3D operating room** | Integrated: the simulator in `wwwroot/or3d` (a frame) and the chat in `app/095`–`096`. Open: the operative steps after the time-out, the chat through the agent instead of keywords, a physician's review of the six steps, the patient draped for the operation, the feature switch `or3d` in the administration (still «قريباً», not wired), and the room's weight (about 27 MB) on slow connections |
 | P8 | **Open owner decisions** | Section 8 of [agent/er-agent.ar.md](agent/er-agent.ar.md): nurse weights, unstable handover, averaging old and new reports, pass marks for four-year programmes, returning after a critical error, the report's layout |
 
 ## Owner decisions on the site

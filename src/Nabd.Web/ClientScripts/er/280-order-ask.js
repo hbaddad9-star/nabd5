@@ -2,13 +2,13 @@
     if (NM() && who === 'n') who = 'd';
     const same = q => q.type === p.type && (q.a ? q.a.id : q.id) === (p.a ? p.a.id : p.id);
     // The same order again while its question is open: the question comes back, not silence.
-    if (E.pending && same(E.pending)) { if (!NM()) { E.askedThisTurn = true; E.pending.asks = (E.pending.asks || 1) + 1; const l = E.pending.type === 'dose' ? (E.pending.asks >= 3 ? 'ما بقدر أعطي ' + spk(E.pending) + ' بدون جرعة يا دكتور. ' + (E.pending.sug ? 'بقترح ' + shortTip(E.pending) + '، ماشي؟' : 'قديش بدك؟') : shortAsk(E.pending).replace(/^و/, 'دكتور، ')) : E.pending.type === 'offer' && E.pending.asks >= 2 ? 'دكتور، ' + line.replace(/^دكتور،\s*/, '').split(/(?<=\.)\s+/).slice(-1)[0] : E.pending.type === 'unsafe' && E.pending.asks % 2 === 0 ? 'لسا مش مرتاحة: ' + line.replace(/^دكتور،\s*/, '').replace(/[؟?]?\s*متأكد؟\s*$/, '') + '. متأكد إنك بدك ' + (fem(spk(E.pending)) ? 'إياها' : 'إياه') + '؟' : line; if (E.inApply || E.bufQ) E.qLine = [who, l]; else person(who, l); return; } if ((E.pending.wait || 0) % 2 === 1) person(who, line); return; }
+    if (E.pending && same(E.pending)) { if (!NM()) { E.askedThisTurn = true; E.pending.asks = (E.pending.asks || 1) + 1; const l = E.pending.type === 'dose' ? (E.pending.asks >= 3 ? 'لا أستطيع أن أعطي ' + spk(E.pending) + ' دون جرعة يا دكتور. ' + (E.pending.sug ? 'أقترح ' + shortTip(E.pending) + '، هل توافق؟' : 'كم تريد؟') : shortAsk(E.pending).replace(/^و/, 'دكتور، ')) : E.pending.type === 'offer' && E.pending.asks >= 2 ? 'دكتور، ' + line.replace(/^دكتور،\s*/, '').split(/(?<=\.)\s+/).slice(-1)[0] : E.pending.type === 'unsafe' && E.pending.asks % 2 === 0 ? 'ما زلتُ غير مرتاحة: ' + line.replace(/^دكتور،\s*/, '').replace(/[؟?]?\s*(?:هل أنت )?متأكد[ةه]?؟\s*$/, '') + '. هل أنت متأكد أنك تريد' + (fem(spk(E.pending)) ? 'ها' : 'ه') + '؟' : line; if (E.inApply || E.bufQ) E.qLine = [who, l]; else person(who, l); return; } if ((E.pending.wait || 0) % 2 === 1) person(who, line); return; }
     if (!NM() && E.pending) {
       // (chat fix 2 2026-11-08) Doctor room. The drug she held for its prerequisite, ordered again: the one question again.
       const qd = E.queue.find(([q]) => same(q));
       if (qd && p.type === 'unsafe' && E.pending.type === 'dose' && ((E.c.care[p.a.id] || {}).stableHarm || {}).unlessDone === E.pending.a.id) {
         E.askedThisTurn = true; E.pending.asks = (E.pending.asks || 1) + 1;
-        const l3 = E.pending.asks >= 4 ? `${spk(p)} مش قبل ${spk(E.pending)} يا دكتور. أبلّش ${shortTip(E.pending)} هسا؟` : `${spk(E.pending)} لسا ما بلشت يا دكتور. بقترح ${shortTip(E.pending)} أول، و${spk(p)} بعدها. ماشي؟`;
+        const l3 = E.pending.asks >= 4 ? `${spk(p)} ليس قبل ${spk(E.pending)} يا دكتور. هل أبدأ ${shortTip(E.pending)} الآن؟` : `${spk(E.pending)} لم أبدأ به بعد يا دكتور. أقترح ${shortTip(E.pending)} أولاً، و${spk(p)} بعدها. هل توافق؟`;
         if (E.inApply || E.bufQ) E.qLine = [who, l3]; else person(who, l3);
         return;
       }
@@ -33,7 +33,7 @@
         // The challenge is "its prerequisite is not in yet" and that prerequisite is the open proposal: one question, safe order.
         const old = E.pending; old.asks = (old.asks || 1) + 1; E.askedThisTurn = true; p.turnAt = E.turns;
         E.queue.push([p, line, who]);
-        const l2 = line.replace(/\s*متأكد؟\s*$/, '') + ' بقترح نبلّش ' + shortTip(old) + ' أول، و' + spk(p) + ' بعدها. ماشي؟';
+        const l2 = line.replace(/\s*(?:هل أنت )?متأكد[ةه]?؟\s*$/, '') + ' أقترح أن نبدأ ' + shortTip(old) + ' أولاً، و' + spk(p) + ' بعدها. هل توافق؟';
         if (E.inApply || E.bufQ) E.qLine = [who, l2]; else person(who, l2);
         return;
       }
@@ -52,7 +52,7 @@
       E.queue.push([p, line, who]);
       // Several doses asked in one message are one proposal, not several questions.
       if (p.type === 'dose' && E.collect) E.collect.push({ p, line });
-      else if (NM() && p.type !== 'interpret' && !E.collect) nurse('لحظة دكتور، جاوبني أول عالسؤال اللي فوق.');
+      else if (NM() && p.type !== 'interpret' && !E.collect) nurse('لحظة يا دكتور، أجبني أولاً عن السؤال أعلاه.');
       return;
     }
     if (p.type === 'dose' && !p.line0) p.line0 = line;

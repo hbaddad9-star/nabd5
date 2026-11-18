@@ -1,6 +1,6 @@
   // A result said aloud: its name and its first two values.
   // (chat fix 2 2026-11-08) Doctor room: the values out of range first (up to three), and a report cut at a sentence's end.
-  const rowSaid = x => x[0] + ' ' + x[1] + (x[2] ? ' ' + x[2] : '') + (x[4] === 'H' ? ' (عالي)' : x[4] === 'L' ? ' (واطي)' : x[3] ? ' (طبيعي)' : '');
+  const rowSaid = x => x[0] + ' ' + x[1] + (x[2] ? ' ' + x[2] : '') + (x[4] === 'H' ? ' (مرتفع)' : x[4] === 'L' ? ' (منخفض)' : x[3] ? ' (طبيعي)' : '');
   const reportCut = (s, n = 170) => { const parts = String(s || '').split(/(?<=\.)\s+/); let out = ''; for (const p of parts) { if (out && (out + ' ' + p).length > n) break; out = out ? out + ' ' + p : p; } return out.replace(/\.\s*$/, ''); };
   function resultBrief(id) {
     const r = c0().results[id] || {}, meta = testOf(id);
@@ -54,20 +54,20 @@
     if (!a && /(?:^| )(?:كم|قديش|شو) (?:ال)?اكسجين(?: |$)|(?:^| )(?:ال)?اكسجين (?:كم|قديش)(?: |$)/.test(t)) return { id: 'oxygen' };
     return null;
   }
-  const agoSaid = at => { const m = E.sim - at; return m < 0.8 ? 'من شوي' : m < 1.5 ? 'من دقيقة' : m < 2.5 ? 'من دقيقتين' : 'من ' + Math.round(m) + ' دقايق'; };
+  const agoSaid = at => { const m = E.sim - at; return m < 0.8 ? 'قبل قليل' : m < 1.5 ? 'قبل دقيقة' : m < 2.5 ? 'قبل دقيقتين' : 'قبل ' + Math.round(m) + ' دقائق'; };
   const hisHer = () => (E.c.patient.sex === 'F' ? 'ها' : 'ه');
   function resultLine(read) {
     const r = read.resultAsk, meta = testOf(r.id), res = E.c.results[r.id] || {};
-    if (!meta) return 'هاد الفحص مش موجود عنا يا دكتور.';
+    if (!meta) return 'هذا الفحص غير متاح لدينا يا دكتور.';
     if (r.back) { const rows = r.row ? (res.rows || []).filter(x => r.row.test(x[0])) : []; return rows.length ? rows.map(rowSaid).join('، ') + '.' : resultBrief(r.id); }
-    if (r.sent) return `نتيجة ${meta.ar} لسا ما طلعت.`;
+    if (r.sent) return `نتيجة ${meta.ar} لم تظهر بعد.`;
     read.offerTest = r.id;
-    return `ما طلبنا ${meta.ar} لسا. ${fem(meta.ar) ? 'أطلبها' : 'أطلبه'}؟`;
+    return `لم نطلب ${meta.ar} بعد. هل ${fem(meta.ar) ? 'أطلبها' : 'أطلبه'}؟`;
   }
   // (chat check 2026-11-08) «شو صار بالفحوصات؟»: every test asked so far, what is back and what is still out.
   function resultsLine() {
     const all = Object.values(E.tests).filter(x => testOf(x.id));
-    if (!all.length) return 'ما طلبنا فحوصات لسا يا دكتور. شو بدك أسحب؟';
+    if (!all.length) return 'لم نطلب فحوصات بعد يا دكتور. ماذا تريد أن أسحب؟';
     const back = all.filter(x => x.back).map(x => testOf(x.id).ar), out = all.filter(x => !x.back).map(x => testOf(x.id).ar);
-    return [back.length ? `طلع ${back.join('، و')}، والنتايج قدامك.` : '', out.length ? `لسا بستنى ${out.join(' و')}.` : ''].filter(Boolean).join(' ');
+    return [back.length ? `ظهرت نتائج ${back.join('، و')}، وهي أمامك.` : '', out.length ? `ما زلتُ بانتظار ${out.join(' و')}.` : ''].filter(Boolean).join(' ');
   }

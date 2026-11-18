@@ -48,7 +48,7 @@
         const i = E.queue.findIndex(([q]) => q.type === 'dose' && q.a.id !== 'oxygen');
         if (i < 0) return 'na';
         const [next] = E.queue.splice(i, 1);
-        E.queue.unshift([p, `دكتور، ${p.name}: ${p.tip || 'أي نوع وكم؟'}، ماشي؟`, 'n']);
+        E.queue.unshift([p, `يا دكتور، ${p.name}: ${p.tip || 'أي نوع وبأي جرعة؟'}، هل توافق؟`, 'n']);
         E.pending = next[0];
         E.pending.since = E.sim;
         return offlineAnswer(text, t, { actions, tests, why, toSup, toComp, toNurse, toPat });
@@ -63,7 +63,7 @@
           const i = E.queue.findIndex(([q]) => q.type === 'dose' && doseFits(q, text));
           if (i >= 0) {
             const [next] = E.queue.splice(i, 1);
-            E.queue.unshift([p, `دكتور، ${p.name}: ${p.tip || 'أي نوع وكم؟'}، ماشي؟`, 'n']);
+            E.queue.unshift([p, `يا دكتور، ${p.name}: ${p.tip || 'أي نوع وبأي جرعة؟'}، هل توافق؟`, 'n']);
             E.pending = next[0];
             E.pending.since = E.sim;
             return offlineAnswer(text, t, { actions, tests, why, toSup, toComp, toNurse, toPat });

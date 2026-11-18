@@ -60,7 +60,7 @@
           <p>مدرّب يعرف أين تتعثّر، ويتدرّب معك عليه حتى تتقنه.</p>
           <ul class="nbx-coach-points">
             <li><b>يسمّي ما تحتاج تطويره</b><span>من تقارير جلساتك، بدليل لكل نقطة.</span></li>
-            <li><b>يصير مريضك وأهله</b><span>وأنت المسؤول: تتصرّف خطوة خطوة.</span></li>
+            <li><b>يؤدّي دور المريض ومرافقيه</b><span>وأنت المسؤول عن القرار: تتصرّف خطوة بعد خطوة.</span></li>
             <li><b>سؤال، ثم تلميح، ثم الجواب</b><span>لا يعطيك الحل من أول مرة.</span></li>
           </ul>
           <div class="nbx-coach-hero-act"><button type="button" class="nbx-coach-cta" data-nbx-coach-open>افتح المدرب ←</button><span class="nbx-coach-status${gap ? ' is-gap' : ''}">${status}</span></div>

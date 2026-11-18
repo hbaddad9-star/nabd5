@@ -135,17 +135,17 @@
     { re: /(\bmri\b|رنين مغناطيسي|رنين)/, name: 'الـMRI', kind: 'mri' },
     { re: /(اميليز|amylase|ليبيز|lipase)/, name: 'إنزيمات البنكرياس', kind: 'case' },
     { re: /(زمره الدم|فصيله الدم|cross ?match|كروس ماتش|crossmatch)/, name: 'فصيلة الدم والتوافق', kind: 'case' },
-    { re: /(فحص براز|stool|زراعه بلغم|sputum)/, name: 'هاد الفحص', kind: 'case' }
+    { re: /(فحص براز|stool|زراعه بلغم|sputum)/, name: 'هذا الفحص', kind: 'case' }
   ];
   function notHere(text) { const t = norm(text); return NOT_HERE.filter(x => x.re.test(t)); }
   function reply(E, items, handled) {
     const nurse = isNurse(E), has = id => (H().D.tests || []).some(t => t.id === id);
     const parts = items.map(x => {
-      if (x.kind === 'follow') return `${x.name} فحص متابعة مش فحص طوارئ: بيطلع بعد يوم وما بيغيّر قرارك هلأ${x.alt && has(x.alt) && !handled ? '، والـCRP بيعطيك فكرة عن الالتهاب' : ''}.`;
-      if (x.kind === 'mri') return `الـMRI مش متاح من الطوارئ هلأ.${has('ct_head') ? ' إذا بدك صورة للراس في طبقي دماغ.' : ''}`;
-      return `${x.name} مش ضمن الفحوصات المتاحة بهالحالة. القائمة كاملة بزر «Labs».`;
+      if (x.kind === 'follow') return `${x.name} فحص متابعة وليس فحص طوارئ: تظهر نتيجته بعد يوم ولا يغيّر قرارك الآن${x.alt && has(x.alt) && !handled ? '، والـCRP يعطيك فكرة عن الالتهاب' : ''}.`;
+      if (x.kind === 'mri') return `الـMRI غير متاح من الطوارئ الآن.${has('ct_head') ? ' وإذا أردت تصوير الرأس فهناك طبقي دماغ.' : ''}`;
+      return `${x.name} ليس ضمن الفحوصات المتاحة في هذه الحالة. القائمة كاملة في زر «Labs».`;
     });
-    const tail = nurse ? ' وأصلاً الفحوصات المخبرية بدها أمر طبيب.' : handled ? '' : ' بدك إشي ثاني؟';
+    const tail = nurse ? ' وأصلاً الفحوصات المخبرية تحتاج إلى أمر طبيب.' : handled ? '' : ' هل تريد شيئاً آخر؟';
     const text = parts.join(' ') + tail;
     const who = nurse ? 'المشرفة ' + E.c.nurse.name : 'الممرضة ' + E.c.nurse.name;
     line(nurse ? 'k-d' : 'k-n', who, text);

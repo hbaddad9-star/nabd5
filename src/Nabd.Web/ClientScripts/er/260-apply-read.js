@@ -113,7 +113,7 @@
     const newTests = DM && !nA ? (read.tests || []).filter(once).filter(x => x.id !== answered && !E.tests[x.id] && testOf(x.id)) : [];
     const riskT = newTests.filter(x => harmNow(x.id)), safeT = newTests.filter(x => !harmNow(x.id));
     if (safeT.length) nurse(`حاضر، ${safeT.map(x => testOf(x.id).ar).join('، و')}.`);
-    if (riskT.length) nurse(`حاضر، ${riskT.map(x => testOf(x.id).ar).join(' و')}. ${(E.c.results[riskT[0].id] || {}).whenShock ? 'بس انتبه: الضغط ' + E.bp.join(' على ') + ' ومش ثابت.' : 'بس انتبه، هاد مش وقته.'}`);
+    if (riskT.length) nurse(`حاضر، ${riskT.map(x => testOf(x.id).ar).join(' و')}. ${(E.c.results[riskT[0].id] || {}).whenShock ? 'لكن انتبه: الضغط ' + E.bp.join(' على ') + ' وغير ثابت.' : 'لكن انتبه، هذا ليس وقته.'}`);
     (read.tests || []).filter(once).filter(x => x.id !== answered).forEach(x => (NM() ? nurseTest(x.id, x.reason, x.reason_ok) : orderTest(x.id, x.reason, x.reason_ok)));
     flushBack();
     const col = (E.collect || []).filter(x => E.pending === x.p || E.queue.some(([q]) => q === x.p));
@@ -155,7 +155,7 @@
         if (q) {
           q.reopened = true; E.parked = E.parked.filter(x => x !== q);
           E.pending = q; q.since = E.sim; q.turnAt = E.turns; q.asks = 1; E.askedThisTurn = true;
-          person('n', (q.a.id === 'oxygen' ? `والـSpO2 ${Math.round(v.spo2)}%: ` : 'و') + namedAsk(q) + '، ماشي؟');
+          person('n', (q.a.id === 'oxygen' ? `والـSpO2 ${Math.round(v.spo2)}%: ` : 'و') + namedAsk(q) + '، هل توافق؟');
         }
       }
       E.tail = null; E.merging = false;

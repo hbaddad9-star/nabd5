@@ -20,7 +20,7 @@
       // the order, so the allergy check sees it when the dose comes.
       const nm = text.trim().split(/\s+/).slice(0, 2).join(' ');
       E.pending = { ...p, a: { ...p.a, sayName: nm, said: (p.a.said || '') + ' ' + text }, name: nm, tip: '', sug: undefined, since: E.sim };
-      nurse(`${nm}، حاضر. قديش الجرعة؟`);
+      nurse(`${nm}، حسناً. كم الجرعة؟`);
       return;
     } else if (p.type === 'dose' && allergicTo({ agent: '' }, E.c.care[p.a.id] || {}, (NM() ? '' : (p.a.said || '') + ' ') + text)) {
       // "Give an antibiotic." "Which?" "Augmentin." is the same order as naming it outright.
@@ -44,17 +44,17 @@
       // (chat fix 2 2026-11-08) Doctor room: a name with no dose («ليفوفلوكساسين») answers "which?", not "how much?".
       if (!NM() && !typed && !accepted) {
         const nm = sayNameOf(p.a.id, text);
-        if (nm && (!a.dose)) { E.pending = { ...p, a: { ...p.a, sayName: nm, said: a.said }, name: nm, tip: '', sug: undefined, since: E.sim }; nurse(`${nm}، حاضر. قديش الجرعة؟`); return; }
+        if (nm && (!a.dose)) { E.pending = { ...p, a: { ...p.a, sayName: nm, said: a.said }, name: nm, tip: '', sug: undefined, since: E.sim }; nurse(`${nm}، حسناً. كم الجرعة؟`); return; }
       }
       // Her own proposal, taken as said, is never "a wrong dose".
       if (!(!NM() && accepted && !typed) && doseBad(NM() ? { ...a, dose: '' } : a, def, NM() ? text : a.dose || text, grade)) {
         badDose({ ...a, dose: a.dose || text.slice(0, 24) }, meta, def);
         if (!p.retried) {
           E.pending = { ...p, retried: true };
-          nurse('دكتور، هاي الجرعة مش مزبوطة، راجعها.', 'الكمية غير مناسبة، فلم يُنفَّذ. راجعها.');
+          nurse('دكتور، هذه الجرعة غير صحيحة، راجعها.', 'الكمية غير مناسبة، فلم يُنفَّذ. راجعها.');
           return;
         }
-        nurse('هاي الجرعة ما بقدر أعطيها. اطلبه من جديد بجرعة صحيحة، أو اسأل المشرف.', 'لم يُنفَّذ: الكمية غير مناسبة.');
+        nurse('لا أستطيع إعطاء هذه الجرعة. اطلبه من جديد بجرعة صحيحة، أو اسأل المشرف.', 'لم يُنفَّذ: الكمية غير مناسبة.');
       } else if (!(a.dose && overTotal(a, meta, def))) {
         give(a, meta, def);
         // One "yes" takes every other proposal she made in the same breath.
@@ -63,15 +63,15 @@
     } else if (p.type === 'reason') {
       if (grade === 'wrong' && !p.retried) {
         E.pending = { ...p, retried: true };
-        nurse('هاد السبب مش راكب مع الحالة. شو بدك تشوف فيه؟');
+        nurse('هذا السبب لا يناسب الحالة. ماذا تريد أن ترى فيه؟');
         return;
       }
       submitTest(p.id, text.slice(0, 120), grade === 'good' ? 'good' : grade === 'ungraded' ? 'ungraded' : 'weak');
     } else if (p.type === 'unsafe') {
       const care = E.c.care[p.a.id];
-      if (grade === 'wrong' && p.def.early && care && !tooEarly(care)) { nurse('هسا صار وقته، ببلش فيه.'); order({ ...p.a }, text); }
+      if (grade === 'wrong' && p.def.early && care && !tooEarly(care)) { nurse('حان وقته الآن، سأبدأ به.'); order({ ...p.a }, text); }
       else if (grade === 'wrong') harm(p.a, actOf(p.a.id), p.def, p.allergic, true);
-      else nurse(!NM() && E.lastRead && (E.lastRead.actions || []).some(a => a.id !== p.a.id) ? 'تمام، بلاش ' + actOf(p.a.id).ar + '.' : 'تمام، ما بعطيه.');
+      else nurse(!NM() && E.lastRead && (E.lastRead.actions || []).some(a => a.id !== p.a.id) ? 'حسناً، لن نعطي ' + actOf(p.a.id).ar + '.' : 'حسناً، لن أعطيه.');
     } else if (p.type === 'interpret' && grade === 'noted') {
       person('d', 'طيب، كمّل.');
     } else if (p.type === 'interpret') {
@@ -80,7 +80,7 @@
       // The instruction goes first and the findings are cut to fit; the diagnosis never reaches the supervisor's words.
       const en = testOf(p.id).en, found = resultText(p.id);
       const brief = head => head + found.slice(0, Math.max(0, 295 - head.length));
-      if (grade === 'good') person('d', pickOf(['تمام، هيك القراءة.', 'صح، كمّل.', 'مزبوط، طيب شو الخطوة الجاية؟']));
+      if (grade === 'good') person('d', pickOf(['حسناً، هذه هي القراءة.', 'صحيح، تابع.', 'صحيح، فما الخطوة التالية؟']));
       else if (grade === 'partial') voice('d', 'supervisor', brief(`The trainee read the ${en} partly right. Say it is right so far, then point to the one finding they left out, by its lead, value or place, and ask what it means. Never name the diagnosis, the artery or the procedure. Findings: `), `صح لحد هون، بس في إشي ناقص بالـ${en}. شو كمان شايف؟`);
       else voice('d', 'supervisor', brief(`The trainee misread the ${en}. Point to one lead or value that does not fit their reading and ask them to look again. Never name the diagnosis, the artery or the procedure. Findings: `), `ارجع للـ${en} مرة ثانية، في إشي مش راكب مع قراءتك.`);
     }
