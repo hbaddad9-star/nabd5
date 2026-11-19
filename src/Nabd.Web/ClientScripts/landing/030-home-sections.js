@@ -90,6 +90,22 @@
   });
 
   apply('all');
+
+  // the sidebar's «الأمراض التنفسية» and «أقسام التدريب» (2026-11-19): the home, then that section's cases or the sections
+  document.addEventListener('click', e => {
+    const side = e.target && e.target.closest ? e.target.closest('[data-nb-side-field]') : null;
+    if (!side) return;
+    const key = side.getAttribute('data-nb-side-field');
+    try { navigateTo('home'); } catch (err) {}
+    setTimeout(() => {
+      const btn = key && box.querySelector(`[data-field-go="cases"][data-field-key="${key}"]`);
+      if (btn) { apply('all'); if (!(panel && !panel.classList.contains('hidden') && panel.dataset.key === key)) showCases(btn); }
+      // below the sticky header
+      const to = btn ? panel : box, head = [...document.querySelectorAll('header')].find(h => h.getBoundingClientRect().height && getComputedStyle(h).position !== 'static');
+      const y = to.getBoundingClientRect().top + window.scrollY - (head ? head.getBoundingClientRect().height : 0) - 12;
+      window.scrollTo({ top: Math.max(0, y), behavior: 'smooth' });
+    }, 250);
+  });
 })();
 
 /* Entrance (2026-11-14, owner: "the page is too still"): the home's cards rise into place once, as they scroll

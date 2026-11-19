@@ -1,5 +1,11 @@
 # Changelog
 
+## 7.2.1 — 2026-11-19 (development freeze)
+
+- **Freeze check before the presentation.** Every page of the three console accounts, the student home, the three open sections, all seven cases and the operating room were opened in a browser: no script error and no broken text or image.
+- **The sidebar matches the site.** The guest links pointed at landing sections that no longer exist; they now go to the sections of the public header. The signed-in sidebar no longer shows the open sections as «قريباً»: «الأمراض التنفسية» opens that section's cases, «أقسام التدريب» opens the sections, and «غرفة العمليات» is listed.
+- **Demo script and handover updated** for 7.2: the open sections, the hyperkalaemia case, the framework assessment, the operating room, Claude on or off, and the freeze.
+
 ## 7.2.0 — 2026-11-19
 
 - **The patient and the relative speak simple colloquial; everyone else stays formal (owner, agent log D-68).** Their lines in the case file, the room's offline lines, the relatives' interruptions, the operating-room patient and Claude's voice prompt for the patient and relative (`PeopleRegister`) use everyday Arabic that leans to the standard; the nurse, the doctor, the supervisor and the interface stay formal (60 staff lines that were still colloquial were corrected). The companion's telling line is linked again to the fact it reveals. The approved room's fingerprint was re-recorded.
