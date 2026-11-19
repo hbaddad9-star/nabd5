@@ -354,14 +354,17 @@ public partial class LandingTests : IClassFixture<WebApplicationFactory<Program>
             "nb8-guide", "nb8-guide-steps", "home-student-uni-section", "nb8-home-stu-uni",
         ];
         foreach (var id in ids) Assert.True(Regex.Matches(home, $"\\bid=\"{id}\"").Count == 1, $"home: id '{id}' should occur exactly once");
-        // V6.9.3 (owner): the emergency room is not one of the sections, it has its own card; every section listed
-        // says it is not open yet, and the ER card's button opens the room.
+        // V6.9.3 (owner): the emergency room is not one of the sections, it has its own card, and its button opens
+        // the room. Since 2026-11-19 (owner) three sections are open: they say so and list their cases; every other
+        // section says it is not open yet.
         var cards = Regex.Matches(home, "<li (class=\"is-open\" )?data-field=\"[^\"]+\">(.*?)</li>", RegexOptions.Singleline).ToList();
         Assert.Equal(11, cards.Count);
-        Assert.DoesNotContain(cards, c => c.Groups[1].Success);
+        var open = cards.Where(c => c.Groups[1].Success).ToList();
+        Assert.Equal(["cardio", "endo", "pulm"], open.Select(c => Regex.Match(c.Value, "data-field-key=\"([^\"]+)\"").Groups[1].Value).Order());
+        Assert.All(open, c => { Assert.Contains("data-field-go=\"cases\"", c.Value); Assert.Contains(">متاح الآن<", c.Value); });
         Assert.DoesNotContain("data-field-go=\"er\"", home);
-        Assert.All(cards, c => Assert.Contains("data-field-go=\"soon\"", c.Value));
-        Assert.All(cards, c => Assert.Contains(">قريباً<", c.Value));
+        Assert.All(cards.Except(open), c => { Assert.Contains("data-field-go=\"soon\"", c.Value); Assert.Contains(">قريباً<", c.Value); });
+        Assert.Contains("id=\"nh-field-cases\"", home);
         Assert.Contains("id=\"launch-er-random-btn\"", home);
         // Every filter has cards, and every card has a filter.
         var filters = Regex.Matches(home, "data-field-filter=\"([^\"]+)\"").Select(m => m.Groups[1].Value).Except(["all", "open"]).ToList();

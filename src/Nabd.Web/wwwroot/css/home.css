@@ -18,6 +18,7 @@
      (#view-resp), their chat, monitor, orders, handover and report, the other views, the header, the drawer,
      the dialogs, the landing and the sign-in screen are never selected, and no sibling combinator is used, so
      nothing here can reach them;
+
    - declarations are !important inside @layer nl-refine (the layer landing.css places first: a layered
      important declaration wins over every unlayered one, and over app.css by coming later);
    - display and visibility are never set inside the layer, except on this file's own ::before / ::after: the
@@ -60,6 +61,20 @@
 #view-home .nh-eyebrow { display: inline-block; }
 @media (max-width: 768px) { #view-home .nh-hero .nh-hero-media figcaption { display: none; } }
 @media (max-width: 480px) { #view-home .h9-fields li > .nh-field-body > .nh-field-desc { display: none; } }
+
+/* The open sections' case list (2026-11-19): under the section cards, one row per patient with a start button. */
+#view-home .h9-tag.is-live { background: #e6f4ef; color: #17603f; }
+#view-home .nh-field-cases { margin: 18px auto 0; max-width: 980px; padding: 18px 20px; background: #fff; border: 1px solid #d6e2e6; border-radius: 16px; box-shadow: 0 16px 34px -22px rgba(8, 47, 61, .35); outline: none; }
+#view-home .nh-field-cases.hidden { display: none; }
+#view-home .nh-field-cases-head h3 { margin: 0 0 4px; font-size: 18px; color: var(--h-navy, #0b2a3a); }
+#view-home .nh-field-cases-head p { margin: 0 0 12px; color: var(--h-copy, #44585f); font-size: 14px; line-height: 1.8; }
+#view-home .nh-field-cases ul { list-style: none; margin: 0; padding: 0; display: grid; gap: 10px; }
+#view-home .nh-field-cases li { display: flex; align-items: center; justify-content: space-between; gap: 14px; padding: 12px 14px; border: 1px solid #e3ecef; border-radius: 12px; background: #f8fbfc; }
+#view-home .nh-field-cases li > div { display: grid; gap: 2px; min-width: 0; }
+#view-home .nh-field-cases li b { color: #10262f; font-size: 15px; }
+#view-home .nh-field-cases li span { color: #4c6169; font-size: 13.5px; line-height: 1.7; }
+#view-home .nh-field-cases li .nh-field-go { flex: none; }
+@media (max-width: 560px) { #view-home .nh-field-cases li { flex-direction: column; align-items: stretch; } }
 
 @layer nl-refine {
   /* V6.9.3 (owner): the trainee first, then what to do now, the emergency room, his numbers, his assignments, and
@@ -357,3 +372,4 @@
 #view-home #home-fields9 li.nbh-rv { opacity: 0; transform: translateY(14px); transition: opacity .5s ease, transform .6s cubic-bezier(.2, .7, .2, 1); }
 #view-home #home-fields9 li.nbh-rv.is-in { opacity: 1; transform: none; }
 @media (prefers-reduced-motion: reduce) { #view-home #home-fields9 li.nbh-rv { opacity: 1; transform: none; } }
+

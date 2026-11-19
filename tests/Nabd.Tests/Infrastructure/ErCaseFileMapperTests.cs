@@ -9,12 +9,12 @@ namespace Nabd.Tests.Infrastructure;
 public class ErCaseFileMapperTests
 {
     [Fact]
-    public async Task The_file_gives_six_cases_and_the_shared_catalog()
+    public async Task The_file_gives_seven_cases_and_the_shared_catalog()
     {
         var repository = TestData.CaseRepository;
-        Assert.Equal(["asthma", "sepsis", "pe", "stemi", "dka", "htn"], await repository.ListCaseIdsAsync());
+        Assert.Equal(["asthma", "sepsis", "pe", "stemi", "dka", "htn", "hyperk"], await repository.ListCaseIdsAsync());
         var catalog = await repository.GetCatalogAsync();
-        Assert.Equal(42, catalog.Interventions.Count);
+        Assert.Equal(43, catalog.Interventions.Count);
         Assert.Equal(22, catalog.Tests.Count);
         Assert.Null(await repository.FindAsync("unknown"));
     }

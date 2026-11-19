@@ -47,7 +47,7 @@
       // (chat fix 2 2026-11-08) A drip turned up, or the second bolus, needs no "started" line; a tablet under the tongue
       // is not "started the infusion".
       let done = !NM() && (a._titr || a._later) ? '' : def.done;
-      if (!NM() && done && /التسريب/.test(done) && a.dose && !(doseOf(a.dose) || {}).perTime) done = /(?:تحت اللسان|sublingual|(?:^| )sl(?: |$)|بخ\S*|spray)/.test(norm((a.said || '') + ' ' + a.dose)) ? `حطيتل${hisHer()} إياه تحت اللسان، وعيني عالضغط.` : done.replace(/بلّشت التسريب/, 'أعطيته');
+      if (!NM() && done && /التسريب/.test(done) && a.dose && !(doseOf(a.dose) || {}).perTime) done = /(?:تحت اللسان|sublingual|(?:^| )sl(?: |$)|بخ\S*|spray)/.test(norm((a.said || '') + ' ' + a.dose)) ? `وضعتُه تحت لسان${hisHer()}، وأراقب الضغط.` : done.replace(/(?:بدأتُ|بلّشت) التسريب/, 'أعطيته');
       if (done) {
         if (!NM() && E.inApply && E.rbBuf) { const rb = E.rbBuf.filter(x => x[1] === meta.ar).pop(); if (rb && !meta.dose) { rb[0] = done; rb[3] = true; } else E.rbBuf.push([done, meta.ar, '', true]); }
         else sayDone(done);

@@ -2,13 +2,13 @@
   // it again; asked about another symptom or habit, he gives a standardized patient's plain «no», the same rule the online
   // patient voice follows (api/er-chat.js planPatient). A positive finding is never made up.
   const NO_TOPICS = [
-    [/كحول|مشروب|(?:^| )خمر|(?:^| )بيره(?: |$)|نبيذ|alcohol/, 'لا… لا أشرب.', 'لا، لا يشرب.', 'لا، لا تشرب.'],
-    [/عمليه|عمليات|جراحه|operation|surgery/, 'لا… لم أجرِ عمليات.', 'لا، لم يجرِ عمليات.', 'لا، لم تجرِ عمليات.'],
-    [/استفراغ|(?:^| )بتستفرغ\S*|استفرغت\S*|ترجيع|غثيان|(?:^| )لايع(?:ه)?(?: |$)|vomit/, 'لا… لم أتقيأ.', 'لا، لم يتقيأ.', 'لا، لم تتقيأ.'],
-    [/حراره|سخونه|(?:^| )(?:سخن\S*|مسخن\S*|مولع\S*)|(?:^| )حمي(?: |$)|fever/, 'لا… لم أشعر بارتفاع في الحرارة.', 'لا، لم يشعر بارتفاع في الحرارة.', 'لا، لم تشعر بارتفاع في الحرارة.'],
-    [/كحه|(?:^| )بتكح\S*|(?:^| )بتسعل\S*|سعله|سعال|بلغم|cough/, 'لا… لا يوجد سعال.', 'لا، لا يسعل.', 'لا، لا تسعل.'],
-    [/هيك قبل|قبل هيك|(?:صار|صاير) (?:معك|معه|معها) هيك|صارلك هيك|صارله هيك|صارلها هيك|اجاك هيك|اول مره/, 'لا… هذه أول مرة يحدث لي هذا.', 'لا، هذه أول مرة يحدث له هذا.', 'لا، هذه أول مرة يحدث لها هذا.'],
-    [/بالعيله|العيله|عيلتك|حدا من اهل|اهلك عندهم|وراثي|family/, 'لا… لا أعرف أحداً في العائلة يعاني من هذا.', 'لا، لا يوجد أحد في العائلة يعاني من هذا.', 'لا، لا يوجد أحد في العائلة يعاني من هذا.'],
+    [/كحول|مشروب|(?:^| )خمر|(?:^| )بيره(?: |$)|نبيذ|alcohol/, 'لا… ما بشرب.', 'لا، ما بيشرب.', 'لا، ما بتشرب.'],
+    [/عمليه|عمليات|جراحه|operation|surgery/, 'لا… ما عملت عمليات.', 'لا، ما عمل عمليات.', 'لا، ما عملت عمليات.'],
+    [/استفراغ|(?:^| )بتستفرغ\S*|استفرغت\S*|ترجيع|غثيان|(?:^| )لايع(?:ه)?(?: |$)|vomit/, 'لا… ما استفرغت.', 'لا، ما استفرغ.', 'لا، ما استفرغت.'],
+    [/حراره|سخونه|(?:^| )(?:سخن\S*|مسخن\S*|مولع\S*)|(?:^| )حمي(?: |$)|fever/, 'لا… ما حسيت بحرارة.', 'لا، ما حسيت عليه حرارة.', 'لا، ما حسيت عليها حرارة.'],
+    [/كحه|(?:^| )بتكح\S*|(?:^| )بتسعل\S*|سعله|سعال|بلغم|cough/, 'لا… ما في كحة.', 'لا، ما بيكحّ.', 'لا، ما بتكحّ.'],
+    [/هيك قبل|قبل هيك|(?:صار|صاير) (?:معك|معه|معها) هيك|صارلك هيك|صارله هيك|صارلها هيك|اجاك هيك|اول مره/, 'لا… أول مرة بيصير معي هيك.', 'لا، أول مرة بيصير معه هيك.', 'لا، أول مرة بيصير معها هيك.'],
+    [/بالعيله|العيله|عيلتك|حدا من اهل|اهلك عندهم|وراثي|family/, 'لا… ما بعرف حدا بالعيلة عنده هيك.', 'لا، ما في حدا بالعيلة عنده هيك.', 'لا، ما في حدا بالعيلة عنده هيك.'],
   ];
   function plainNo(read, t) {
     if (NM() || read.typedOrder || read.actions.length || read.tests.length || read.exam.length) return null;
@@ -48,9 +48,9 @@
     const c = E.c;
     if (E.stage >= 2) return pickOf(((c.stageLines[STAGES[E.stage]] || {}).patient) || ['...']);
     const better = E.betterTurn != null || E.saidBy.size > 0 || E.improved > 0 || E.risk <= c.risk.start - 8;
-    if (better) { const by = c.improveBy || {}, own = [...E.saidBy].map(id => by[id]).filter(Boolean); const pool = own.length ? own : (c.improve || []); return pickOf(pool.length ? pool : ['أفضل قليلاً…']); }
-    if (E.stage === 1 || E.risk >= c.risk.start + 6) return pickOf(((c.stageLines.watch || {}).patient) || ['أسوأ قليلاً يا دكتور…']);
-    return 'ما زلتُ كما أنا يا دكتور… لم أشعر بفرق.';
+    if (better) { const by = c.improveBy || {}, own = [...E.saidBy].map(id => by[id]).filter(Boolean); const pool = own.length ? own : (c.improve || []); return pickOf(pool.length ? pool : ['أحسن شوي…']); }
+    if (E.stage === 1 || E.risk >= c.risk.start + 6) return pickOf(((c.stageLines.watch || {}).patient) || ['أسوأ شوي يا دكتور…']);
+    return 'لسا مثل ما أنا يا دكتور… ما حسيت بفرق.';
   }
   function patLine(k) {
     const p = E.c.patient, nm = String(p.name);
@@ -60,7 +60,7 @@
     if (orient && k !== 'age') { E.facts.add('orient'); return orient.say; }
     const name = /^(?:الحاج|الحاجه|الحاجة|ابو|أبو|ام|أم) /.test(nm) ? `أنا ${nm.replace(/^الحاج[ةه]? /, '')}...` : `${nm.split(' ')[0]}... ${nm}.`;
     if (k === 'name') return name;
-    if (k === 'name_where') return name + ' وأنا هنا في المستشفى… في الطوارئ.';
+    if (k === 'name_where') return name + ' وأنا هون بالمستشفى… بالطوارئ.';
     if (k === 'age') return `${p.age} سنة...`;
-    return 'في المستشفى… في الطوارئ.';
+    return 'بالمستشفى… بالطوارئ.';
   }

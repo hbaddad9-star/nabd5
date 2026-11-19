@@ -53,7 +53,7 @@
   }
   window.NabdCoachData = Object.freeze({ data: coachData, titleOf, caseOf });
   /* ---------- the gap (D-46): read from the record; the prototype names the elderly when they are the weak spot ---------- */
-  const AGE = { asthma: 23, sepsis: 74, pe: 34, stemi: 58, dka: 19, htn: 71 };
+  const AGE = { asthma: 23, sepsis: 74, pe: 34, stemi: 58, dka: 19, htn: 71, hyperk: 66 };
   function gapOf(u) {
     const runs = ((u && u.history) || []).filter(h => h && /^er_/.test(h.caseId || '') && typeof h.num === 'number');
     const caseOf = h => String(h.caseId).replace(/^er_/, '').replace(/_n$/, '');

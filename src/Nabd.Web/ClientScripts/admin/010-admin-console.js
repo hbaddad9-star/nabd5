@@ -192,8 +192,9 @@
         { id: 's4', title: 'Guidelines for the management of acute coronary syndromes', org: 'ESC', year: 2023, cases: ['stemi'] },
         { id: 's5', title: 'The management of diabetic ketoacidosis in adults', org: 'JBDS-IP', year: 2023, cases: ['dka'] },
         { id: 's6', title: 'Guidelines for the diagnosis and treatment of acute and chronic heart failure', org: 'ESC', year: 2021, cases: ['htn'] },
-        { id: 's7', title: 'Adult Advanced Cardiovascular Life Support', org: 'AHA', year: 2020, cases: ['asthma', 'sepsis', 'pe', 'stemi', 'dka', 'htn'] },
-        { id: 's8', title: 'National Early Warning Score (NEWS2)', org: 'Royal College of Physicians', year: 2017, cases: [] }
+        { id: 's7', title: 'Adult Advanced Cardiovascular Life Support', org: 'AHA', year: 2020, cases: ['asthma', 'sepsis', 'pe', 'stemi', 'dka', 'htn', 'hyperk'] },
+        { id: 's8', title: 'National Early Warning Score (NEWS2)', org: 'Royal College of Physicians', year: 2017, cases: [] },
+        { id: 's9', title: 'Clinical Practice Guidelines: Treatment of Acute Hyperkalaemia in Adults', org: 'UK Kidney Association', year: 2023, cases: ['hyperk'] }
       ],
       rules: rulesSeed(),
       rulesLive: rulesSeed(),
@@ -252,7 +253,7 @@
   }
   const weekOf = back => { try { return new Date(Date.now() - back * 7 * 864e5).toLocaleDateString('ar-JO-u-nu-latn', { day: 'numeric', month: 'short' }); } catch (e) { return ''; } };
   const weekShort = back => { const d = new Date(Date.now() - back * 7 * 864e5); return d.getDate() + '/' + (d.getMonth() + 1); };
-  const USAGE = { asthma: 412, stemi: 389, sepsis: 344, pe: 301, dka: 276, htn: 233 };
+  const USAGE = { asthma: 412, stemi: 389, sepsis: 344, pe: 301, dka: 276, htn: 233, hyperk: 118 };
   /* clinical quality (demo figures for this environment; with the server they are computed from the sessions) */
   const DOMAINS = [
     { id: 'safe', name: 'السلامة والإجراءات الحرجة', v: 76 },
@@ -264,7 +265,7 @@
   ];
   const TARGET = 75;
   const PLATFORM_SCORE = Math.round(DOMAINS.reduce((a, d, j) => a + d.v * WEIGHTS[j].v, 0) / 100);
-  const CASE_SHORT = { asthma: 'الربو الحاد', sepsis: 'الإنتان', pe: 'الانصمام الرئوي', stemi: 'احتشاء STEMI', dka: 'الحماض الكيتوني', htn: 'الطارئ الضغطي' };
+  const CASE_SHORT = { asthma: 'الربو الحاد', sepsis: 'الإنتان', pe: 'الانصمام الرئوي', stemi: 'احتشاء STEMI', dka: 'الحماض الكيتوني', htn: 'الطارئ الضغطي', hyperk: 'فرط البوتاسيوم' };
   const ERRORS = [
     ['تسليم SBAR ناقص أو دون توصية', 21, -3, ''],
     ['تأخر الإجراء الحرج عن وقته', 17, -5, 'sepsis'],
@@ -276,7 +277,7 @@
   const CASE_Q = {
     asthma: [82, 91, '4.1', 'سالبيوتامول وأكسجين'], stemi: [77, 84, '9.5', 'أسبرين وتفعيل القسطرة'],
     sepsis: [74, 79, '38', 'مضاد حيوي وريدي'], pe: [71, 76, '22', 'مضاد تخثر'],
-    dka: [79, 81, '31', 'سوائل وريدية'], htn: [80, 87, '12', 'نترات وريدية']
+    dka: [79, 81, '31', 'سوائل وريدية'], htn: [80, 87, '12', 'نترات وريدية'], hyperk: [73, 78, '6.5', 'كالسيوم وريدي']
   };
   const band = v => (v >= 80 ? 'ok' : v >= 70 ? 'mid' : 'low');
   /* a repeatable pseudo-random stream per institution, so its demo figures stay the same between visits */

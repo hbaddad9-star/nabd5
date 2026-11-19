@@ -39,6 +39,40 @@
 
   chips.forEach(chip => chip.addEventListener('click', () => apply(chip.dataset.fieldFilter)));
 
+  /* The open sections (owner, 2026-11-19): each lists its cases; a case opens in the simulation room through the
+     room's own entry (data-nb8-open-case, erplus/040-open-case.js) with its full virtual patient. The list says
+     what the patient comes with, never the diagnosis. */
+  const SECTION_CASES = {
+    pulm: { title: 'حالات الأمراض التنفسية', cases: [
+      ['asthma', 'لين الحياري، 23 سنة', 'ضيق نفس شديد وصفير لم يتحسّن بالبخاخ'],
+      ['pe', 'رنا العمري، 34 سنة', 'ألم في الجنب وضيق نفس مفاجئ بعد سفر طويل'],
+      ['sepsis', 'محمود العبادي، 74 سنة', 'سعال وحرارة وتشوش منذ ثلاثة أيام']] },
+    cardio: { title: 'حالات أمراض القلب', cases: [
+      ['stemi', 'منصور الرواشدة، 58 سنة', 'ثقل في الصدر يسمّيه حموضة، مع عرق'],
+      ['htn', 'فاطمة السعدي، 71 سنة', 'ضيق نفس شديد عند الفجر ورغوة مع السعال'],
+      ['hyperk', 'يوسف النعيمات، 66 سنة', 'ضعف في الأطراف ونبض بطيء ودوار']] },
+    endo: { title: 'حالات الغدد الصمّاء والسكري', cases: [
+      ['dka', 'ليث الزعبي، 19 سنة', 'ألم بطن واستفراغ وتنفس عميق عند مريض سكري'],
+      ['hyperk', 'يوسف النعيمات، 66 سنة', 'مريض سكري وكلى بضعف عام بعد أيام من الإسهال']] }
+  };
+  const panel = document.getElementById('nh-field-cases');
+  const escH = s => String(s).replace(/[&<>"']/g, c => ({ '&': '&amp;', '<': '&lt;', '>': '&gt;', '"': '&quot;', "'": '&#39;' }[c]));
+  function showCases(btn) {
+    const sec = SECTION_CASES[btn.dataset.fieldKey];
+    if (!panel || !sec) return;
+    const again = !panel.classList.contains('hidden') && panel.dataset.key === btn.dataset.fieldKey;
+    box.querySelectorAll('[data-field-go="cases"]').forEach(b => b.setAttribute('aria-expanded', 'false'));
+    if (again) { panel.classList.add('hidden'); panel.dataset.key = ''; return; }
+    panel.dataset.key = btn.dataset.fieldKey;
+    panel.innerHTML = `<div class="nh-field-cases-head"><h3 id="nh-field-cases-title">${escH(sec.title)}</h3><p>اختر مريضاً. تبدأ الحالة في غرفة المحاكاة: تسأل وتفحص وتطلب الفحوصات وتعطي العلاج، ويُقيَّم كل ذلك بالدقيقة.</p></div>
+      <ul>${sec.cases.map(([id, who, comes]) => `<li><div><b>${escH(who)}</b><span>${escH(comes)}</span></div><button type="button" class="nh-field-go focus-ring" data-nb8-open-case="${escH(id)}">ابدأ الحالة</button></li>`).join('')}</ul>`;
+    panel.classList.remove('hidden');
+    btn.setAttribute('aria-expanded', 'true');
+    if (note) note.classList.add('hidden');
+    try { panel.scrollIntoView({ behavior: 'smooth', block: 'nearest' }); } catch (e) { panel.scrollIntoView(); }
+    panel.focus({ preventScroll: true });
+  }
+
   box.addEventListener('click', e => {
     const btn = e.target.closest('[data-field-go]');
     if (!btn) return;
@@ -46,7 +80,8 @@
       document.getElementById('launch-er-random-btn')?.click();
       return;
     }
-    const msg = 'قسم ' + (btn.dataset.fieldName || '') + ' قيد الإعداد ويُفتح قريباً. المتاح الآن: قسم الطوارئ.';
+    if (btn.dataset.fieldGo === 'cases') { showCases(btn); return; }
+    const msg = 'قسم ' + (btn.dataset.fieldName || '') + ' قيد الإعداد ويُفتح قريباً. المتاح الآن: الطوارئ، والأمراض التنفسية، وأمراض القلب، والغدد الصمّاء والسكري.';
     if (note) {
       note.textContent = msg;
       note.classList.remove('hidden');

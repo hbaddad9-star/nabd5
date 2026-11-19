@@ -1,5 +1,12 @@
 # Changelog
 
+## 7.2.0 — 2026-11-19
+
+- **The patient and the relative speak simple colloquial; everyone else stays formal (owner, agent log D-68).** Their lines in the case file, the room's offline lines, the relatives' interruptions, the operating-room patient and Claude's voice prompt for the patient and relative (`PeopleRegister`) use everyday Arabic that leans to the standard; the nurse, the doctor, the supervisor and the interface stay formal (60 staff lines that were still colloquial were corrected). The companion's telling line is linked again to the fact it reveals. The approved room's fingerprint was re-recorded.
+- **Assessment by the international frameworks (D-69).** The doctor's report adds the primary survey (ABCDE: first minute of each letter, complete in the first five minutes, order), SAMPLE history coverage, the response to each deterioration in minutes, communication in the four Calgary-Cambridge domains and the error type of every error. All read from what the trainee did in the session. The assessment axis is now history 6, ABCDE 4, reassessment 5; a deterioration left three minutes is a major error.
+- **A seventh emergency case (D-70).** Severe hyperkalaemia with ECG changes on acute-on-chronic kidney injury, built on the project's clinical data files: full history with the relative, examinations, 22 tests with results, IV calcium (new in the catalogue), insulin with dextrose, salbutamol, fluids, the dangerous orders the nurse challenges, deterioration over time and a nurse role. Orders given together run in a safe order (dextrose before insulin). A home medicine named in the handover is no longer read as a claimed treatment.
+- **Three specialty sections open (D-71).** Pulmonology, cardiology, and endocrinology and diabetes list their cases by complaint; each case opens in the simulation room.
+
 ## 7.1.0 — 2026-11-19
 
 - **Formal language after sign-in (owner's decision, 2026-11-19).** The clinical coach, the room's interruptions, the case file's lines (patient, relative, nurse, supervisor), the room's offline lines and the operating-room chat are in plain formal Arabic close to the standard. The people are named by role («المريض محمود العبادي»، «المرافق (ابنه)») and no longer by nickname or kunya. What the system understands from the trainee still accepts colloquial and formal forms. The approved room's fingerprint was re-recorded (agent log D-65, D-66).

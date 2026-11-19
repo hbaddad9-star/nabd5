@@ -56,11 +56,11 @@ public class ClaudeUnderstandingServiceGatewayTests
     }
 
     [Fact]
-    public async Task A_turn_is_read_against_the_case_file_and_the_patient_answers_in_formal_Arabic()
+    public async Task A_turn_is_read_against_the_case_file_and_the_patient_answers_in_simple_colloquial()
     {
         var claude = new FakeClaude(c => c.System.StartsWith("You read", StringComparison.Ordinal)
             ? """{"to":"patient","kind":"history","facts":["trigger","not-a-fact"],"exam":[],"actions":[{"id":"oxygen","dose":"10","agent":"","dose_ok":"ok"},{"id":"made-up","dose":"","agent":"","dose_ok":"ok"}],"tests":[],"tone":{"empathy":true},"pending_ok":"na","vague":"none"}"""
-            : """{"reply":"كنتُ أنظّف الغرفة وفيها غبار كثير."}""");
+            : """{"reply":"كنت بنظّف الغرفة وكان فيها غبرة كثير."}""");
         var (status, body) = Parse(await Gateway(claude).SendAsync(Request(Turn("شو سبب النوبة؟ واعطوها اكسجين"))));
         Assert.Equal(200, status);
         var read = body["read"]!.AsObject();
@@ -70,11 +70,13 @@ public class ClaudeUnderstandingServiceGatewayTests
         Assert.True((bool)read["tone"]!["empathy"]!);
         // the order makes the nurse the one who speaks about it; a question inside the order is still the patient's to answer
         Assert.Equal("patient", (string)body["to"]!);
-        Assert.Contains("غبار", (string)body["reply"]!);
+        Assert.Contains("غبرة", (string)body["reply"]!);
         // the patient's call carries the case file's own line as the plan, never a model-written fact
         var voice = claude.Calls.Last();
-        Assert.Contains("أنظّف الغرفة", voice.User);
-        Assert.Contains("formal Arabic", voice.System);
+        Assert.Contains("بنظّف الغرفة", voice.User);
+        // the patient and the relative speak simple colloquial; the staff stay formal (agent log D-68)
+        Assert.Contains("simple everyday Levantine", voice.System);
+        Assert.DoesNotContain("plain formal Arabic", voice.System);
         Assert.Contains("kunya", voice.System);
     }
 

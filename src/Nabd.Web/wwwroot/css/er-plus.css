@@ -205,3 +205,9 @@
 #view-er.nbp-on .er-bar .nbq-target.is-doc { color: #17603f; background: #e3f2ea; box-shadow: inset 0 0 0 1px #b7dcc7; }
 @media (prefers-reduced-motion: reduce) { #view-er.nbp-on .nbq-call, #view-er.nbp-on .nbq-call-ic { animation: none !important; } }
 @media (max-width: 640px) { #view-er.nbp-on .nbq-call-thread { max-height: 26vh; } #view-er.nbp-on .er-bar .nbq-target { flex-basis: 100%; min-height: 32px; } }
+
+/* D-69 (2026-11-19): the frameworks section of the report and the error type on each error */
+#view-er.nbp-on .nbq-frames h5 { margin: 12px 0 6px; font-size: 13.5px; color: #10262f; }
+#view-er.nbp-on .nbq-frames h5:first-of-type { margin-top: 0; }
+#view-er.nbp-on .nbq-chips { display: flex; flex-wrap: wrap; gap: 6px; }
+#view-er.nbp-on .nbq-cls { display: inline-block; padding: 0 8px; border-radius: 999px; background: #eef3f6; color: #33505c; font-size: 11.5px; font-style: normal; font-weight: 700; }

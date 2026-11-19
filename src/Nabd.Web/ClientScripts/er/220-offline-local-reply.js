@@ -18,8 +18,8 @@
       if (read.planLater) { read.to = 'nurse'; const m = testOf(read.planLater.id); return `حسناً، دوّنتها في الملف: ${m ? m.ar : 'الفحص'} ${read.planLater.when}.`; }
       if (read.patQ && read.to === 'patient') return patLine(read.patQ);
       // A plan for the relative to hear: told to step out or to hush, the relative does so.
-      if (read.to === 'companion' && /(?:^| )(?:اطلع\S*|برا|بره|عالباب)(?: |$)/.test(t) && !/[؟?]/.test(read.text || '')) return `حسناً، سأنتظر في الخارج… لكن طمئنوني علي${hisHer()}.`;
-      if (read.to === 'companion' && /(?:^| )(?:اسكت|اسكتي|اخرس|اخرسي)(?: |$)/.test(t)) return 'حسناً حسناً… لكن طمئنوني.';
+      if (read.to === 'companion' && /(?:^| )(?:اطلع\S*|برا|بره|عالباب)(?: |$)/.test(t) && !/[؟?]/.test(read.text || '')) return `طيب، أنا برا… بس طمّنوني علي${hisHer()}.`;
+      if (read.to === 'companion' && /(?:^| )(?:اسكت|اسكتي|اخرس|اخرسي)(?: |$)/.test(t)) return 'طيب طيب… بس طمّنوني.';
       // (chat fix 2026-11-08) An order with no drug named: the nurse asks which, in one short line.
       if (read.vague && !read.actions.length && !read.tests.length) {
         read.to = 'nurse';
@@ -84,8 +84,8 @@
     // Spoken to, the relative answers what was said; being told what is happening settles them.
     if (read.to === 'companion') {
       // (chat fix 2 2026-11-08) Doctor room: a question the relative has no answer for gets an honest «ما بعرف», not a nod.
-      if (!NM() && /(?:بتوافق\S*|موافق\S*|موافقتك|بتسمح\S*|بتسمحي|نوقع\S*|توقيع|توقعي|توقع)/.test(t)) return `يا رب… حسناً يا دكتور، افعلوا ما يلزم. لكن طمئنوني علي${hisHer()}.`;
-      if (!NM() && /[؟?]/.test(read.text || '') && !read.facts.length && !read.tone.explained) { const no = plainNo(read, t); if (no) return no; return 'والله لا أعرف بالضبط يا دكتور…'; }
+      if (!NM() && /(?:بتوافق\S*|موافق\S*|موافقتك|بتسمح\S*|بتسمحي|نوقع\S*|توقيع|توقعي|توقع)/.test(t)) return `يا رب… طيب يا دكتور، اعملوا اللي لازم. بس طمّنوني علي${hisHer()}.`;
+      if (!NM() && /[؟?]/.test(read.text || '') && !read.facts.length && !read.tone.explained) { const no = plainNo(read, t); if (no) return no; return 'والله ما بعرف بالزبط يا دكتور…'; }
       const L = c.companion.lines, kind = read.tone.explained || read.tone.empathy ? 'heard' : 'answer';
       const own = fresh(L[kind] || []), other = fresh(L[kind === 'heard' ? 'answer' : 'heard'] || []);
       // Out of words, a relative just nods: a short reply, never the same speech again.

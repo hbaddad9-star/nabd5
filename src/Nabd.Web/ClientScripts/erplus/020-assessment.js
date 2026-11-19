@@ -25,7 +25,7 @@
   const DISPO = { icu: 'العناية الحثيثة', hdu: 'مراقبة عالية في الطوارئ', cath: 'القسطرة', ward: 'طابق عادي', home: 'البيت' };
 
   /* the session's own notes: what the trainee wrote and when, and the help he asked for */
-  const A = { E: null, msgs: [], helps: [], built: false, entry: null, result: null };
+  const A = { E: null, msgs: [], helps: [], built: false, entry: null, result: null, seen: { facts: new Map(), exam: new Map() } };
   document.addEventListener('submit', ev => {
     if (!ev.target || ev.target.id !== 'er-form' || !A.E || A.E.over) return;
     const text = String(($('er-input') || {}).value || '').trim();
@@ -136,6 +136,95 @@
     return { rounds: counted, done: counted.filter(r => r.ok).length, frac: counted.length ? counted.filter(r => r.ok).length / counted.length : given.length ? 1 : 0 };
   }
 
+  /* ---------- 2b. the frameworks the international simulators grade by (D-69, 2026-11-19) ----------
+     The owner asked for an assessment like Body Interact, vSim and OMS, kept real: every line below is read from
+     what the trainee actually did in this session (his messages, the examinations and history the room recorded,
+     the orders and tests with their minutes), never from a self-report. The room keeps no minute for a fact or an
+     examination, so this layer notes the minute it first sees each one (A.seen, filled by the loop). */
+  const ABCDE = [
+    { k: 'A', name: 'مجرى الهواء (A)', ex: /airway|stridor/, msg: /(airway|مجرى ال?هوا|صرير|stridor|بيحكي|بتحكي|بيقدر يحكي|بتقدر تحكي|يبلع|تبلع)/, act: ['airway'], test: [] },
+    { k: 'B', name: 'التنفس (B)', ex: /chest|work|breath|lung|auscult/, msg: /((اسمع|سمع|افحص).{0,6}صدر|سرعه التنفس|سرعه النفس|جهد التنفس|كيف (النفس|التنفس|نفسه|نفسها)|الاشباع|spo2|سات(وريشن)?)/, act: [], test: ['abg', 'peak_flow', 'cxr'] },
+    { k: 'C', name: 'الدوران (C)', ex: /heart|volume|hydration|pulse|perfusion|circul/, msg: /(النبض|نبضه|نبضها|الضغط|(^| )bp( |$)|تعبئه الشعيرات|crt|الاطراف|اطرافه|اطرافها|بارده|تروي)/, act: ['iv_access'], test: ['ecg', 'lactate'] },
+    { k: 'D', name: 'الوعي (D)', ex: /conscious|neuro|gcs|pupil/, msg: /(وعي|واعي|gcs|avpu|حدق|متوجه|السكر|سكره|سكرها)/, act: [], test: ['glucose'] },
+    { k: 'E', name: 'الكشف والحرارة (E)', ex: /abdomen|skin|rash|expos/, msg: /(حراره|اكشف|الجلد|طفح|نزيف|exposure|افحصه كامل|افحصها كامل|البطن)/, act: ['temp'], test: [] }
+  ];
+  function primarySurvey(E) {
+    const c = E.c, exams = [...A.seen.exam.entries()];
+    // a patient who answers a question is talking: his airway is open and was, in effect, assessed
+    const spoke = [...A.seen.facts.entries()].filter(([id]) => { const f = (c.facts || []).find(x => x.id === id); return f && f.who !== 'companion'; }).map(([, at]) => at);
+    const rows = ABCDE.map(L => {
+      const times = [];
+      exams.forEach(([id, at]) => { const x = (c.exam || []).find(e => e.id === id) || {}; if (L.ex.test(id) || L.ex.test(String(x.q || ''))) times.push(at); });
+      A.msgs.forEach(m => { if (L.msg.test(m.text)) times.push(m.at); });
+      L.act.forEach(id => { const x = E.done.get(id); if (x) times.push(x.at); });
+      L.test.forEach(id => { const t = (E.tests || {})[id]; if (t && t.at != null) times.push(t.at); });
+      if (L.k === 'A' && spoke.length) times.push(Math.min(...spoke));
+      const at = times.length ? Math.min(...times) : null;
+      return { k: L.k, name: L.name, at, state: at == null ? 'missed' : at <= 5 ? 'ontime' : 'late' };
+    });
+    const done = rows.filter(r => r.at != null), early = rows.filter(r => r.state === 'ontime');
+    const order = done.slice().sort((a, b) => a.at - b.at).map(r => r.k).join('');
+    const inOrder = done.length >= 3 && done.every((r, i) => i === 0 || r.at >= done[i - 1].at - 0.25);
+    return { rows, frac: early.length / 5, order, inOrder, complete: early.length === 5 };
+  }
+  // SAMPLE: the history every simulator checks, read against what this case's patient and relative can tell
+  const SAMPLE = [
+    { k: 'S', name: 'الأعراض', re: /pain|symptom|breath|weak|cough|vomit|palpit|chest|onset|what happened|noticed/ },
+    { k: 'A', name: 'الحساسية', re: /allerg/ },
+    { k: 'M', name: 'الأدوية', re: /medic|pill|insulin|inhaler|painkill|drug|contracept|anticoag/ },
+    { k: 'P', name: 'السوابق المرضية', re: /chronic|known|kidney|asthma|before|previous|prior|history|diabet|hypertens/ },
+    { k: 'L', name: 'آخر وجبة وسوائل', re: /eat|meal|food|diet|drink|salt|juice|feast/ },
+    { k: 'E', name: 'ما سبق الحدث', re: /when it started|how long|trigger|what (was|were) .*doing|what happened|travel|exposure|cause/ }
+  ];
+  function historyFrame(E) {
+    const facts = E.c.facts || [];
+    return SAMPLE.map(L => {
+      const ids = facts.filter(f => L.re.test(String(f.q || '').toLowerCase())).map(f => f.id);
+      return { k: L.k, name: L.name, avail: ids.length > 0, got: ids.some(id => E.facts.has(id)) };
+    }).filter(r => r.avail);
+  }
+  // cue to action: each deterioration the monitor showed, and the minute the trainee first did something about it
+  const STAGE_NAME = { 'بدأ التدهور': 'بداية التدهور', 'تدهور واضح': 'تدهور واضح', 'حالة حرجة': 'حالة حرجة' };
+  function cueResponse(E) {
+    const cues = (E.log || []).filter(l => l.type === 'stage' && STAGE_NAME[l.text]);
+    const acts = [];
+    E.done.forEach(x => { if (x) { acts.push(x.at); if (x.last) acts.push(x.last); } });
+    Object.values(E.tests || {}).forEach(t => { if (t && t.at != null) acts.push(t.at); });
+    A.helps.forEach(h => acts.push(h.at));
+    A.msgs.forEach(m => { if (REASSESS.test(m.text)) acts.push(m.at); });
+    (E.log || []).filter(l => l.type === 'exam').forEach(l => acts.push(l.at));
+    return cues.map(q => {
+      const next = acts.filter(t => t > q.at + 0.02).sort((a, b) => a - b)[0];
+      const delay = next == null ? null : next - q.at;
+      const left = E.sim - q.at;
+      return { name: STAGE_NAME[q.text], at: q.at, resp: next == null ? null : next, delay, state: delay == null ? (left >= 3 ? 'missed' : 'open') : delay <= 2 ? 'ontime' : 'late' };
+    });
+  }
+  // communication in the four domains of the Calgary-Cambridge guide, from how the trainee spoke in this session
+  const OPEN_Q = /(شو فيك|شو بك|شو صار|شو مالك|احكيلي|احكيلنا|كيف بتحس|كيف حاسس|كيف حاسه|شو بيوجعك|شو بتشتكي|ممكن تحكيلي|اوصفلي|صفلي|what brings|tell me)/;
+  function commFrame(E) {
+    const m = E.comm || {};
+    const open = A.msgs.some(x => OPEN_Q.test(x.text));
+    return [
+      { k: 'init', label: 'بدء اللقاء', ok: !!m.introduced, miss: 'لم تعرّف بنفسك للمريض أو لمرافقه' },
+      { k: 'gather', label: 'جمع المعلومات', ok: open, miss: 'لم تبدأ بسؤال مفتوح يترك للمريض أن يروي ما حدث' },
+      { k: 'explain', label: 'الشرح والتخطيط', ok: !!m.explained, miss: 'لم تشرح للمريض أو لأهله ما يجري وما ستفعل' },
+      { k: 'relate', label: 'بناء العلاقة', ok: !!m.empathy && !m.rude && !(m.jargon > 0), miss: m.rude ? 'كلام جارح أو متجاهل' : m.jargon > 0 ? 'مصطلحات طبية لم يفهمها الأهل' : 'لا عبارة تطمين أو تعاطف' }
+    ];
+  }
+  function frameworks(E) { return { ps: primarySurvey(E), hx: historyFrame(E), cues: cueResponse(E), comm: commFrame(E) }; }
+  // the error types of the emergency-nursing data set (error_taxonomy.json), named on each error in the report
+  const CLASS = [
+    [/حساسي/, 'فعل قبل التحقق'],
+    [/أذى|جرعة|غير آمن|أوقفته الممرضة/, 'فعل غير آمن'],
+    [/لم تستجب|لم يحدث|لم يُعالج|تأخر|بلا أي فحص|قصة مرضية/, 'قرينة فائتة'],
+    [/أكسجين عالٍ|إعادة التقييم/, 'غياب إعادة التقييم'],
+    [/تسليم|التسليم|وجهة/, 'نقص في التسليم'],
+    [/فحص غير لازم/, 'فحص بلا استطباب'],
+    [/مصطلحات/, 'تواصل']
+  ];
+  const classOf = t => (CLASS.find(([re]) => re.test(t)) || [null, ''])[1];
+
   // the room's own safety list, rebuilt from its state (key care steps and timed results)
   const doneAs = (E, id) => E.done.get(id) || (id === 'call_senior' ? E.done.get('call_icu') : undefined);
   function steps(E) {
@@ -198,8 +287,11 @@
     ];
     const place = dispoCheck(E, d.dispo);
     // "gave aspirin" about a drug nobody gave: the room's own rule, read here from the same state
-    const claims = /(اعطيت|عطيت|اعطيناه|اعطيناها|عطيناه|عطيناها|اخذ|اخد|gave|given|started)/.test(raw) && !/(بدي|اقترح|نحتاج|يحتاج|تحتاج|لازم|need|plan)/.test(raw);
-    const invented = claims && (D.actions || []).some(a => a.limits && !E.done.has(a.id) && a.kw.some(k => raw.includes(norm(k))));
+    // D-70: a claim is a drug named right after a verb of giving; «بياخد بروفين» is his home medicine, not a claim
+    const GIVE = /(?:^| )[وف]?(?:اعطيت|عطيت|اعطيناه|اعطيناها|عطيناه|عطيناها|اعطيته|اعطيتها|بدينا|بدانا|بلشنا|gave|given|started)(?: |$)/g;
+    const claimed = []; let g;
+    while ((g = GIVE.exec(raw))) claimed.push(raw.slice(g.index, g.index + 70).split(/ (?:و?التوصيه|و?بدي|و?اقترح|و?نحتاج|و?لازم)/)[0]);
+    const invented = (D.actions || []).some(a => a.limits && !E.done.has(a.id) && claimed.some(t => a.kw.some(k => t.includes(norm(k)))));
     const pts = clamp(checks.filter(x => x.ok).length * 1.5 + (place === 'right' ? 6 : 0) - (invented ? 4 : 0), 0, 15);
     return { handed: true, checks, pts, place, invented, dispo: d.dispo };
   }
@@ -265,6 +357,11 @@
     (E.unneeded || []).forEach(u => minor.push({ text: u.label, why: u.why }));
     Object.values(E.tests || {}).filter(t => t.ind === 'no' && t.justOk !== true).forEach(t => { const m = (H().D.tests || []).find(x => x.id === t.id) || {}; minor.push({ text: 'فحص غير لازم: ' + (m.ar || t.id), at: t.at }); });
     if (E.comm && E.comm.jargon > 0) minor.push({ text: `مصطلحات طبية مع الأهل (${E.comm.jargon})` });
+    // D-69: a deterioration left three minutes without any action, test, examination or call is a major error
+    const fw = frameworks(E);
+    fw.cues.filter(q => q.state === 'missed' || (q.state === 'late' && q.delay > 3)).forEach(q => major.push({ text: `لم تستجب للتدهور (${q.name}) خلال 3 دقائق`, at: q.at, why: 'عند كل تغيّر على المونيتور: ارجع إلى المريض، أعد التقييم، واطلب ما يلزم أو اطلب المساعدة.' }));
+    if (handed && !fw.ps.complete) minor.push({ text: `تقييم أولي ناقص في أول 5 دقائق: ${fw.ps.rows.filter(r => r.state !== 'ontime').map(r => r.k).join('، ')}`, why: 'ابدأ كل حالة بـABCDE كاملاً قبل التفاصيل: مجرى الهواء، التنفس، الدوران، الوعي، ثم الكشف.' });
+    [critical, major, minor].forEach(list => list.forEach(x => { x.cls = x.cls || classOf(x.text); }));
 
     // --- team: help in time, and the interruptions ---
     const call = doneAs(E, 'call_senior') || E.done.get('call_surgery'), needHelp = (c.care.call_senior || {}).key || E.topStage >= 2;
@@ -278,7 +375,8 @@
     const axes = [
       // a major error the room does not charge is charged here: a medicine before the allergy question costs 3
       { k: 'safe', label: 'السلامة والإجراءات الحرجة', max: 35, pts: legacy.safe * 35 / 40 - (al.late ? 3 : 0), comp: 'التعرّف على المريض الحرج وتدبيره' },
-      { k: 'assess', label: 'التقييم وإعادة التقييم', max: 15, pts: legacy.hist + 5 * re.frac, comp: 'القصة والفحص السريري' },
+      // D-69: history 6, the primary survey (ABCDE) within the first five minutes 4, reassessment after treatment 5
+      { k: 'assess', label: 'التقييم وإعادة التقييم', max: 15, pts: legacy.hist * 0.6 + 4 * fw.ps.frac + 5 * re.frac, comp: 'القصة والفحص السريري' },
       { k: 'dx', label: 'التشخيص', max: 10, pts: legacy.dx * 10 / 15, comp: 'الاستدلال السريري' },
       { k: 'tests', label: 'الفحوصات', max: 10, pts: legacy.tests * 10 / 15, comp: 'طلب الفحوصات وقراءتها' },
       { k: 'team', label: 'التواصل والفريق', max: 15, pts: legacy.comm + helpPts + intPts, comp: 'التواصل والعمل ضمن فريق' },
@@ -286,7 +384,7 @@
     ].map(a => ({ ...a, pts: clamp(Math.round(a.pts * 10) / 10, 0, a.max) }));
     const total = Math.round(axes.reduce((s, a) => s + a.pts, 0));
     const mark = passMark(), passed = total >= mark && !critical.length;
-    return { total, mark, passed, axes, critical, major, minor, steps: st, hand, re, help: { call, need: needHelp, by, pts: helpPts }, ints: { fired, pts: intPts }, legacyDx: legacy.dx };
+    return { total, mark, passed, axes, critical, major, minor, steps: st, hand, re, fw, help: { call, need: needHelp, by, pts: helpPts }, ints: { fired, pts: intPts }, legacyDx: legacy.dx };
   }
 
   /* ---------- 5. the timeline ---------- */
@@ -301,7 +399,25 @@
 
   /* ---------- 6. the report ---------- */
   const STATE = { ontime: ['في وقته', 'ok'], late: ['متأخر', 'mid'], missed: ['لم يحدث', 'bad'] };
-  const sevList = (list, cls) => list.map(x => `<li class="${cls}"><b>${esc(x.text)}</b>${x.at != null ? `<span class="font-num" dir="ltr">${mm(x.at)}</span>` : ''}${x.why ? `<small>${esc(x.why)}</small>` : ''}</li>`).join('');
+  const sevList = (list, cls) => list.map(x => `<li class="${cls}"><b>${esc(x.text)}</b>${x.cls ? `<i class="nbq-cls">${esc(x.cls)}</i>` : ''}${x.at != null ? `<span class="font-num" dir="ltr">${mm(x.at)}</span>` : ''}${x.why ? `<small>${esc(x.why)}</small>` : ''}</li>`).join('');
+  // the frameworks section (D-69): primary survey, SAMPLE, cue to action, the four domains of communication
+  function frameBox(r) {
+    const f = r.fw, PS = { ontime: ['في أول 5 دقائق', 'ok'], late: ['متأخر', 'mid'], missed: ['لم يُقيَّم', 'bad'] };
+    const ps = f.ps.rows.map(x => `<tr><td>${esc(x.name)}</td><td class="font-num" dir="ltr">${x.at == null ? '—' : mm(x.at)}</td><td><span class="nbq-chip is-${PS[x.state][1]}">${PS[x.state][0]}</span></td></tr>`).join('');
+    const orderLine = f.ps.order ? `ترتيبك: <b dir="ltr">${f.ps.order.split('').join(' → ')}</b>${f.ps.inOrder ? '، وهو الترتيب الصحيح.' : '. الترتيب المعتمد A ثم B ثم C ثم D ثم E: ما يهدد الحياة أسرع يُقيَّم أولاً.'}` : 'لم يُسجَّل تقييم أولي.';
+    const hx = f.hx.length ? f.hx.map(x => `<span class="nbq-chip is-${x.got ? 'ok' : 'bad'}" title="${esc(x.name)}">${x.k} · ${esc(x.name)}</span>`).join(' ') : '';
+    const CQ = { ontime: ['خلال دقيقتين', 'ok'], late: ['متأخرة', 'mid'], missed: ['لا استجابة', 'bad'], open: ['انتهت الحالة', 'mid'] };
+    const cues = f.cues.length ? `<div class="nbq-scroll"><table class="nbq-goals"><thead><tr><th>ما ظهر على المريض</th><th>عند</th><th>أول استجابة</th><th>النتيجة</th></tr></thead><tbody>${f.cues.map(q => `<tr><td>${esc(q.name)}</td><td class="font-num" dir="ltr">${mm(q.at)}</td><td class="font-num" dir="ltr">${q.resp == null ? '—' : mm(q.resp)}</td><td><span class="nbq-chip is-${CQ[q.state][1]}">${CQ[q.state][0]}</span></td></tr>`).join('')}</tbody></table></div>` : '<p class="nbq-line">لم يتدهور المريض خلال الحالة.</p>';
+    return `<section class="nbq-box nbq-frames" data-no-terms><h4>التقييم بالأطر المعتمدة دولياً</h4>
+      <h5>التقييم الأولي ABCDE</h5>
+      <div class="nbq-scroll"><table class="nbq-goals"><thead><tr><th>البند</th><th>أول مرة</th><th>النتيجة</th></tr></thead><tbody>${ps}</tbody></table></div>
+      <p class="nbq-line">${orderLine}</p>
+      ${hx ? `<h5>القصة المرضية SAMPLE</h5><p class="nbq-line nbq-chips">${hx}</p>` : ''}
+      <h5>الاستجابة للتدهور</h5>${cues}
+      <h5>التواصل (دليل Calgary-Cambridge)</h5>
+      <ul class="nbq-hand">${f.comm.map(x => `<li class="${x.ok ? 'is-ok' : 'is-miss'}"><b>${esc(x.label)}</b><span>${x.ok ? 'تحقّق' : esc(x.miss)}</span></li>`).join('')}</ul>
+      <p class="nbq-note">كل بند هنا مأخوذ مما فعلته وكتبته فعلاً في هذه الجلسة، وبالدقيقة.</p></section>`;
+  }
   function sections(E, r) {
     const c = E.c, d = E.draft || {};
     const dxState = !r.hand.handed ? ['لا تسليم', 'bad'] : r.legacyDx >= 15 ? ['صحيح', 'ok'] : r.legacyDx > 0 ? ['قريب', 'mid'] : ['غير مطابق', 'bad'];
@@ -322,7 +438,7 @@
       <ul class="nbq-hand">${r.hand.checks.map(x => `<li class="${x.ok ? 'is-ok' : 'is-miss'}"><b>${esc(x.label)}</b><span>${x.ok ? 'ذُكر' : esc(x.miss)}</span></li>`).join('')}</ul>
       ${r.hand.invented ? '<p class="nbq-line is-bad">ذكرت علاجاً لم يُعطَ. التسليم الخاطئ يضلل من يستلم المريض.</p>' : ''}
       <p class="nbq-note">الأرقام تُقارن بقراءات المونيتور وقت التسليم. رقم واحد أو كلمة عامة لا تكفي.</p></section>`;
-    return { crit, body: how + sev + hand };
+    return { crit, body: how + frameBox(r) + sev + hand };
   }
   function timeBox(rows) {
     return `<section class="nbq-box nbq-time" data-no-terms><h4>الخط الزمني للجلسة</h4>${rows.length ? `<ol>${rows.map(l => `<li class="t-${esc(l.type)}"><time class="font-num" dir="ltr">${mm(l.at)}</time><span class="nbq-tag">${esc(TYPE[l.type] || l.type)}</span><p>${esc(l.text)}</p></li>`).join('')}</ol>` : '<p>لا أحداث مسجّلة.</p>'}</section>`;
@@ -410,7 +526,10 @@
       outcome: E.outcome || '', major: r ? r.major.map(x => x.text) : [], minor: r ? r.minor.map(x => x.text) : [],
       steps: r ? r.steps.map(k => ({ label: k.label, by: k.by, at: k.at == null ? null : Math.round(k.at * 100) / 100, state: k.state })) : [],
       hand: hand && hand.handed ? hand.checks.map(x => ({ label: x.label, ok: x.ok, miss: x.miss })) : [],
-      reassess: r ? `${r.re.done}/${r.re.rounds.length}` : '', helps: A.helps.map(h => h.title)
+      reassess: r ? `${r.re.done}/${r.re.rounds.length}` : '', helps: A.helps.map(h => h.title),
+      frames: r && r.fw ? { abcde: r.fw.ps.rows.map(x => ({ k: x.k, at: x.at == null ? null : Math.round(x.at * 100) / 100, state: x.state })), order: r.fw.ps.order,
+        sample: r.fw.hx.map(x => ({ k: x.k, got: x.got })), cues: r.fw.cues.map(q => ({ name: q.name, at: Math.round(q.at * 100) / 100, delay: q.delay == null ? null : Math.round(q.delay * 100) / 100, state: q.state })),
+        comm: r.fw.comm.map(x => ({ k: x.k, ok: x.ok })) } : null
     };
   }
   // the nurse's report keeps its own seven parts and its own verdict; they are read from the page as the room wrote them
@@ -505,9 +624,14 @@
     const h = H(), E = h && h.E, on = !!E && !!P() && P().enabled();
     if (!on) { const b = $('nbq-help'); if (b) b.remove(); closeHelp(); A.E = null; return; }
     if (E !== A.E) {
-      Object.assign(A, { E, msgs: [], helps: [], built: false, entry: null, result: null });
+      Object.assign(A, { E, msgs: [], helps: [], built: false, entry: null, result: null, seen: { facts: new Map(), exam: new Map() } });
       closeHelp();
       const box = $('er-debrief'); if (box) box.classList.remove('nbq-waiting');
+    }
+    // the minute each fact and examination first appears (the room keeps the ids, not the minutes)
+    if (!E.over) {
+      E.facts.forEach(id => { if (!A.seen.facts.has(id)) A.seen.facts.set(id, E.sim); });
+      E.exam.forEach(id => { if (!A.seen.exam.has(id)) A.seen.exam.set(id, E.sim); });
     }
     helpButton(E);
     sheetGuide();

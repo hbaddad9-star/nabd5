@@ -106,7 +106,11 @@
     const answered = E.resolved && open ? (open.a ? open.a.id : open.id) : null;
     const swapped = a => open && open.type === 'unsafe' && open.allergic && !allergicTo(a, E.c.care[a.id] || {}, text);
     const once = (x, i, all) => all.findIndex(y => y.id === x.id) === i;
-    (read.actions || []).filter(once).filter(a => a.id !== answered || swapped(a)).forEach(a => (NM() ? nurseAct(a, text) : order(a, text)));
+    // (2026-11-19, agent log D-70) Orders said together run in a safe order: a step another order waits for
+    // (the case's stableHarm.unlessDone, dextrose before insulin) goes first, whatever order the reader returned.
+    const needFirst = new Set((read.actions || []).map(a => ((E.c.care[a.id] || {}).stableHarm || {}).unlessDone).filter(Boolean));
+    const ranked = (read.actions || []).filter(once).map((a, i) => [a, i]).sort((x, y) => (needFirst.has(y[0].id) - needFirst.has(x[0].id)) || x[1] - y[1]).map(x => x[0]);
+    ranked.filter(a => a.id !== answered || swapped(a)).forEach(a => (NM() ? nurseAct(a, text) : order(a, text)));
     // (chat fix 2026-11-08) Doctor room: tests alone get a word from the nurse before their results, never silence.
     // (chat fix 2 2026-11-08) A test dangerous right now gets the supervisor's «استنى», not the nurse's «حاضر» beside it.
     const harmNow = id => { const res = E.c.results[id] || {}; return res.ind === 'harm' || (res.whenShock === 'harm' && untreatedSbp() < 90); };
