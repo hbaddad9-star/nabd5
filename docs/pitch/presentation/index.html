@@ -1,0 +1,530 @@
+<!doctype html>
+<html lang="ar" dir="rtl">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>نبض · العرض التقديمي</title>
+<script>
+/* =====================================================================================
+   ✎ عدّل هنا: كل ما يتغيّر في العرض موجود في هذا القسم فقط.
+   - الصور في مجلد img بجانب هذا الملف. لتغيير صورة: ضع الملف الجديد بنفس الاسم، أو غيّر الاسم هنا.
+   - photoPos: أين يقع الوجه داخل الصورة (الأفقي ثم العمودي)، و zoom: مقدار التكبير على الوجه (1 بلا تكبير).
+   - الأسعار بالدينار الأردني، والتكاليف بالدولار. المجاميع تُحسب وحدها.
+   ===================================================================================== */
+window.DECK = {
+  event: 'العرض النهائي · 2026',
+  team: [
+    { name: 'خميس الحلبوسي', spec: 'هندسة البرمجيات', photo: 'img/team-1.jpg', photoPos: '60% 44%', zoom: 2.5 },
+    { name: 'أحمد هاني',     spec: 'علم الحاسوب',     photo: 'img/team-2.jpg', photoPos: '33% 27%', zoom: 1.9 },
+    { name: 'حمزة بداد',     spec: 'هندسة البرمجيات', photo: 'img/team-3.jpg', photoPos: '48% 47%', zoom: 1.9 },
+    { name: 'عمر المحفدي',   spec: 'علم الحاسوب',     photo: 'img/team-4.jpg', photoPos: '52% 50%', zoom: 1.25 }
+  ],
+  // المشرفون والمدققون: تظهر في الشريحة 2. اكتب الاسم واللقب والدور.
+  // المشرفون (بلا أسماء): اللقب، والجهة، والدور
+  advisors: [
+    { title: 'عميدة كلية التمريض', org: 'جامعة الشرق الأوسط', role: 'الإشراف الأكاديمي على المشروع' },
+    { title: 'رئيس قسم التمريض', org: 'جامعة الشرق الأوسط', role: 'الإشراف على الاستبيانات والتدريب' },
+    { title: 'مشرفون أكاديميون', org: 'كلية التمريض · جامعة الشرق الأوسط', role: 'تدقيق الحالات السريرية ومعايير التقييم' }
+  ],
+};
+</script>
+<style>
+@font-face { font-family: "Noto Sans Arabic"; font-weight: 100 599; src: url("fonts/NotoSansArabic-Regular.woff2") format("woff2"); }
+@font-face { font-family: "Noto Sans Arabic"; font-weight: 600 900; src: url("fonts/NotoSansArabic-Bold.woff2") format("woff2"); }
+:root {
+  --navy: #12303d; --navy-2: #193B4A; --teal: #16838A; --teal-l: #6CC9CE; --teal-d: #0F6A70; --tint: #E6F2F4;
+  --copper: #b07152; --copper-l: #e5ad8e; --copper-bg: #f7ece5; --ink: #1d2c33; --mute: #5d6e75; --line: #d8e5e9; --paper: #f5f8f9;
+}
+* { box-sizing: border-box; margin: 0; padding: 0; }
+html, body { background: #0b1f28; }
+body { font-family: "Noto Sans Arabic", sans-serif; color: var(--ink); -webkit-print-color-adjust: exact; print-color-adjust: exact; }
+.en { unicode-bidi: isolate; direction: ltr; display: inline-block; }
+
+/* ---------- the deck: 1280×720 slides, scaled to the window ---------- */
+.deck { display: flex; flex-direction: column; align-items: center; gap: 28px; padding: 28px 0 60px; }
+.frame { width: calc(1280px * var(--s, 1)); height: calc(720px * var(--s, 1)); position: relative; }
+.slide { width: 1280px; height: 720px; position: absolute; top: 0; right: 0; transform-origin: top right; transform: scale(var(--s, 1)); overflow: hidden; background: var(--paper); border-radius: 6px; box-shadow: 0 20px 60px rgba(0,0,0,.35); }
+body.present .deck { padding: 0; gap: 0; height: 100vh; justify-content: center; }
+body.present .frame { display: none; }
+body.present .frame.on { display: block; }
+body.present .slide { border-radius: 0; box-shadow: none; }
+.hint { position: fixed; bottom: 14px; left: 14px; color: #8fb2bb; font-size: 13px; background: rgba(0,0,0,.35); padding: 6px 12px; border-radius: 8px; }
+body.present .hint { display: none; }
+
+/* ---------- common slide parts ---------- */
+.pad { position: absolute; inset: 0; padding: 54px 64px 56px; }
+.kicker { font-size: 15px; font-weight: 700; color: var(--teal); letter-spacing: .2px; }
+.title { font-size: 40px; font-weight: 700; color: var(--navy); line-height: 1.3; margin-top: 4px; }
+.sub { font-size: 19px; color: var(--mute); margin-top: 6px; }
+.foot { position: absolute; bottom: 18px; left: 64px; right: 64px; display: flex; justify-content: space-between; font-size: 12px; color: #8a9ba1; }
+.foot b { color: var(--teal); font-weight: 700; }
+.dark { background: radial-gradient(1200px 700px at 85% 10%, #1c4a5a 0%, var(--navy) 55%, #0c222c 100%); color: #fff; }
+.dark .title { color: #fff; } .dark .sub { color: #b9d4da; } .dark .kicker { color: var(--teal-l); } .dark .foot { color: #7fa3ad; }
+.brand { display: flex; align-items: center; gap: 12px; }
+.brand svg { width: 44px; height: 44px; }
+.brand b { font-size: 30px; font-weight: 700; }
+.brand span { font-size: 14px; color: #a9cdd3; display: block; line-height: 1.3; }
+.tag { display: inline-block; font-size: 13px; font-weight: 700; padding: 3px 12px; border-radius: 99px; background: var(--tint); color: var(--teal-d); }
+.tag.cop { background: var(--copper-bg); color: var(--copper); }
+.shot { border-radius: 10px; overflow: hidden; background: #fff; box-shadow: 0 14px 40px rgba(18,48,61,.22), 0 2px 6px rgba(18,48,61,.12); border: 1px solid rgba(18,48,61,.08); }
+.shot .bar { height: 22px; background: #eef3f5; display: flex; align-items: center; gap: 6px; padding: 0 10px; direction: ltr; }
+.shot .bar i { width: 8px; height: 8px; border-radius: 50%; background: #cfdade; display: block; }
+.shot img { display: block; width: 100%; }
+.cap { position: absolute; background: var(--navy); color: #fff; font-size: 14px; font-weight: 700; padding: 6px 14px; border-radius: 8px; box-shadow: 0 6px 18px rgba(0,0,0,.2); white-space: nowrap; }
+.cap.cop { background: var(--copper); }
+.src { font-size: 11px; color: #8a9ba1; }
+
+/* ---------- 1 team ---------- */
+.team { position: absolute; left: 64px; right: 64px; top: 306px; display: grid; grid-template-columns: repeat(4, 1fr); gap: 22px; }
+.member { text-align: center; }
+.member .ph { height: 236px; border-radius: 16px; overflow: hidden; position: relative; background: linear-gradient(160deg, #24586a, #12303d); box-shadow: 0 18px 40px rgba(0,0,0,.35); border: 1px solid rgba(255,255,255,.12); }
+.member .ph img { width: 100%; height: 100%; object-fit: cover; display: block; }
+.member .ph .ini { position: absolute; inset: 0; display: none; place-items: center; font-size: 64px; font-weight: 700; color: rgba(255,255,255,.35); }
+.member .ph.empty img { display: none; } .member .ph.empty .ini { display: grid; }
+.member h3 { font-size: 22px; font-weight: 700; margin-top: 14px; color: #fff; }
+.member .spec { display: inline-block; margin-top: 6px; font-size: 13.5px; font-weight: 700; color: var(--navy); background: var(--teal-l); padding: 3px 12px; border-radius: 99px; }
+.member p { font-size: 13.5px; color: #a9c7cd; margin-top: 7px; }
+
+/* ---------- advisors ---------- */
+.adv { position: absolute; top: 250px; left: 150px; right: 150px; display: grid; grid-template-columns: repeat(3, 1fr); gap: 22px; }
+.adv > div { background: #fff; border: 1px solid var(--line); border-radius: 16px; padding: 22px 18px 20px; text-align: center; box-shadow: 0 8px 22px rgba(18,48,61,.07); border-top: 5px solid var(--teal); }
+.adv > div:nth-child(even) { border-top-color: var(--copper); }
+.adv i { width: 64px; height: 64px; border-radius: 50%; background: var(--tint); color: var(--teal-d); display: grid; place-items: center; margin: 0 auto 12px; font-style: normal; }
+.adv i svg { width: 32px; height: 32px; }
+.adv h3 { font-size: 20px; color: var(--navy); }
+.adv .t { display: inline-block; margin-top: 6px; font-size: 13.5px; font-weight: 700; color: var(--teal-d); background: var(--tint); padding: 3px 12px; border-radius: 99px; }
+.adv p { font-size: 14.5px; color: var(--mute); margin-top: 10px; line-height: 1.55; }
+.adv-note { position: absolute; bottom: 70px; right: 64px; left: 64px; display: flex; gap: 14px; justify-content: center; }
+.adv-note span { font-size: 15px; font-weight: 700; color: var(--navy); background: #fff; border: 1px solid var(--line); border-radius: 12px; padding: 10px 18px; }
+.adv-note span b { color: var(--copper); }
+/* ---------- 2 problem ---------- */
+.prob { position: absolute; top: 156px; right: 64px; width: 690px; display: grid; grid-template-columns: 1fr 1fr; gap: 12px; }
+.stat { background: #fff; border: 1px solid var(--line); border-radius: 14px; padding: 15px 20px; box-shadow: 0 6px 18px rgba(18,48,61,.06); }
+.stat b { display: block; font-size: 40px; font-weight: 700; color: var(--teal); line-height: 1.15; }
+.stat p { font-size: 15.5px; color: var(--ink); margin-top: 4px; line-height: 1.55; }
+.stat .src { margin-top: 6px; display: block; }
+.stat.big { grid-column: 1 / -1; background: var(--navy); border-color: var(--navy); display: grid; grid-template-columns: auto 1fr; gap: 22px; align-items: center; }
+.stat.big b { font-size: 64px; color: var(--copper-l); }
+.stat.big p { color: #fff; font-size: 18px; }
+.stat.big .src { color: #8fb2bb; }
+.method { display: flex; flex-wrap: wrap; align-items: center; gap: 6px; margin-top: 9px; }
+.method em { font-style: normal; font-size: 12.5px; color: #8fb2bb; margin-left: 2px; }
+.method span { font-size: 12.5px; font-weight: 700; color: #dff4f5; background: rgba(108,201,206,.14); border: 1px solid rgba(108,201,206,.45); padding: 2px 10px; border-radius: 99px; }
+.prob-photos { position: absolute; top: 156px; left: 64px; width: 420px; height: 470px; }
+.prob-photos .p1, .prob-photos .p2 { position: absolute; border-radius: 14px; overflow: hidden; box-shadow: 0 16px 40px rgba(18,48,61,.25); }
+.prob-photos img { width: 100%; height: 100%; object-fit: cover; display: block; filter: saturate(.85); }
+.prob-photos .p1 { top: 0; left: 0; width: 330px; height: 250px; }
+.prob-photos .p2 { bottom: 0; right: 0; width: 330px; height: 250px; border: 6px solid var(--paper); }
+.prob-photos .q { position: absolute; bottom: 196px; left: -6px; width: 240px; background: var(--copper); color: #fff; font-size: 16px; font-weight: 700; padding: 12px 16px; border-radius: 12px; line-height: 1.5; box-shadow: 0 10px 26px rgba(0,0,0,.2); z-index: 2; }
+.bottom-line { position: absolute; bottom: 46px; right: 64px; width: 690px; font-size: 17px; font-weight: 700; color: var(--navy); border-right: 4px solid var(--copper); padding-right: 14px; }
+
+/* ---------- 3 emergency room ---------- */
+.steps { position: absolute; top: 236px; right: 64px; width: 330px; list-style: none; counter-reset: s; }
+.steps li { counter-increment: s; position: relative; padding-right: 50px; margin-bottom: 12px; font-size: 16px; line-height: 1.5; color: var(--ink); }
+.steps li b { display: block; font-size: 19px; color: var(--navy); }
+.steps li::before { content: counter(s); position: absolute; right: 0; top: 2px; width: 36px; height: 36px; border-radius: 50%; background: var(--teal); color: #fff; font-weight: 700; display: grid; place-items: center; font-size: 17px; }
+.collage { position: absolute; top: 166px; left: 72px; width: 760px; height: 480px; }
+.phone { position: absolute; width: 212px; padding: 7px; border-radius: 30px; background: #0d1b22; box-shadow: 0 22px 50px rgba(18,48,61,.35), inset 0 0 0 1.5px #2b4652; }
+.phone img { display: block; width: 100%; border-radius: 24px; }
+.ph-fig { position: absolute; width: 190px; margin: 0; text-align: center; }
+.ph-fig .phone { position: relative; width: 100%; }
+.ph-fig figcaption { display: inline-flex; align-items: center; gap: 8px; margin-top: 12px; background: var(--navy); color: #fff; font-size: 14px; font-weight: 700; padding: 6px 14px 6px 12px; border-radius: 99px; box-shadow: 0 8px 20px rgba(18,48,61,.22); white-space: nowrap; }
+.ph-fig figcaption i { font-style: normal; width: 22px; height: 22px; border-radius: 50%; background: var(--teal); display: grid; place-items: center; font-size: 12.5px; }
+.collage .shot { position: absolute; }
+.dev-note { position: absolute; bottom: 50px; right: 64px; width: 330px; display: flex; gap: 10px; align-items: flex-start; background: #fff7e8; border: 1px solid #efd9a6; border-radius: 12px; padding: 10px 14px; font-size: 13.5px; color: #6d4c0c; line-height: 1.5; }
+.dev-note svg { flex: 0 0 22px; height: 22px; margin-top: 1px; }
+.dev-note b { color: #6d4c0c; }
+
+/* ---------- 4 operating room ---------- */
+.or-bg { position: absolute; inset: 0; }
+.or-bg img { width: 100%; height: 100%; object-fit: cover; object-position: 30% 50%; display: block; }
+.or-bg::after { content: ""; position: absolute; inset: 0; background: linear-gradient(270deg, rgba(10,30,39,.96) 0%, rgba(10,30,39,.88) 34%, rgba(10,30,39,.25) 62%, rgba(10,30,39,.05) 100%); }
+.or-text { position: absolute; top: 50px; right: 64px; width: 500px; color: #fff; }
+.or-text .title { color: #fff; font-size: 40px; }
+.or-block { margin-top: 16px; }
+.or-block h4 { font-size: 15px; color: var(--copper-l); margin-bottom: 6px; }
+.or-steps { list-style: none; display: grid; grid-template-columns: 1fr 1fr; gap: 6px 12px; counter-reset: o; }
+.or-steps li { counter-increment: o; font-size: 14.5px; color: #e6f3f5; position: relative; padding-right: 30px; line-height: 1.45; }
+.or-steps li::before { content: counter(o); position: absolute; right: 0; top: 0; width: 22px; height: 22px; border-radius: 50%; background: rgba(108,201,206,.2); border: 1px solid rgba(108,201,206,.55); color: #dff4f5; font-size: 12px; font-weight: 700; display: grid; place-items: center; }
+.or-block p { font-size: 15px; color: #d3e6ea; line-height: 1.6; }
+.or-text .sub { color: #c4dde2; }
+.chips { display: flex; flex-wrap: wrap; gap: 8px; margin-top: 24px; }
+.chips span { font-size: 14.5px; font-weight: 700; padding: 6px 14px; border-radius: 99px; background: rgba(108,201,206,.14); border: 1px solid rgba(108,201,206,.45); color: #dff4f5; }
+.chips span i { font-style: normal; color: var(--copper-l); margin-left: 6px; }
+.or-inset { position: absolute; bottom: 62px; right: 64px; width: 300px; }
+.or-inset .cap { bottom: -14px; left: 16px; }
+
+.or-slide .foot span { background: rgba(10,30,39,.78); padding: 2px 10px; border-radius: 6px; }
+/* ---------- 5 audiences, B2B / B2C ---------- */
+.aud { position: absolute; top: 150px; left: 64px; right: 64px; display: grid; grid-template-columns: repeat(5, 1fr); gap: 14px; }
+.aud div { background: #fff; border: 1px solid var(--line); border-radius: 14px; padding: 16px 12px 14px; text-align: center; box-shadow: 0 6px 18px rgba(18,48,61,.05); }
+.aud svg { width: 40px; height: 40px; color: var(--teal); }
+.aud b { display: block; font-size: 17px; color: var(--navy); margin-top: 6px; }
+.aud span { font-size: 13px; color: var(--mute); }
+.models { position: absolute; top: 318px; left: 64px; right: 64px; display: grid; grid-template-columns: 1fr 120px 1fr; gap: 0; align-items: stretch; }
+.model { background: #fff; border: 1px solid var(--line); border-radius: 16px; padding: 18px 20px; position: relative; overflow: hidden; display: grid; grid-template-columns: 1fr 180px; gap: 14px; }
+.model.b2b { border-top: 5px solid var(--teal); } .model.b2c { border-top: 5px solid var(--copper); }
+.model h3 { font-size: 24px; color: var(--navy); display: flex; align-items: baseline; gap: 10px; }
+.model h3 small { font-size: 14px; color: var(--mute); font-weight: 400; }
+.flowline { display: flex; align-items: center; gap: 5px; margin: 10px 0 10px; flex-wrap: nowrap; white-space: nowrap; }
+.flowline span { font-size: 13px; font-weight: 700; background: var(--tint); color: var(--teal-d); padding: 4px 10px; border-radius: 8px; }
+.model.b2c .flowline span { background: var(--copper-bg); color: var(--copper); }
+.flowline em { font-style: normal; color: var(--mute); font-size: 15px; }
+.model ul { list-style: none; font-size: 14.5px; line-height: 1.6; }
+.model li::before { content: "•"; color: var(--teal); font-weight: 700; margin-left: 7px; }
+.model.b2c li::before { color: var(--copper); }
+.model .shot { align-self: center; }
+.bridge { display: grid; place-items: center; text-align: center; padding: 0 8px; }
+.bridge svg { width: 54px; height: 30px; color: var(--copper); }
+.bridge p { font-size: 13px; color: var(--mute); line-height: 1.5; margin-top: 6px; }
+.bridge b { color: var(--navy); }
+
+/* ---------- 6 cost vs revenue ---------- */
+.money { position: absolute; top: 150px; left: 64px; right: 64px; display: grid; grid-template-columns: 400px 1fr; gap: 22px; }
+.cost { background: var(--navy); color: #fff; border-radius: 18px; padding: 22px 24px; position: relative; }
+.cost h3 { font-size: 20px; color: var(--teal-l); }
+.cost table { width: 100%; border-collapse: collapse; margin-top: 12px; font-size: 15px; }
+.cost td { padding: 8px 0; border-bottom: 1px solid rgba(255,255,255,.12); }
+.cost td.n { text-align: left; font-weight: 700; direction: ltr; }
+.cost .total { margin-top: 16px; display: flex; justify-content: space-between; align-items: baseline; }
+.cost .total b { font-size: 40px; color: #fff; direction: ltr; }
+.cost .total span { font-size: 14px; color: #a9c7cd; }
+.cost .var { margin-top: 12px; font-size: 13px; color: #cfe1e5; background: rgba(255,255,255,.07); border-radius: 10px; padding: 9px 12px; line-height: 1.55; }
+.rev h3 { font-size: 20px; color: var(--navy); display: flex; gap: 10px; align-items: center; }
+.tiers { display: grid; grid-template-columns: repeat(3, 1fr); gap: 14px; margin-top: 12px; }
+.tier { background: #fff; border: 1px solid var(--line); border-radius: 16px; padding: 16px 16px 12px; }
+.tier .who { font-size: 13px; font-weight: 700; color: var(--teal); }
+.tier h4 { font-size: 19px; color: var(--navy); margin-top: 2px; }
+.tier .row { display: flex; justify-content: space-between; align-items: baseline; padding: 7px 0; border-bottom: 1px dashed var(--line); font-size: 14px; color: var(--mute); }
+.tier .row:last-child { border-bottom: 0; }
+.tier .row b { font-size: 20px; color: var(--navy); }
+.tier .row b small { font-size: 12px; color: var(--mute); font-weight: 400; }
+.tier p.study { font-size: 14px; color: var(--mute); line-height: 1.65; margin-top: 10px; }
+.tier p.study b { color: var(--copper); }
+.cost .study-tag { display: inline-block; margin-top: 12px; background: var(--copper); color: #fff; font-weight: 700; font-size: 15px; padding: 5px 16px; border-radius: 99px; }
+.cost-list { list-style: none; margin-top: 18px; display: grid; gap: 12px; }
+.cost-list li { font-size: 16px; color: #e3f0f3; padding: 10px 14px 10px 14px; background: rgba(255,255,255,.06); border-radius: 10px; display: flex; align-items: center; gap: 10px; }
+.cost-list li::before { content: ""; width: 9px; height: 9px; border-radius: 50%; background: var(--teal-l); flex: 0 0 9px; }
+.cost-note { margin-top: 18px; font-size: 15px; color: #c3dbe0; line-height: 1.65; }
+.tier .row b.k { font-size: 14.5px; color: var(--teal-d); }
+.payoff { margin-top: 16px; display: grid; grid-template-columns: 1fr 1fr; gap: 14px; }
+.payoff div { background: var(--copper-bg); border: 1px solid #ecd3c4; border-radius: 14px; padding: 12px 16px; font-size: 15px; color: var(--ink); line-height: 1.55; }
+.payoff b { font-size: 26px; color: var(--copper); display: block; line-height: 1.2; }
+
+/* ---------- 7 competitors and trust ---------- */
+.versus { position: absolute; top: 146px; right: 64px; width: 600px; }
+.versus table { width: 100%; border-collapse: separate; border-spacing: 0 8px; font-size: 14.5px; }
+.versus td { background: #fff; padding: 10px 14px; border-top: 1px solid var(--line); border-bottom: 1px solid var(--line); vertical-align: middle; line-height: 1.45; }
+.versus td:first-child { border-right: 1px solid var(--line); border-radius: 0 12px 12px 0; font-weight: 700; color: var(--navy); width: 150px; }
+.versus td:last-child { border-left: 1px solid var(--line); border-radius: 12px 0 0 12px; }
+.versus td .price { font-weight: 700; color: var(--copper); }
+.versus tr.us td { background: var(--navy); color: #fff; border-color: var(--navy); }
+.versus tr.us td:first-child { color: var(--teal-l); }
+.versus tr.us .price { color: var(--copper-l); }
+.edge { margin-top: 10px; display: flex; flex-wrap: wrap; gap: 8px; }
+.edge span { font-size: 13.5px; font-weight: 700; color: var(--teal-d); background: var(--tint); padding: 5px 12px; border-radius: 99px; }
+.trust { position: absolute; top: 146px; left: 64px; width: 488px; height: 500px; background: #fff; border: 1px solid var(--line); border-radius: 18px; padding: 18px 20px; }
+.trust h3 { font-size: 20px; color: var(--navy); }
+.badges { display: flex; flex-wrap: wrap; gap: 6px; margin-top: 10px; }
+.badges span { font-size: 12.5px; font-weight: 700; border: 1px solid var(--line); border-radius: 8px; padding: 3px 9px; color: var(--navy); background: var(--paper); direction: ltr; }
+.badges span.fw { background: var(--navy); color: #fff; border-color: var(--navy); }
+.rules { list-style: none; margin-top: 12px; font-size: 14px; line-height: 1.55; }
+.rules li { padding-right: 22px; position: relative; margin-bottom: 5px; }
+.rules li::before { content: ""; position: absolute; right: 0; top: 7px; width: 12px; height: 12px; border-radius: 50%; border: 3px solid var(--teal); }
+.trust .shot { position: absolute; left: 20px; right: 20px; bottom: 16px; height: 118px; }
+.trust .shot img { object-fit: cover; object-position: 50% 8%; height: 118px; }
+
+/* ---------- next steps ---------- */
+.road { position: absolute; top: 236px; left: 64px; right: 64px; display: grid; grid-template-columns: 1fr 1.25fr; gap: 26px; }
+.phase { background: rgba(255,255,255,.06); border: 1px solid rgba(108,201,206,.35); border-radius: 18px; padding: 24px 26px; }
+.phase .when { display: inline-block; background: var(--copper); color: #fff; font-weight: 700; font-size: 16px; padding: 5px 16px; border-radius: 99px; }
+.phase ul { list-style: none; margin-top: 18px; display: grid; gap: 14px; }
+.phase li { font-size: 15.5px; color: #c9dfe4; line-height: 1.55; padding-right: 22px; position: relative; }
+.phase li::before { content: ""; position: absolute; right: 0; top: 8px; width: 10px; height: 10px; border-radius: 50%; background: var(--teal-l); }
+.phase li b { display: block; color: #fff; font-size: 18px; }
+.phase.year ul { grid-template-columns: 1fr 1fr; }
+.plan { position: absolute; top: 232px; left: 64px; right: 64px; display: grid; grid-template-columns: repeat(4, 1fr); gap: 16px; }
+.plan > div { background: rgba(255,255,255,.06); border: 1px solid rgba(108,201,206,.32); border-radius: 16px; padding: 20px 18px; }
+.plan > div:nth-child(-n+4) { border-top: 4px solid var(--teal-l); }
+.plan > div:nth-child(n+5) { border-top: 4px solid var(--copper-l); }
+.plan i { font-style: normal; display: grid; place-items: center; width: 34px; height: 34px; border-radius: 50%; background: rgba(108,201,206,.16); color: #dff4f5; font-weight: 700; font-size: 15px; }
+.plan b { display: block; color: #fff; font-size: 18px; margin-top: 12px; }
+.plan p { font-size: 14.5px; color: #c3dbe0; line-height: 1.55; margin-top: 6px; }
+/* ---------- print: one slide per page ---------- */
+@page { size: 1280px 720px; margin: 0; }
+@media print {
+  html, body { background: #fff; }
+  .deck { padding: 0; gap: 0; display: block; }
+  .frame { width: 1280px; height: 720px; break-after: page; display: block !important; }
+  .slide { transform: none; border-radius: 0; box-shadow: none; position: relative; }
+  .hint { display: none; }
+}
+</style>
+</head>
+<body>
+<div class="deck">
+
+<!-- ============ 1 · الفريق ============ -->
+<div class="frame"><section class="slide dark">
+  <div class="pad">
+    <div class="brand">
+      <svg viewBox="0 0 48 48" fill="none"><rect x="1" y="1" width="46" height="46" rx="12" stroke="#6CC9CE" stroke-width="2"/><path d="M8 26h8l3-8 5 14 4-10 2 4h10" stroke="#e5ad8e" stroke-width="2.6" stroke-linecap="round" stroke-linejoin="round"/></svg>
+      <div><b>نَبْض</b><span>منصة المحاكاة السريرية التفاعلية</span></div>
+    </div>
+    <p class="kicker" style="margin-top:26px">من نحن</p>
+    <h1 class="title">فريق نبض</h1>
+    <p class="sub">من هندسة البرمجيات وعلم الحاسوب، بنينا نبض من الفكرة إلى منصة تعمل.</p>
+  </div>
+  <div class="team" id="team"></div>
+  <div class="foot"><span data-k="event"></span><span><b>نبض</b> · 1</span></div>
+</section></div>
+
+<!-- ============ الإشراف الأكاديمي والتدقيق ============ -->
+<div class="frame"><section class="slide">
+  <div class="pad">
+    <p class="kicker">من يقف معنا</p>
+    <h1 class="title">الإشراف الأكاديمي والتدقيق</h1>
+    <p class="sub">يشرف على نبض أكاديميون من كلية التمريض في جامعة الشرق الأوسط، ويدقّقون محتواه السريري ومعايير تقييمه.</p>
+  </div>
+  <div class="adv" id="advisors"></div>
+  <div class="adv-note"><span><b>استبيان الطلبة</b> موثّق ومرفق ورقياً مع نتائجه</span><span><b>استبيان المرضى</b> موثّق ومرفق ورقياً مع نتائجه</span></div>
+  <div class="foot"><span>الاستبيانان أُجريا بإشراف أكاديميين من كلية التمريض</span><span><b>نبض</b></span></div>
+</section></div>
+
+<!-- ============ المشكلة ============ -->
+<div class="frame"><section class="slide">
+  <div class="pad">
+    <p class="kicker">المشكلة</p>
+    <h1 class="title">الطالب يتخرّج قبل أن يجرّب القرار بنفسه</h1>
+  </div>
+  <div class="prob">
+    <div class="stat"><b><span class="en">69,737</span></b><p>طالب طب وتمريض في الجامعات الأردنية: 29,938 طب و39,799 تمريض</p><span class="src">دائرة الإحصاءات العامة، الكتاب الإحصائي السنوي 2025</span></div>
+    <div class="stat"><b><span class="en">4.3</span></b><p>طالب طب وتمريض لكل سرير: 16,363 سريراً في 121 مستشفى بالأردن</p><span class="src">محسوب من دائرة الإحصاءات العامة 2025</span></div>
+    <div class="stat"><b style="font-size:30px;padding:6px 0">6 كليات طب</b><p>طلبتها ومشرفوها وصفوا مزاحمة الطلبة على الحالات وضيق فرص الممارسة</p><span class="src">Albeitawi وآخرون، PLOS ONE 2025</span></div>
+    <div class="stat"><b><span class="en">55.1%</span></b><p>من طلاب التمريض يرون الخوف من ارتكاب الخطأ عائقاً في التدريب</p><span class="src">Al-Dweik وآخرون، 2021 · 187 طالباً</span></div>
+    <div class="stat big"><b><span class="en">85%</span></b><div><p>من المرضى يرفضون أن يتولّى متدرّب علاجهم أو الإشراف على حالتهم</p></div></div>
+  </div>
+  <div class="prob-photos">
+    <div class="p1"><img src="img/photo-training.jpg" alt=""></div>
+    <div class="p2"><img src="img/photo-vitals.jpg" alt=""></div>
+    <div class="q">المشاهدة وحدها لا تصنع قراراً</div>
+  </div>
+  <p class="bottom-line">النتيجة: أول حالة حرجة يقرّر فيها الطالب قد تكون على مريض حقيقي.</p>
+  <div class="foot"><span class="src">الصور: Wikimedia Commons، ملكية عامة · نتائج استبيانَي نبض مرفقة ورقياً</span><span><b>نبض</b></span></div>
+</section></div>
+
+<!-- ============ 3 · الحل: غرفة الطوارئ ============ -->
+<div class="frame"><section class="slide">
+  <div class="pad">
+    <p class="kicker">الحل</p>
+    <h1 class="title">نبض: محاكاة سريرية تفاعلية</h1>
+    <p class="sub" style="max-width:440px">تدريب عملي بعد المادة النظرية في الجامعة: يختبر الطالب نفسه، والمدرّب يعلّمه ويصحّح.</p>
+  </div>
+  <ol class="steps">
+    <li><b>يتكلم بحرية</b>مع المريض وأهله، بالعربية كما يتكلم.</li>
+    <li><b>يفحص ويطلب الفحوصات</b>ويقرأ النتائج والمونيتور الحي.</li>
+    <li><b>يأمر بالعلاج</b>والممرضة توقف الجرعة الخطرة.</li>
+    <li><b>يسلّم ويأخذ تقريره</b>كل ما فعله، بالدقيقة.</li>
+    <li><b>المدرّب السريري يعلّمه</b>يكشف الخلل ويصحّح التفاصيل.</li>
+  </ol>
+  <div class="collage">
+    <figure class="ph-fig" style="top:26px;left:540px"><div class="phone"><img src="img/phone-history.jpg" alt=""></div><figcaption><i>1</i>يسأل المريض وابنته</figcaption></figure>
+    <figure class="ph-fig" style="top:0;left:280px"><div class="phone"><img src="img/phone-results.jpg" alt=""></div><figcaption><i>2</i>يقرأ الفحوصات والمونيتور</figcaption></figure>
+    <figure class="ph-fig" style="top:26px;left:20px"><div class="phone"><img src="img/phone-nurse.jpg" alt=""></div><figcaption><i>3</i>الممرضة توقف الجرعة الخطرة</figcaption></figure>
+  </div>
+  <div class="foot"><span>حالة حقيقية من النسخة 7.2.1: فرط بوتاسيوم شديد</span><span><b>نبض</b> · 3</span></div>
+</section></div>
+
+<!-- ============ 4 · غرفة العمليات ============ -->
+<div class="frame"><section class="slide dark or-slide">
+  <div class="or-bg"><img src="img/or-surgeon.jpg" alt=""></div>
+  <div class="or-text">
+    <span class="tag cop">نسخة تجريبية</span>
+    <h1 class="title" style="margin-top:12px">غرفة العمليات ثلاثية الأبعاد</h1>
+    <p class="sub">المريض على الطاولة والفريق حوله، والمشرف يرافق الطالب بالمحادثة خطوة بخطوة.</p>
+    <div class="or-block"><h4>ماذا يفعل الطالب</h4>
+      <ol class="or-steps"><li>يتحقّق من هوية المريض</li><li>يراجع الموافقة والحساسية والصيام</li><li>يفحص البطن</li><li>يراجع العلامات الحيوية قبل التخدير</li><li>يعلن وقفة الأمان قبل الشق</li><li>يأخذ موقع الجرّاح</li></ol></div>
+    <div class="or-block"><h4>كيف يتعامل</h4><p>يردّ بزرّ فعل أو بالكتابة، والكاميرا تنتقل إلى ما يفحصه، والمشرف يصحّح الخطأ في لحظته.</p></div>
+    <div class="or-block"><h4>ماذا يتعلّم</h4><p>خطوات السلامة الجراحية قبل الشق، ومنع أخطر الأخطاء: المريض الخطأ، والجهة الخطأ، والحساسية المنسية.</p></div>
+  </div>
+  <div class="foot"><span>سيناريو: التحضير لاستئصال الزائدة الدودية · نماذج BodyParts3D (CC BY 4.0)</span><span><b>نبض</b> · 4</span></div>
+</section></div>
+
+<!-- ============ 5 · الفئات المستهدفة ============ -->
+<div class="frame"><section class="slide">
+  <div class="pad">
+    <p class="kicker">لمن نبض؟</p>
+    <h1 class="title">الفئات المستهدفة</h1>
+  </div>
+  <div class="aud">
+    <div><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.7" stroke-linecap="round" stroke-linejoin="round"><path d="M3 21h18M5 21V9l7-5 7 5v12M9 21v-5h6v5M9 12h.01M15 12h.01"/></svg><b>الجامعات</b><span>كليات الطب والتمريض</span></div>
+    <div><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.7" stroke-linecap="round" stroke-linejoin="round"><path d="M22 10 12 5 2 10l10 5 10-5z"/><path d="M6 12v5c3 2 9 2 12 0v-5"/></svg><b>الطلاب والخرّيجون</b><span>طب وتمريض، كل السنوات</span></div>
+    <div><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.7" stroke-linecap="round" stroke-linejoin="round"><rect x="4" y="3" width="16" height="18" rx="2"/><path d="M12 7v6M9 10h6M9 21v-4h6v4"/></svg><b>المستشفيات</b><span>التعليم المستمر للكوادر</span></div>
+    <div><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.7" stroke-linecap="round" stroke-linejoin="round"><path d="M20.8 4.6a5.5 5.5 0 0 0-7.8 0L12 5.7l-1-1.1a5.5 5.5 0 0 0-7.8 7.8L12 21l8.8-8.6a5.5 5.5 0 0 0 0-7.8z"/><path d="M8 12h2l1-2 2 4 1-2h2"/></svg><b>المراكز الصحية</b><span>تدريب الكوادر الأولية</span></div>
+    <div><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.7" stroke-linecap="round" stroke-linejoin="round"><rect x="3" y="4" width="18" height="12" rx="2"/><path d="M8 20h8M12 16v4M7 9l3 2-3 2M12 13h4"/></svg><b>مراكز التدريب</b><span>دورات الطوارئ والإنعاش</span></div>
+  </div>
+  <div class="models">
+    <div class="model b2b">
+      <div>
+        <h3>B2B <small>للمؤسسات</small></h3>
+        <div class="flowline"><span>نبض</span><em>←</em><span>المؤسسة</span><em>←</em><span>طلابها وكوادرها</span></div>
+        <ul><li>اشتراك بالمقاعد: فصلي أو سنوي أو مخصص</li><li>بوابة للإدارة والمشرفين</li><li>إسناد الحالات واعتماد الدرجات</li><li>تقارير الأداء والأخطاء المتكررة</li></ul>
+      </div>
+      <div class="shot"><img src="img/23-uni-home.jpg" alt=""></div>
+    </div>
+    <div class="bridge">
+      <svg viewBox="0 0 60 30" fill="none" stroke="currentColor" stroke-width="2.4" stroke-linecap="round" stroke-linejoin="round"><path d="M4 15h50M44 5l10 10-10 10"/></svg>
+      <p><b>B2C يقود إلى B2B</b><br>طلاب كثيرون من جامعة واحدة يدفعون من جيبهم = عقد مؤسسي</p>
+    </div>
+    <div class="model b2c">
+      <div>
+        <h3>B2C <small>للأفراد</small></h3>
+        <div class="flowline"><span>نبض</span><em>←</em><span>الطالب أو الخرّيج مباشرة</span></div>
+        <ul><li>اشتراك صغير: شهري أو فصلي أو سنوي</li><li>التدريب كاملاً من أي مكان</li><li>تقارير شخصية ومدرّب سريري</li><li>لمن جامعته غير مشتركة بعد</li></ul>
+      </div>
+      <div class="shot"><img src="img/03-home.jpg" alt=""></div>
+    </div>
+  </div>
+  <div class="foot"><span>المستخدم الجامعي يدخل ببريد جامعته، والمستقل يسجّل بنفسه</span><span><b>نبض</b> · 5</span></div>
+</section></div>
+
+<!-- ============ 6 · التكلفة مقابل الأرباح ============ -->
+<div class="frame"><section class="slide">
+  <div class="pad">
+    <p class="kicker">نموذج العمل</p>
+    <h1 class="title">اشتراكات مرنة بأسعار تناسب الطالب</h1>
+  </div>
+  <div class="money">
+    <div class="cost">
+      <h3>التكلفة التشغيلية</h3>
+      <span class="study-tag">قيد الدراسة حالياً</span>
+      <ul class="cost-list"><li>الخوادم والاستضافة السحابية</li><li>الذكاء الاصطناعي</li><li>المحتوى السريري وتدقيقه</li><li>الدعم والتشغيل اليومي</li></ul>
+      <p class="cost-note">نحسبها لتناسب الطلبة والمؤسسات، وتغطّي التشغيل الكامل للمنصة.</p>
+    </div>
+    <div class="rev">
+      <h3>الاشتراكات <span class="tag cop">أرقام تقريبية قيد الدراسة مع المشرفين الأكاديميين</span></h3>
+      <div class="tiers">
+        <div class="tier"><span class="who">B2B</span><h4>الجامعات</h4>
+          <div class="row">فصلي <b class="k">لكل مقعد</b></div>
+          <div class="row">سنوي <b class="k">لكل مقعد</b></div>
+          <div class="row">مخصص <b class="k">حسب العدد</b></div></div>
+        <div class="tier"><span class="who">B2B</span><h4>المستشفيات ومراكز التدريب</h4>
+          <div class="row">فصلي <b class="k">لكل متدرّب</b></div>
+          <div class="row">سنوي <b class="k">لكل متدرّب</b></div>
+          <div class="row">مخصص <b class="k">حسب العدد</b></div></div>
+        <div class="tier"><span class="who">B2C</span><h4>الأفراد</h4>
+          <p class="study"><b>قيد الدراسة:</b> نسعّره بما يناسب الطالب الأردني في كل مرحلة دراسية ويغطّي تكلفة التشغيل، ليحصل على أفضل تجربة بسعر مناسب.</p></div>
+      </div>
+      <div class="payoff">
+        <div><b>يناسب الطالب</b>سعر يراعي الطالب الأردني في كل مرحلة دراسية</div>
+        <div><b>يغطّي التشغيل</b>ويترك مجالاً للتوسّع والتطوير المستمر</div>
+      </div>
+    </div>
+  </div>
+  <div class="foot"><span>التكاليف والأسعار قيد الدراسة مع المشرفين الأكاديميين</span><span><b>نبض</b> · 6</span></div>
+</section></div>
+
+<!-- ============ 7 · المنصات العالمية والثقة ============ -->
+<div class="frame"><section class="slide">
+  <div class="pad">
+    <p class="kicker">السوق</p>
+    <h1 class="title">أقوى من المنافس، وأقرب للطالب</h1>
+  </div>
+  <div class="versus">
+    <table>
+      <tr><td>vSim for Nursing</td><td>للتمريض فقط، بالإنجليزية · <span class="price"><span class="en">$100–120</span> للطالب لكل منتج سنوياً</span></td></tr>
+      <tr><td>Oxford Medical Simulation</td><td>واقع افتراضي، عقود مؤسسية · <span class="price">عقد جامعة بريطانية واحدة: <span class="en">£563,760</span></span></td></tr>
+      <tr><td>Body Interact</td><td>مريض افتراضي، مكتبة كبيرة · <span class="price">عقود مؤسسية، السعر عند الطلب</span></td></tr>
+      <tr class="us"><td>نبض</td><td>عربي، طب وتمريض · <span class="price">اشتراك محلي بالدينار يناسب الطالب الأردني</span></td></tr>
+    </table>
+    <div class="edge"><span>عربي من الأساس بلهجة المريض</span><span>محادثة حرة في كل حالة</span><span>ضغط الأهل والفريق</span><span>تقييم التسليم بالمحتوى</span><span>دورة جامعية كاملة</span><span>صرامة حسب السنة والمسار</span></div>
+    <p class="src" style="margin-top:8px">الأسعار: متجر Lippincott/Laerdal · سجل المناقصات البريطاني 2021 (Oxford Brookes) · موقع Body Interact</p>
+  </div>
+  <div class="trust">
+    <h3>لماذا يثق بنا العميل؟</h3>
+    <div class="badges"><span>GINA 2024</span><span>ESC 2019–2023</span><span>AHA ACLS 2020</span><span>Surviving Sepsis 2021</span><span>JBDS-IP 2023</span><span>UK Kidney Assoc. 2023</span><span>NEWS2</span><span class="fw">ABCDE</span><span class="fw">SAMPLE</span><span class="fw">SBAR</span><span class="fw">Calgary-Cambridge</span></div>
+    <ul class="rules">
+      <li>كل علامة لها سبب مكتوب ومرجع دولي</li>
+      <li>الخطأ الحرج يُسقط الحالة مهما كانت الدرجة</li>
+      <li>الطب يكتبه الطبيب، والموديل لا يضع الدرجة</li>
+      <li>المشرف يعدّل بسبب مكتوب، ثم يعتمد وينشر</li>
+      <li>تجربة أردنية عشوائية: المحاكاة رفعت معرفة طلاب التمريض وثقتهم (Tawalbeh، 2020)</li>
+    </ul>
+    <div class="shot"><img src="img/12-report-top.jpg" alt=""></div>
+  </div>
+  <div class="foot"><span>المنافسون تفاعليون أيضاً؛ تميّزنا في اللغة والواقعية والتقييم والسعر</span><span><b>نبض</b> · 7</span></div>
+</section></div>
+
+
+<!-- ============ الخطوة القادمة ============ -->
+<div class="frame"><section class="slide dark">
+  <div class="pad">
+    <p class="kicker">ما بعد هذه المرحلة</p>
+    <h1 class="title">الخطة المستقبلية</h1>
+    <p class="sub">نطوّر نبض خطوة خطوة، وكل حالة جديدة تحت إشراف طبي.</p>
+  </div>
+  <div class="plan">
+    <div><i>1</i><b>حالات كاملة شاملة</b><p>قصة وفحص وفحوصات وعلاج وتقييم متكامل لكل حالة</p></div>
+    <div><i>2</i><b>نموذج لغوي متقن</b><p>فهم دقيق ومنسّق لعربية الطلاب ولهجات المرضى</p></div>
+    <div><i>3</i><b>لوحة الجامعات</b><p>إكمال لوحة التحكم وتدقيقها للإدارة والمشرفين</p></div>
+    <div><i>4</i><b>حالات أكثر</b><p>تنسيق عدد أكبر من الحالات في الأقسام التخصصية كلها</p></div>
+    <div><i>5</i><b>واقع عمليات أوسع</b><p>سيناريوهات جراحية جديدة بواقعية أعلى</p></div>
+    <div><i>6</i><b>إشراف طبي</b><p>كل حالة يراجعها مختص قبل نشرها</p></div>
+    <div><i>7</i><b>خوادم أقوى</b><p>تتحمّل أعداداً أكبر من الطلاب في الوقت نفسه</p></div>
+    <div><i>8</i><b>جامعات ومستشفيات أكثر</b><p>في الأردن، ثم في المنطقة العربية</p></div>
+  </div>
+  <div class="foot"><span>خطة التطوير بعد المرحلة الحالية</span><span><b>نبض</b></span></div>
+</section></div>
+
+</div>
+<div class="hint">اضغط P للعرض · الأسهم للتنقل · F ملء الشاشة</div>
+
+<script>
+(function () {
+  const D = window.DECK;
+  const get = path => path.split('.').reduce((o, k) => (o == null ? o : o[k]), D);
+  const n = v => Number(v).toLocaleString('en-US');
+  // text bindings
+  document.querySelectorAll('[data-k]').forEach(el => {
+    const v = get(el.getAttribute('data-k'));
+    if (v == null) return;
+    el.innerHTML = el.hasAttribute('data-jod') ? `${n(v)} <small>د.أ</small>` : String(v);
+  });
+  // team
+  const team = document.getElementById('team');
+  team.innerHTML = D.team.map((m, i) => `<div class="member"><div class="ph"><img src="${m.photo}" alt="" style="object-position:${m.photoPos || '50% 30%'};transform-origin:${m.photoPos || '50% 30%'};transform:scale(${m.zoom || 1})" onerror="this.parentNode.classList.add('empty')"><span class="ini">${i + 1}</span></div><h3>${m.name}</h3><span class="spec">${m.spec}</span>${m.role ? `<p>${m.role}</p>` : ''}</div>`).join('');
+  // advisors
+  const adv = document.getElementById('advisors');
+  const icon = '<svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.7" stroke-linecap="round" stroke-linejoin="round"><path d="M22 10 12 5 2 10l10 5 10-5z"/><path d="M6 12v5c3 2 9 2 12 0v-5"/></svg>';
+  if (adv) adv.innerHTML = (D.advisors || []).map(a => `<div><i>${icon}</i><h3>${a.title}</h3><span class="t">${a.org}</span><p>${a.role}</p></div>`).join('');
+  // slide numbers
+  document.querySelectorAll('.frame').forEach((f, i) => { const sp = f.querySelector('.foot span:last-child'); if (sp) sp.innerHTML = `<b>نبض</b> · ${i + 1}`; });
+  // the survey: who took part and who supervised
+  const sm = document.getElementById('survey-method');
+  if (sm && D.survey) sm.innerHTML = `<em>${D.survey.source || ''}</em>` + (D.survey.method || []).map(x => `<span>${x}</span>`).join('');
+  // costs
+
+  // scaling and presenting
+  const frames = [...document.querySelectorAll('.frame')];
+  let cur = 0;
+  function fit() {
+    const present = document.body.classList.contains('present');
+    const s = present ? Math.min(innerWidth / 1280, innerHeight / 720) : Math.min(1, (innerWidth - 40) / 1280);
+    document.documentElement.style.setProperty('--s', s);
+  }
+  function show(i) { cur = Math.max(0, Math.min(frames.length - 1, i)); frames.forEach((f, k) => f.classList.toggle('on', k === cur)); }
+  addEventListener('resize', fit);
+  addEventListener('keydown', e => {
+    if (e.key === 'p' || e.key === 'P') { document.body.classList.toggle('present'); show(cur); fit(); }
+    else if (e.key === 'f' || e.key === 'F') { document.fullscreenElement ? document.exitFullscreen() : document.documentElement.requestFullscreen(); }
+    else if (['ArrowLeft', 'ArrowDown', 'PageDown', ' '].includes(e.key)) { e.preventDefault(); show(cur + 1); }
+    else if (['ArrowRight', 'ArrowUp', 'PageUp'].includes(e.key)) { e.preventDefault(); show(cur - 1); }
+    else if (e.key === 'Escape') { document.body.classList.remove('present'); fit(); }
+  });
+  addEventListener('beforeprint', () => document.documentElement.style.setProperty('--s', 1));
+  addEventListener('afterprint', fit);
+  show(0); fit();
+})();
+</script>
+</body>
+</html>

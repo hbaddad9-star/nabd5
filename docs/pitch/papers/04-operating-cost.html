@@ -1,0 +1,117 @@
+<!doctype html>
+<html lang="ar" dir="rtl">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>التكلفة التشغيلية · نبض</title>
+<link rel="stylesheet" href="paper.css">
+<link rel="stylesheet" href="flow.css">
+</head>
+<body>
+<section class="sheet flow">
+  <div class="band"><div class="brand"><div class="mark"><svg viewBox="0 0 24 24" fill="none" stroke="#6cc9ce" stroke-width="2.4" stroke-linecap="round" stroke-linejoin="round"><path d="M2 12h4l3-8 4 16 3-8h6"/></svg></div><div class="name">نبض<small>منصة محاكاة سريرية تفاعلية</small></div></div>
+    <div class="doc"><b>التكلفة التشغيلية</b>تقدير أولي · 21 تشرين الثاني 2026</div></div>
+
+  <h1>كم يكلّف تشغيل نبض لـ2,000 طالب سنة كاملة؟</h1>
+  <p class="lead">تقدير التكلفة المباشرة لتشغيل المنصة: الخوادم السحابية على AWS، والذكاء الاصطناعي. كل رقم مبني على سعر معلن وافتراض مكتوب، حتى يمكن مراجعته وتعديله.</p>
+
+  <div class="kpis">
+    <div class="kpi"><b class="en">~$4,900</b><span>الخوادم على AWS في السنة (حوالي 410 دولارات شهرياً)</span></div>
+    <div class="kpi"><b class="en">~$16,000</b><span>الذكاء الاصطناعي في السنة (80,000 حالة × 0.20 دولار)</span></div>
+    <div class="kpi"><b>~14,800 د.أ</b><span>التكلفة المباشرة السنوية الكلية (حوالي 20,900 دولار)</span></div>
+    <div class="kpi"><b>~7.4 د.أ</b><span>تكلفة الطالب الواحد في السنة</span></div>
+  </div>
+
+  <h2><span class="num">1</span>الافتراضات</h2>
+  <table class="t">
+    <tr><th>الافتراض</th><th>القيمة</th><th>لماذا</th></tr>
+    <tr><td>عدد الطلاب</td><td>2,000</td><td>حجم جامعة متوسطة (طب وتمريض)، تشغيل أولي</td></tr>
+    <tr><td>أشهر التدريس</td><td>9 أشهر</td><td>فصلان دراسيان</td></tr>
+    <tr><td>الحالات لكل طالب في السنة</td><td>40 حالة</td><td>4 إلى 5 حالات شهرياً، وهو تقدير مرتفع عمداً</td></tr>
+    <tr><td>الاستخدام المتزامن في الذروة</td><td>200 إلى 300 طالب</td><td>10% إلى 15% من الطلاب في الوقت نفسه</td></tr>
+    <tr><td>سعر الصرف</td><td><span class="en">1 USD = 0.709 JOD</span></td><td>سعر الربط الرسمي للدينار</td></tr>
+  </table>
+
+  <h2><span class="num">2</span>الخوادم والاستضافة على AWS</h2>
+  <table class="t">
+    <tr><th>البند</th><th>المواصفات</th><th class="n">دولار / شهر</th></tr>
+    <tr><td>خادما التطبيق (EC2)</td><td>2 × t3.large (2 معالج، 8 GB)، للتوزيع وعدم التوقف</td><td class="n">121.50</td></tr>
+    <tr><td>موزّع الأحمال (ALB)</td><td>يوزّع الطلاب على الخادمين</td><td class="n">22.00</td></tr>
+    <tr><td>قاعدة البيانات (RDS PostgreSQL)</td><td>db.t3.medium بنسختين في منطقتين (Multi-AZ)</td><td class="n">105.90</td></tr>
+    <tr><td>تخزين قاعدة البيانات ونسخها الاحتياطية</td><td>100 GB gp3 مع نسخ احتياطي يومي</td><td class="n">28.00</td></tr>
+    <tr><td>تخزين الملفات والصور (S3)</td><td>500 GB</td><td class="n">11.50</td></tr>
+    <tr><td>شبكة توزيع المحتوى ونقل البيانات (CloudFront)</td><td>صفحات وصور ونماذج غرفة العمليات</td><td class="n">20.00</td></tr>
+    <tr><td>بيئة التجربة قبل النشر</td><td>t3.small مع db.t3.micro</td><td class="n">28.30</td></tr>
+    <tr><td>بوابة الشبكة الخاصة (NAT Gateway)</td><td>تبقي الخوادم وقاعدة البيانات خارج الإنترنت المباشر</td><td class="n">35.00</td></tr>
+    <tr><td>المراقبة والسجلات (CloudWatch)</td><td>تنبيهات الأعطال وسجلات التشغيل</td><td class="n">15.00</td></tr>
+    <tr><td>جدار الحماية (AWS WAF)</td><td>حماية من الهجمات الشائعة</td><td class="n">10.00</td></tr>
+    <tr><td>النطاق والبريد والأسرار</td><td>Route 53 وSES وSecrets Manager وعناوين IP</td><td class="n">10.00</td></tr>
+    <tr class="total"><td colspan="2">المجموع الشهري</td><td class="n">407</td></tr>
+    <tr class="total"><td colspan="2">المجموع السنوي (× 12)</td><td class="n">4,890</td></tr>
+  </table>
+  <p class="tcap">أسعار AWS المعلنة بنظام الدفع حسب الاستخدام (On-Demand) لمنطقة us-east-1. قد تزيد 5% إلى 15% في منطقة أقرب للأردن (البحرين أو الإمارات). تُثبَّت الأرقام في حاسبة AWS الرسمية قبل أي عقد. <span class="cite">[1، 2، 3]</span></p>
+  <div class="box"><b>يمكن تخفيضها:</b> بخطة ادخار لسنة واحدة (Savings Plan / Reserved) تنخفض تكلفة الخوادم وقاعدة البيانات بحوالي 30% إلى 40%، فيصبح مجموع الخوادم حوالي 3,800 دولار في السنة.</div>
+
+  <h2><span class="num">3</span>الذكاء الاصطناعي</h2>
+  <p>في كل رسالة يكتبها الطالب، تقرأ المنصة الرسالة وتصنّفها (من المقصود، وما المطلوب)، ثم يكتب المريض أو الأهل أو الممرضة ردّاً قصيراً. والحقائق السريرية تأتي دائماً من ملف الحالة، لا من النموذج. وفي نهاية الحالة يُقيَّم التسليم مرة واحدة.</p>
+  <table class="t">
+    <tr><th>افتراض الحجم</th><th class="n">القيمة</th></tr>
+    <tr><td>رسائل الطالب في الحالة الواحدة</td><td class="n">~20</td></tr>
+    <tr><td>نص يُرسل للنموذج في كل رسالة (تعليمات الحالة والمحادثة)</td><td class="n">~5,800 token</td></tr>
+    <tr><td>نص يكتبه النموذج في كل رسالة</td><td class="n">~500 token</td></tr>
+    <tr class="total"><td>المجموع في الحالة الواحدة (مع تقييم التسليم)</td><td class="n">~118,000 دخل · ~10,300 خرج</td></tr>
+  </table>
+  <table class="t">
+    <tr><th>طريقة التشغيل</th><th>النماذج</th><th class="n">دولار / حالة</th></tr>
+    <tr><td>الأوفر</td><td>Claude Haiku 5.5 لكل الأدوار</td><td class="n">~0.02</td></tr>
+    <tr class="total"><td>المخطّط للإنتاج</td><td>Claude Sonnet 5.5 لقراءة الرسائل والتقييم، وHaiku 5.5 لأصوات المريض والأهل والممرضة، مع تخزين التعليمات الثابتة مؤقتاً (prompt caching)</td><td class="n">~0.15</td></tr>
+    <tr><td>الأعلى جودة (إعداد العرض الحالي)</td><td>Claude Opus 5.5 لكل الأدوار</td><td class="n">~0.70</td></tr>
+  </table>
+  <p class="tcap">أسعار Anthropic المعلنة لكل مليون token: Haiku 5.5 دخل 0.10 وخرج 0.50 دولار · Sonnet 5.5 دخل 2 وخرج 10 · Opus 5.5 دخل 4 وخرج 20. <span class="cite">[4]</span></p>
+  <div class="box"><b>الرقم المعتمد في الحساب: 0.20 دولار للحالة</b>، أي طريقة الإنتاج مع هامش أمان حوالي 30% للحالات الطويلة وإعادة المحاولة.<br>2,000 طالب × 40 حالة = 80,000 حالة في السنة × 0.20 = <b>16,000 دولار في السنة</b> (8 دولارات للطالب).</div>
+
+  <h2><span class="num">4</span>الخلاصة: التكلفة مقابل الإيراد</h2>
+  <table class="t">
+    <tr><th>البند</th><th class="n">دولار / سنة</th><th class="n">دينار / سنة</th></tr>
+    <tr><td>الخوادم على AWS</td><td class="n">4,890</td><td class="n">3,467</td></tr>
+    <tr><td>الذكاء الاصطناعي</td><td class="n">16,000</td><td class="n">11,344</td></tr>
+    <tr class="total"><td>التكلفة المباشرة الكلية</td><td class="n">20,890</td><td class="n">14,811</td></tr>
+    <tr class="total"><td>للطالب الواحد (÷ 2,000)</td><td class="n">10.4</td><td class="n">7.4</td></tr>
+  </table>
+
+  <table class="t">
+    <tr><th>سيناريو السعر (قيد الدراسة)</th><th class="n">الإيراد السنوي</th><th class="n">بعد التكلفة المباشرة</th></tr>
+    <tr><td>مقعد سنوي 25 د.أ</td><td class="n">50,000 د.أ</td><td class="n">35,200 د.أ</td></tr>
+    <tr><td>مقعد فصلي 15 د.أ × فصلين</td><td class="n">60,000 د.أ</td><td class="n">45,200 د.أ</td></tr>
+    <tr><td>سعر مخفّض 20 د.أ سنوياً</td><td class="n">40,000 د.أ</td><td class="n">25,200 د.أ</td></tr>
+  </table>
+  <p class="tcap">نقطة التعادل للتكلفة المباشرة: حوالي 600 مقعد سنوي بسعر 25 د.أ (محسوب: 14,811 ÷ 25).</p>
+
+  <h2><span class="num">5</span>عندما يكبر العدد</h2>
+  <table class="t">
+    <tr><th class="n">الطلاب</th><th class="n">الخوادم / سنة</th><th class="n">الذكاء الاصطناعي / سنة</th><th class="n">للطالب / سنة</th></tr>
+    <tr><td class="n">500</td><td class="n">~$3,000</td><td class="n">$4,000</td><td class="n">~9.9 د.أ</td></tr>
+    <tr class="total"><td class="n">2,000</td><td class="n">~$4,900</td><td class="n">$16,000</td><td class="n">~7.4 د.أ</td></tr>
+    <tr><td class="n">5,000</td><td class="n">~$8,400</td><td class="n">$40,000</td><td class="n">~6.9 د.أ</td></tr>
+    <tr><td class="n">10,000</td><td class="n">~$14,400</td><td class="n">$80,000</td><td class="n">~6.7 د.أ</td></tr>
+  </table>
+  <p class="tcap">تقدير تقريبي: الخوادم تكبر على درجات، والذكاء الاصطناعي يكبر مع عدد الحالات. تكلفة الطالب تنخفض كلما كبر العدد.</p>
+
+  <h2><span class="num">6</span>ما لا يشمله هذا الرقم</h2>
+  <ul class="dots">
+    <li>رواتب الفريق، والمراجعة الطبية للحالات الجديدة، والتسويق، والدعم الفني اليومي.</li>
+    <li>الضرائب ورسوم الدفع الإلكتروني.</li>
+    <li>هذه البنود قيد الدراسة مع المشرفين الأكاديميين، ضمن النموذج المالي الكامل للمشروع.</li>
+  </ul>
+
+  <h2><span class="num">7</span>المصادر</h2>
+  <ol class="refs">
+    <li><i>[1]</i><div class="ltrref">AWS Pricing Calculator. <a href="https://calculator.aws/">calculator.aws</a></div></li>
+    <li><i>[2]</i><div class="ltrref">Amazon EC2 On-Demand Pricing. <a href="https://aws.amazon.com/ec2/pricing/on-demand/">aws.amazon.com/ec2/pricing/on-demand</a></div></li>
+    <li><i>[3]</i><div class="ltrref">Amazon RDS for PostgreSQL Pricing. <a href="https://aws.amazon.com/rds/postgresql/pricing/">aws.amazon.com/rds/postgresql/pricing</a></div></li>
+    <li><i>[4]</i><div class="ltrref">Anthropic. Claude API pricing. <a href="https://platform.claude.com/docs/en/about-claude/pricing">platform.claude.com/docs/en/about-claude/pricing</a></div></li>
+  </ol>
+  <div class="foot"><span>نبض · التكلفة التشغيلية</span><span>تقدير أولي، يُثبَّت بالحاسبات الرسمية قبل الاعتماد</span></div>
+</section>
+</body>
+</html>

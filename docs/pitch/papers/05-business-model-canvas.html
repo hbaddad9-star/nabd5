@@ -1,0 +1,124 @@
+<!doctype html>
+<html lang="ar" dir="rtl">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>نموذج العمل التجاري · نبض</title>
+<link rel="stylesheet" href="paper.css">
+<style>
+@page { size: A4 landscape; margin: 0; }
+.bmc { display: grid; grid-template-columns: repeat(10, 1fr); grid-template-rows: 1fr 1fr auto; gap: 7px; height: 160mm; margin-top: 4px; }
+.blk { border: 1px solid var(--line); border-radius: 10px; padding: 7px 10px 6px; background: #fff; overflow: hidden; }
+.blk h3 { margin: 0 0 3px; font-size: 13px; color: var(--navy); display: flex; align-items: center; gap: 6px; }
+.blk h3 i { font-style: normal; width: 20px; height: 20px; border-radius: 6px; background: var(--teal); color: #fff; font-size: 11px; display: inline-grid; place-items: center; }
+.blk ul { list-style: none; }
+.blk li { font-size: 10.8px; line-height: 1.5; padding-right: 10px; position: relative; margin: 2px 0; }
+.blk li::before { content: ""; position: absolute; right: 0; top: .62em; width: 4px; height: 4px; border-radius: 50%; background: var(--teal); }
+.blk li b { color: var(--navy); }
+.kp { grid-column: 1 / 3; grid-row: 1 / 3; }
+.ka { grid-column: 3 / 5; grid-row: 1; }
+.kr { grid-column: 3 / 5; grid-row: 2; }
+.vp { grid-column: 5 / 7; grid-row: 1 / 3; background: var(--navy); border-color: var(--navy); }
+.vp h3, .vp li, .vp li b { color: #fff; }
+.vp h3 i { background: var(--copper); }
+.vp li::before { background: var(--teal-l); }
+.cr { grid-column: 7 / 9; grid-row: 1; }
+.ch { grid-column: 7 / 9; grid-row: 2; }
+.cs { grid-column: 9 / 11; grid-row: 1 / 3; background: var(--tint-2); }
+.co { grid-column: 1 / 6; grid-row: 3; border-top: 4px solid var(--copper); }
+.rs { grid-column: 6 / 11; grid-row: 3; border-top: 4px solid var(--teal); }
+.co h3 i { background: var(--copper); }
+.co ul, .rs ul { display: grid; grid-template-columns: 1fr 1fr; column-gap: 14px; }
+.head { display: flex; justify-content: space-between; align-items: flex-end; }
+.head h1 { font-size: 21px; }
+.head p { font-size: 11.5px; color: var(--mute); }
+</style>
+</head>
+<body>
+<section class="sheet land">
+  <div class="band" style="margin-bottom:8px"><div class="brand"><div class="mark"><svg viewBox="0 0 24 24" fill="none" stroke="#6cc9ce" stroke-width="2.4" stroke-linecap="round" stroke-linejoin="round"><path d="M2 12h4l3-8 4 16 3-8h6"/></svg></div><div class="name">نبض<small>منصة محاكاة سريرية تفاعلية</small></div></div>
+    <div class="doc"><b>نموذج العمل التجاري</b>Business Model Canvas · 2026</div></div>
+  <div class="head"><h1>نموذج العمل التجاري لنبض</h1><p>الطالب يتدرّب ويخطئ ويتعلّم على مريض افتراضي، قبل أن يقف أمام مريض حقيقي.</p></div>
+
+  <div class="bmc">
+    <div class="blk kp"><h3><i>8</i>الشركاء الرئيسيون</h3><ul>
+      <li><b>كلية التمريض في جامعة الشرق الأوسط:</b> إشراف أكاديمي وتدقيق الحالات والاستبانات.</li>
+      <li><b>كليات الطب والتمريض:</b> شريك التجربة الميدانية الأولى، والعميل الأول.</li>
+      <li><b>المستشفيات التعليمية ومراكز التدريب:</b> حالات من الواقع المحلي، وتدريب المتدرّبين الجدد.</li>
+      <li><b>أطباء وممرضون مراجعون:</b> يراجعون كل حالة قبل نشرها.</li>
+      <li><b>مزوّد السحابة (AWS):</b> الاستضافة والحماية.</li>
+      <li><b>مزوّد الذكاء الاصطناعي:</b> نموذج Claude من شركة Anthropic، عبر خادمنا فقط.</li>
+      <li><b>جهات الاعتماد والمجالس المهنية:</b> شراكة مستهدفة لاحقاً.</li>
+    </ul></div>
+
+    <div class="blk ka"><h3><i>7</i>الأنشطة الرئيسية</h3><ul>
+      <li>كتابة الحالات السريرية ومراجعتها طبياً.</li>
+      <li>تطوير المنصة وغرفة العمليات ثلاثية الأبعاد.</li>
+      <li>معايرة التقييم على الأطر الدولية.</li>
+      <li>تهيئة الجامعات وتدريب المشرفين.</li>
+      <li>حماية البيانات وضمان الجودة.</li>
+    </ul></div>
+
+    <div class="blk kr"><h3><i>6</i>الموارد الرئيسية</h3><ul>
+      <li><b>مكتبة الحالات:</b> طوارئ وقلب وتنفسية وسكري.</li>
+      <li><b>محرّك التقييم:</b> 6 محاور، وخطأ حرج يُسقط الحالة.</li>
+      <li><b>المنصة:</b> غرف المحاكاة، ولوحة الجامعة، وغرفة العمليات.</li>
+      <li><b>الفريق:</b> هندسة برمجيات وعلم حاسوب.</li>
+      <li><b>المشرفون الأكاديميون.</b></li>
+    </ul></div>
+
+    <div class="blk vp"><h3><i>2</i>القيمة المقدَّمة</h3><ul>
+      <li><b>تدريب آمن:</b> الطالب يقرّر ويخطئ ويتعلّم دون أي خطر على مريض حقيقي.</li>
+      <li><b>ممارسة لا مشاهدة:</b> يحكي مع المريض، ويفحص، ويطلب الفحوصات، ويشخّص، ويعالج.</li>
+      <li><b>عربي من الأساس:</b> المريض يحكي مثل مرضانا، والطالب يكتب كما يتكلم.</li>
+      <li><b>حالات من واقعنا</b> مبنية على إرشادات دولية.</li>
+      <li><b>تقييم موثوق:</b> ABCDE وSAMPLE وSBAR، والمشرف يعتمد الدرجة.</li>
+      <li><b>دورة جامعية كاملة:</b> الجامعة تنظّم الجلسات، والمشرف يراجع ويعتمد.</li>
+      <li><b>غرفة عمليات ثلاثية الأبعاد</b> لخطوات السلامة قبل العملية.</li>
+      <li><b>سعر محلي بالدينار</b> مقابل 100 دولار فأكثر للمنصات العالمية.</li>
+      <li><b>في أي وقت ومن أي مكان،</b> دون ضغط على أسرّة المستشفيات.</li>
+    </ul></div>
+
+    <div class="blk cr"><h3><i>4</i>العلاقة مع العملاء</h3><ul>
+      <li>تجربة أولى (Pilot) مع كل جامعة قبل التعاقد.</li>
+      <li>تهيئة وتدريب للمشرفين والإدارة.</li>
+      <li>مسؤول متابعة لكل مؤسسة.</li>
+      <li>تطوير مستمر بناءً على ملاحظات الأكاديميين.</li>
+    </ul></div>
+
+    <div class="blk ch"><h3><i>3</i>القنوات</h3><ul>
+      <li>تواصل مباشر مع العمداء ورؤساء الأقسام.</li>
+      <li>عروض حيّة في المؤتمرات والأيام الطبية.</li>
+      <li>سفراء من الطلاب في الكليات.</li>
+      <li>المنصة على الويب والهاتف.</li>
+    </ul></div>
+
+    <div class="blk cs"><h3><i>1</i>شرائح العملاء</h3><ul>
+      <li><b>B2B · الجامعات:</b> كليات الطب والتمريض، حوالي 70 ألف طالب في الأردن.</li>
+      <li><b>B2B · المستشفيات ومراكز التدريب:</b> أطباء الامتياز والممرضون الجدد.</li>
+      <li><b>B2C · الأفراد:</b> طلاب يريدون تدريباً إضافياً، وخرّيجون يستعدّون لامتحان أو مقابلة.</li>
+      <li><b>لاحقاً:</b> جامعات ومستشفيات في المنطقة العربية.</li>
+    </ul></div>
+
+    <div class="blk co"><h3><i>9</i>هيكل التكاليف</h3><ul>
+      <li><b>الخوادم على AWS:</b> حوالي 4,900 دولار سنوياً لـ2,000 طالب.</li>
+      <li><b>الذكاء الاصطناعي:</b> حوالي 16,000 دولار سنوياً (0.20 دولار للحالة).</li>
+      <li><b>التكلفة المباشرة:</b> حوالي 7.4 د.أ للطالب في السنة.</li>
+      <li>رواتب الفريق والمراجعة الطبية (قيد الدراسة).</li>
+      <li>التسويق والدعم الفني (قيد الدراسة).</li>
+      <li>التكلفة للطالب تنخفض كلما زاد العدد.</li>
+    </ul></div>
+
+    <div class="blk rs"><h3><i>5</i>مصادر الإيرادات</h3><ul>
+      <li><b>B2B · اشتراك لكل مقعد:</b> فصلي أو سنوي للجامعات.</li>
+      <li><b>B2B · اشتراك لكل متدرّب:</b> للمستشفيات ومراكز التدريب.</li>
+      <li><b>B2B · عقد مخصّص</b> حسب العدد والأقسام.</li>
+      <li><b>B2C · اشتراك فردي:</b> قيد الدراسة.</li>
+      <li><b>مثال (قيد الدراسة):</b> 2,000 مقعد × 25 د.أ = 50,000 د.أ سنوياً.</li>
+      <li>الأسعار قيد الدراسة لتناسب كل طبقات المجتمع.</li>
+    </ul></div>
+  </div>
+  <div class="foot"><span>نبض · نموذج العمل التجاري</span><span>الأرقام تقديرية، والتفاصيل في ملف «التكلفة التشغيلية»</span></div>
+</section>
+</body>
+</html>

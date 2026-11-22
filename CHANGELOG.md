@@ -1,5 +1,10 @@
 # Changelog
 
+## 7.2.2 — 2026-11-22 (presentation materials; development postponed)
+
+- **Presentation materials saved in `docs/pitch/`.** The nine-slide deck (HTML and PDF), the approved speaking script, the team document and the companion papers: two survey report templates that compute percentages from the counts typed in from the paper forms, the research file (40 references, study DOIs checked against Crossref), the operating cost, the business model canvas, the assessment standards and a pilot study plan. Index in `docs/pitch/README.ar.md`.
+- **Development postponed** until the new requirements document. No application code changed since 7.2.1.
+
 ## 7.2.1 — 2026-11-19 (development freeze)
 
 - **Freeze check before the presentation.** Every page of the three console accounts, the student home, the three open sections, all seven cases and the operating room were opened in a browser: no script error and no broken text or image.
